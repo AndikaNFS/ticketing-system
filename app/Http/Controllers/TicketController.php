@@ -146,6 +146,11 @@ class TicketController extends Controller
         ]);
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
+         
+        // Jika statusnya "OnProgress", tetap di halaman edit
+        // if ($request->status == 'OnProgress') {
+        //     return redirect()->back()->with('success', 'Status updated to OnProgress');
+        // }
 
         return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
     }
