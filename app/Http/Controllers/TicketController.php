@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+// use Carbon\Carbon;
 
 class TicketController extends Controller
 {
@@ -37,7 +39,7 @@ class TicketController extends Controller
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,OnProgress,Done',
+            'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'it_name' => 'required|string|max:255',
             'date_finish' => 'required|string|max:255',
             'lama_pengerjaan' => 'nullable|string|max:225',
@@ -104,22 +106,43 @@ class TicketController extends Controller
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,OnProgress,Done',
-            'it_name' => 'required|string|max:255',
-            'date_finish' => 'required|string|max:255',
-            'lama_pengerjaan' => 'required|string|max:225',
+            'status' => 'required|in:Open,OnProgress,Done,Cancel',
+            'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
+            'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
+            'lama_pengerjaan' => $request->it_name == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
         ]);
         // dd($request->all());
 
         $ticket = Ticket::findOrFail($id);
+        // $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
+        // $lamaPengerjaan = null;
+        $createdAt = Carbon::parse($ticket->created_at);
+
+        // Jika status "Done", otomatis set date_finish ke sekarang
+        if ($request->status == "Done") {
+            $dateFinish = Carbon::now();
+        } else {
+            $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
+        }
+        // if ($request->status == "Done") {
+        //     $dateFinish = Carbon::now();
+        //     $lamaPengerjaan = $ticket->created_at->diff($dateFinish)->format('%h jam %i menit'); 
+        // }
+        // $dateFinish = Carbon::parse($request->date_finish);
+
+        // Hitung selisih waktu jika date_finish tersedia
+        $lamaPengerjaan = $dateFinish ? $createdAt->diff($dateFinish)->format('%d hari %h jam %i menit') : null; 
+
+
         $ticket->update([
             'ticketing' => $request->ticketing,
             'problem' => $request->problem,
             'outlet' => $request->outlet,
             'status' => $request->status,
             'it_name' => $request->it_name,
-            'date_finish' => $request->date_finish,
-            'lama_pengerjaan' => $request->lama_pengerjaan,
+            'date_finish' => $dateFinish,
+            'lama_pengerjaan' => $lamaPengerjaan,
+            // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);

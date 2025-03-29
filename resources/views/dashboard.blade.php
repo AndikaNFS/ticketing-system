@@ -24,6 +24,7 @@
                             <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
                             <option value="OnProgress" {{ request('status') == 'OnProgress' ? 'selected' : '' }}>OnProgress</option>
                             <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
+                            <option value="Cancel" {{ request('status') == 'Cancel' ? 'selected' : '' }}>Cancel</option>
                        </select>
                        {{-- <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-md text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-700 dark:focus:ring-blue-800">Export</button> --}}
                    </form>
@@ -119,11 +120,11 @@
                             
                             <td class="px-6 py-4">
                                 <span class=" px-2 py-1 rounded text-white
-                                     {{ $ticket->status == 'Open' ? 'bg-red-500' : ($ticket->status == 'OnProgress' ? 'bg-yellow-500' : 'bg-green-500') }}">
+                                     {{ 
+                                        $ticket->status == 'Open' ? 'bg-blue-500' : 
+                                        ($ticket->status == 'OnProgress' ? 'bg-yellow-500' : 
+                                        ($ticket->status == 'Done' ? 'bg-green-500' : 'bg-red-500')) }}">
                                      {{ $ticket->status }}
-                                {{-- </span>
-                                <span class="px-2 py-1 rounded text-white {{ $statusOptions[$ticket->status] ?? 'bg-gray-500' }}">
-                                    {{ $ticket->status }} --}}
                                 </span>
                             </td>
                             <td class="px-6 py-4">

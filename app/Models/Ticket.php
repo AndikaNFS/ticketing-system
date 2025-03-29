@@ -18,7 +18,7 @@ class Ticket extends Model
 
     public function scopeFilterStatus($query, $status)
     {
-        if ($status && in_array($status, ['Open', 'OnProgress', 'Done'])) {
+        if ($status && in_array($status, ['Open', 'OnProgress', 'Done', 'Cancel'])) {
             return $query->where('status', $status);
         }
         return $query;
