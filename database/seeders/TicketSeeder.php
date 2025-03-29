@@ -14,20 +14,20 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-        Ticket::create([
-            'ticketing' => 'R001',
-            'problem' => 'Printer Error',
-            'outlet' => 'Lotte',
-            'status' => 'Open',
-            'it_name' => null,
-            'date_finish' => null,
-            'lama_pengerjaan' => null,
-        ]);
+        // Ticket::create([
+        //     'ticketing' => 'R001',
+        //     'problem' => 'Printer Error',
+        //     'outlet' => 'Lotte',
+        //     'status' => 'Open',
+        //     'it_name' => null,
+        //     'date_finish' => null,
+        //     'lama_pengerjaan' => null,
+        // ]);
 
         User::create([
-            'name' => 'Andika',
-            'email' => 'andika@gmail.com',
-            'password' => bcrypt('andika'),
+            'name' => 'Admin IT',
+            'email' => 'itrrchocolate@gmail.com',
+            'password' => bcrypt('*mhb2020'),
         ]);
     }
 }
