@@ -30,8 +30,12 @@
                    </form>
 
                 </div>
+                <div class="">
+                    
+                </div>
+                <div class=" flex place-content-end">
 
-                <form class="flex items-center max-w-sm mx-auto" method="GET" action="{{ route('dashboard') }}">   
+                <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="{{ route('dashboard') }}">   
                     {{-- <label for="simple-search" class="sr-only">Search</label> --}}
                     {{-- <input type="hidden" name="outlet_id" value="{{ $outlet_id }}"> --}}
                     
@@ -50,7 +54,6 @@
                        <span class="sr-only">Search</span>
                     </button>
                  </form>
-                <div class=" flex place-content-end">
                  <a href="{{ route('tickets.create') }}">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>   
                  </a>
