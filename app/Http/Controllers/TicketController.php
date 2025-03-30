@@ -14,20 +14,32 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        // $status = $request->query('status'); //Ambil filter status dari query string
+        $status = $request->query('status'); //Ambil filter status dari query string
+        $tickets = Ticket::filterStatus($status);
+        $search = $request->input('search');
 
         // $tickets = Ticket::All();
-        // $tickets = Ticket::filterStatus($status)->paginate(10);
-        $search = $request->input('search');
-        $tickets = Ticket::where('ticketing', 'like', "%{$search}%")
-            ->orWhere('problem', 'like', "%{$search}%")
-            // ->orWhereHas('outlet', function ($query) use ($search) {
-            //     $query->where('it_name', 'like', "%{$search}%");
-            // })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $tickets = Ticket::when($status, function ($query) use ($status) {
+            return $query->where('status', $status);
+        })
+        ->when($search, function ($query) use ($search) {
+            return $query->where(function ($q) use ($search) {
+                $q->where('ticketing', 'like', "%{$search}%")
+                  ->orWhere('problem', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
-        return view('dashboard', compact('tickets'));
+        // $tickets = Ticket::where('ticketing', 'like', "%{$search}%")
+        //     ->orWhere('problem', 'like', "%{$search}%")
+        //     // ->orWhereHas('outlet', function ($query) use ($search) {
+        //     //     $query->where('it_name', 'like', "%{$search}%");
+        //     // })
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(10);
+
+        return view('dashboard', compact('tickets', 'status'));
     }
 
     /**
