@@ -53,10 +53,10 @@
                         <option value="Usman" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Usman') ? 'selected' : '' }}>Usman</option>
                         <option value="Asep" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Asep') ? 'selected' : '' }}>Asep</option>
                         <option value="Santo" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Santo') ? 'selected' : '' }}>Santo</option> --}}
-                        <option value="Andika" {{  old('it_name', $ticket->it_namea) }}>Andika</option>
-                        <option value="Usman" {{  old('it_name', $ticket->it_name) }}>Usman</option>
-                        <option value="Asep" {{  old('it_name', $ticket->it_name) }}>Asep</option>
-                        <option value="Santo" {{  old('it_name', $ticket->it_name) }}>Santo</option>
+                        <option value="Andika" {{  old('it_name', $ticket->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
+                        <option value="Usman" {{  old('it_name', $ticket->it_name) == 'Usman' ? 'selected' : '' }}>Usman</option>
+                        <option value="Asep" {{  old('it_name', $ticket->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
+                        <option value="Santo" {{  old('it_name', $ticket->it_name) == 'Santo' ? 'selected' : '' }}>Santo</option>
                     </select>
         </div>
         <div>
