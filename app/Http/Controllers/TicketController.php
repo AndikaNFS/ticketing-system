@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Outlet;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -47,7 +48,9 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.create');
+        $outlets = Outlet::all();
+
+        return view('tickets.create', compact('outlets'));
     }
 
     /**
