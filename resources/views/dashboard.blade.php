@@ -21,7 +21,7 @@
                        <select name="status" id="status" onchange="this.form.submit()" class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-8 py-2.5 dark:bg-gray-700 dark:text-white dark:focus:ring-blue-800" required>
                             <option value="">Filter Status</option>
                             <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="OnProgress" {{ request('status') == 'OnProgress' ? 'selected' : '' }}>OnProgress</option>
+                            <option value="InProgress" {{ request('status') == 'InProgress' ? 'selected' : '' }}>InProgress</option>
                             <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
                             <option value="Cancel" {{ request('status') == 'Cancel' ? 'selected' : '' }}>Cancel</option>
                        </select>
@@ -143,7 +143,7 @@
                                 <span class=" px-2 py-1 rounded text-white
                                      {{ 
                                         $ticket->status == 'Open' ? 'bg-blue-500' : 
-                                        ($ticket->status == 'OnProgress' ? 'bg-yellow-500' : 
+                                        ($ticket->status == 'InProgress' ? 'bg-yellow-500' : 
                                         ($ticket->status == 'Done' ? 'bg-green-500' : 'bg-red-500')) }}">
                                      {{ $ticket->status }}
                                 </span>

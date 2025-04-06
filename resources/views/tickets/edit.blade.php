@@ -38,7 +38,7 @@
                         onchange="this.form.submit()"
                         >
                             <option value="Open" {{ old('status', $ticket->status) == 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="OnProgress" {{ old('status', $ticket->status) == 'OnProgress' ? 'selected' : '' }}>OnProgress</option>
+                            <option value="InProgress" {{ old('status', $ticket->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
                             <option value="Done" {{ old('status', $ticket->status) == 'Done' ? 'selected' : '' }}>Done</option>
                             <option value="Cancel" {{ old('status', $ticket->status) == 'Cancel' ? 'selected' : '' }}>Cancel</option>
                         </select>

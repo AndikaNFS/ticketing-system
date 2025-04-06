@@ -62,7 +62,7 @@ class TicketController extends Controller
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,OnProgress,Done,Cancel',
+            'status' => 'required|in:Open,InProgress,Done,Cancel',
             'it_name' => 'required|string|max:255',
             'date_finish' => 'required|string|max:255',
             'lama_pengerjaan' => 'nullable|string|max:225',
@@ -111,7 +111,7 @@ class TicketController extends Controller
 
         // $statusOptions = [
         //     'Open' => 'bg-red-500',
-        //     'OnProgress' => 'bg-yellow-500',
+        //     'InProgress' => 'bg-yellow-500',
         //     'Done' => 'bg-green-500',
         //     'Pending' => 'bg-blue-500'
         // ];
@@ -129,7 +129,7 @@ class TicketController extends Controller
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,OnProgress,Done,Cancel',
+            'status' => 'required|in:Open,InProgress,Done,Cancel',
             'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'lama_pengerjaan' => $request->it_name == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',

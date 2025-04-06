@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ticketing');
             $table->string('problem');
             $table->string('outlet');
-            $table->enum('status', ['Open', 'OnProgress', 'Done', 'Cancel'])->default('Open');
+            $table->enum('status', ['Open', 'InProgress', 'Done', 'Cancel'])->default('Open');
             $table->string('it_name')->nullable();
             $table->string('date_finish')->nullable();
             $table->string('lama_pengerjaan')->nullable();
