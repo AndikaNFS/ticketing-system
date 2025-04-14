@@ -92,7 +92,7 @@
                  
                 </div> --}}
                 
-            <div class="relative overflow-x-auto overflow-y-auto max-h-96 shadow-md sm:rounded-lg mt-10">
+            <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase sticky top-0 z-10 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -110,6 +110,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 IT Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Date Start
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Date Finish
@@ -150,6 +153,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $ticket->it_name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $ticket->created_at }}
                             </td>
                             <td class="px-6 py-4">
                                 @if ($ticket->date_finish)
