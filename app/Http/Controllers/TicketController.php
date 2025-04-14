@@ -53,9 +53,52 @@ class TicketController extends Controller
         return view('tickets.create', compact('outlets'));
     }
 
+    public function userCreate()
+    {
+        $outlets = Outlet::all();
+
+        return view('tickets.users.create', compact('outlets'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            // 'ticketing' => 'required|string|max:255',
+            'problem' => 'required|string|max:255',
+            'outlet' => 'required|string|max:255',
+            'status' => 'required|in:Open,InProgress,Done,Cancel',
+            'it_name' => 'required|string|max:255',
+            'date_finish' => 'required|string|max:255',
+            'lama_pengerjaan' => 'nullable|string|max:225',
+        ]);
+
+         // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
+        $latestTicket = Ticket::latest()->first();
+        $nextNumber = $latestTicket ? ((int)substr($latestTicket->ticketing, -3)) + 1 : 1;
+        $ticketNumber = 'RR-' . date('Ymd') . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+        // dd($request->all());
+
+
+        Ticket::create([
+            'ticketing' => $ticketNumber,
+            'problem' => $request->problem,
+            'outlet' => $request->outlet,
+            'status' => $request->status,
+            'it_name' => $request->it_name,
+            'date_finish' => $request->date_finish,
+            'lama_pengerjaan' => $request->lama_pengerjaan,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'ticket_code' => $ticketNumber
+        ]);
+    
+    }
+
     public function store(Request $request)
     {
         $request->validate([
