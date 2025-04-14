@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TicketSeeder extends Seeder
 {
@@ -24,10 +25,35 @@ class TicketSeeder extends Seeder
         //     'lama_pengerjaan' => null,
         // ]);
 
-        User::create([
-            'name' => 'Admin IT',
-            'email' => 'itrrchocolate@gmail.com',
-            'password' => bcrypt('*mhb2020'),
+        // User::create(
+        //     [
+        //     'name' => 'Admin IT',
+        //     'email' => 'itrrchocolate@gmail.com',
+        //     'password' => bcrypt('*mhb2020'),
+        //     ]);
+        DB::table('users')->insert([
+            // [
+            // 'name' => 'Admin IT',
+            // 'email' => 'itrrchocolate@gmail.com',
+            // 'password' => bcrypt('*mhb2020'),
+
+            // ],
+            [
+            'name' => 'Andika Nur Sasmito',
+            'email' => 'andika@gmail.com',
+            'password' => bcrypt('andikans'),
+            ],
+            [
+            'name' => 'Santo',
+            'email' => 'santo@gmail.com',
+            'password' => bcrypt('santo123'),
+            ],
+            [
+            'name' => 'Asep',
+            'email' => 'asep@gmail.com',
+            'password' => bcrypt('asep123'),
+            ],
         ]);
+            
     }
 }
