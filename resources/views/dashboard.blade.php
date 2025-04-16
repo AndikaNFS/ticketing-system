@@ -10,11 +10,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div> --}}
             <div class="flex justify-between place-items-center bg-gray-700 border border-gray-600 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <div class="flex ">
                    <form method="GET" action="{{ route('dashboard') }}" class="">
@@ -55,42 +50,8 @@
                  <a href="{{ route('tickets.create') }}">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>   
                  </a>
-                   {{-- <div class="flex text-white   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-s-md text-sm w-full sm:w-auto px-5  text-center dark:bg-gray-700  dark:focus:ring-blue-800">
-                      <form action="#" method="POST" enctype="multipart/form-data" class="">
-                         @csrf
-                         <div class="flex items-center ">
-                            <input type="file" name="file" class="w-full text-sm text-gray-300 border border-gray-600 h-11 content-center rounded-s-lg cursor-pointer bg-gray-600 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="large_size" type="file" required>
-                            <button type="submit" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-md text-sm w-full sm:w-auto px-3 py-3 text-center dark:bg-green-500 dark:hover:bg-green-700" >Import</button>
-                         </div>
-                      </form>
-                      
-                   </div> --}}
                 </div>
             </div>
-            
-            {{-- <div class="flex justify-between place-items-center rounded bg-gray-400 items-center pr-6 px-6 py-1">
-                <div class="flex justify-center">
-                    <div class="grid items-center">
-                        <form method="GET" action="{{ route('dashboard') }}" class="mb-4">
-                            <label for="status" class="text-sm font-medium text-gray-200">Filter Status:</label>
-                            <select name="status" id="status" class="border p-2 rounded" onchange="this.form.submit()">
-                                <option value="">-- Semua Status --</option>
-                                <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                                <option value="OnProgress" {{ request('status') == 'OnProgress' ? 'selected' : '' }}>OnProgress</option>
-                                <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
-                            </select>
-                        </form>
-
-                    </div>
-                </div>
-                <div class=" flex place-content-end">
-                    <a href="{{ route('tickets.create') }}">
-                       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>   
-                    </a>
-                 </div>
-
-                 
-                </div> --}}
                 
             <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
