@@ -6,6 +6,8 @@ use App\Models\Outlet;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 // use Carbon\Carbon;
 
 class TicketController extends Controller
@@ -49,8 +51,10 @@ class TicketController extends Controller
     public function create()
     {
         $outlets = Outlet::all();
+        $user = Auth::user(); // ambil dari user login
 
-        return view('tickets.create', compact('outlets'));
+
+        return view('tickets.create', compact('outlets', 'user'));
     }
 
     public function userCreate()
@@ -109,6 +113,7 @@ class TicketController extends Controller
             'it_name' => 'required|string|max:255',
             'date_finish' => 'required|string|max:255',
             'lama_pengerjaan' => 'nullable|string|max:225',
+            'user' => 'required|string|max:255',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -126,6 +131,7 @@ class TicketController extends Controller
             'it_name' => $request->it_name,
             'date_finish' => $request->date_finish,
             'lama_pengerjaan' => $request->lama_pengerjaan,
+            'user' => $request->user,
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');

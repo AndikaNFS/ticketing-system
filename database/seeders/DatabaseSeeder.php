@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TicketSeeder::class);
         $this->call(OutletSeeder::class);
+        $this->call(UserSeeder::class);
         
     }
 }

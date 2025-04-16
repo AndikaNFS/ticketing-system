@@ -14,6 +14,7 @@ class Ticket extends Model
         'it_name', 
         'date_finish', 
         'lama_pengerjaan',
+        'user',
     ];
 
     public function scopeFilterStatus($query, $status)

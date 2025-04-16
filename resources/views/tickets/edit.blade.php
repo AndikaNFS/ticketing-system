@@ -17,6 +17,11 @@
 <form action="{{ route('tickets.update', $ticket->id) }}" method="POST" class="max-w-md mx-auto mt-10">
     @csrf
     @method('PUT')
+    {{-- <input type="hidden" name="user" id="user" value="{{ $user->name }}" class="rounded-xl border-gray-700 bg-gray-700 text-white" readonly> --}}
+    <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+        <p class="text-l ">Created At : </p>
+        <span class="font-sans">{{ $ticket->user }}</span>
+    </div>
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticketing ID</label>
         <input value="{{ $ticket->ticketing }}" type="text" name="ticketing" id="ticketing" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " disabled />

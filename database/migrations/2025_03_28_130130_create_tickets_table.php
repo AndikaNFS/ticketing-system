@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('it_name')->nullable();
             $table->string('date_finish')->nullable();
             $table->string('lama_pengerjaan')->nullable();
+            $table->string('user')->nullable();
+            // $table->dropColumn('user');
             $table->timestamps();
         });
     }
@@ -29,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('tickets', function (Blueprint $table) {
+            $table->dropColumn('user'); // Hapus kolom user jika rollback
+            // $table->string('user')->nullable();
+        });
     }
 };
