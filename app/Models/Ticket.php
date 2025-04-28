@@ -12,14 +12,16 @@ class Ticket extends Model
         'outlet', 
         'status', 
         'it_name', 
-        'date_finish', 
+        'date_finish',
+        'start_date',
         'lama_pengerjaan',
         'user',
+        'description'
     ];
 
     public function scopeFilterStatus($query, $status)
     {
-        if ($status && in_array($status, ['Open', 'OnProgress', 'Done', 'Cancel'])) {
+        if ($status && in_array($status, ['Open', 'InProgress', 'Done', 'Cancel'])) {
             return $query->where('status', $status);
         }
         return $query;

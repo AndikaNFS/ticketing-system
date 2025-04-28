@@ -28,7 +28,7 @@
                 </div>
                 <div class=" flex place-content-end">
 
-                <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="{{ route('dashboard') }}">   
+                <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="">   
                     {{-- <label for="simple-search" class="sr-only">Search</label> --}}
                     {{-- <input type="hidden" name="outlet_id" value="{{ $outlet_id }}"> --}}
                     
@@ -47,7 +47,7 @@
                        <span class="sr-only">Search</span>
                     </button>
                  </form>
-                 <a href="{{ route('tickets.create') }}">
+                 <a href="{{ route('visits.create') }}">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>   
                  </a>
                 </div>
@@ -61,83 +61,68 @@
                                 Ticketing ID
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Tanggal
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                IT Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Problem
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Outlet
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Status
+                                Description
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                IT Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Date Start
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Date Finish
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Work Duration
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                                {{-- <span class="sr-only">Detail</span> --}}
                                 <span class="sr-only">Edit</span>
                             </th>
                         </tr>
                     </thead>
-                    @foreach ($tickets as $ticket )
+                    @foreach ($visits as $visit )
                     <tbody>     
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
                             
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $ticket->ticketing }}
+                                {{ $visit->ticketing }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $ticket->problem }}
+                                {{ $visit->problem }}
                                 
                             </td>
                             <td class="px-6 py-4">
-                                {{ $ticket->outlet }}
+                                {{ $visit->outlet }}
                                 
                             </td>
                             
                             <td class="px-6 py-4">
-                                <span class=" px-2 py-1 rounded text-white
-                                     {{ 
-                                        $ticket->status == 'Open' ? 'bg-blue-500' : 
-                                        ($ticket->status == 'InProgress' ? 'bg-yellow-500' : 
-                                        ($ticket->status == 'Done' ? 'bg-green-500' : 'bg-red-500')) }}">
-                                     {{ $ticket->status }}
+                                <span class=" px-2 py-1 rounded text-white">
+                                     
+                                     {{ $visit->status }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                {{ $ticket->it_name }}
+                                {{ $visit->it_name }}
                             </td>
                             <td class="px-6 py-4">
-                                @if($ticket->start_date)
-                                     {{ $ticket->start_date }}
-                                @else
-                                    <p>No date start available</p>
-                                @endif
+                                {{ $visit->start_date }}
                             </td>
                             <td class="px-6 py-4">
-                                @if ($ticket->date_finish)
-                                 {{ $ticket->date_finish }}
-                              @else
+                                {{-- @if ($ticket->date_finish) --}}
+                                 {{-- {{ $ticket->date_finish }} --}}
+                              {{-- @else --}}
                                  <p>No date finish available</p>   
-                              @endif
+                              {{-- @endif --}}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $ticket->lama_pengerjaan }}
+                                {{-- {{ $ticket->lama_pengerjaan }} --}}
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex space-x-4">
-                                    <a href="{{ route('tickets.detail', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                                    <a href="{{ route('tickets.edit', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-
-                                </div>
+                            <td class="flex space-x-2 px-6 py-4 text-right">
+                                {{-- <a href="{{ route('tickets.detail', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a> --}}
+                                {{-- <a href="{{ route('tickets.edit', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> --}}
                             </td>
                             @endforeach
                         </tr>
@@ -148,7 +133,6 @@
                     {{ $tickets->links() }}
                 </div> --}}
                 
-                {{ $tickets->links() }}
             </div>
         </div>
         

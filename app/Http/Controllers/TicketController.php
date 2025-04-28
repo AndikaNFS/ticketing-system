@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 // use Carbon\Carbon;
 
@@ -53,67 +54,24 @@ class TicketController extends Controller
         $outlets = Outlet::all();
         $user = Auth::user(); // ambil dari user login
 
-
         return view('tickets.create', compact('outlets', 'user'));
-    }
-
-    public function userCreate()
-    {
-        $outlets = Outlet::all();
-
-        return view('tickets.users.create', compact('outlets'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function storeUser(Request $request)
-    {
-        $request->validate([
-            // 'ticketing' => 'required|string|max:255',
-            'problem' => 'required|string|max:255',
-            'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,InProgress,Done,Cancel',
-            'it_name' => 'required|string|max:255',
-            'date_finish' => 'required|string|max:255',
-            'lama_pengerjaan' => 'nullable|string|max:225',
-        ]);
-
-         // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
-        $latestTicket = Ticket::latest()->first();
-        $nextNumber = $latestTicket ? ((int)substr($latestTicket->ticketing, -3)) + 1 : 1;
-        $ticketNumber = 'RR-' . date('Ymd') . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-        // dd($request->all());
-
-
-        Ticket::create([
-            'ticketing' => $ticketNumber,
-            'problem' => $request->problem,
-            'outlet' => $request->outlet,
-            'status' => $request->status,
-            'it_name' => $request->it_name,
-            'date_finish' => $request->date_finish,
-            'lama_pengerjaan' => $request->lama_pengerjaan,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'ticket_code' => $ticketNumber
-        ]);
-    
-    }
-
     public function store(Request $request)
     {
         $request->validate([
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet' => 'required|string|max:255',
-            'status' => 'required|in:Open,InProgress,Done,Cancel',
-            'it_name' => 'required|string|max:255',
-            'date_finish' => 'required|string|max:255',
+            'status' => 'required|in:Open,OnProgress,Done,Cancel',
+            'it_name' => 'nullable|string|max:255',
+            'date_finish' => 'nullable|string|max:255',
+            'start_date' => 'nullable|string|max:255',
             'lama_pengerjaan' => 'nullable|string|max:225',
-            'user' => 'required|string|max:255',
+            'description' => 'nullable|string|max:225',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -123,16 +81,26 @@ class TicketController extends Controller
         // dd($request->all());
 
 
-        Ticket::create([
+        $ticket = Ticket::create([
             'ticketing' => $ticketNumber,
             'problem' => $request->problem,
             'outlet' => $request->outlet,
             'status' => $request->status,
-            'it_name' => $request->it_name,
-            'date_finish' => $request->date_finish,
-            'lama_pengerjaan' => $request->lama_pengerjaan,
-            'user' => $request->user,
+            'it_name' => null,
+            'date_finish' => null,
+            'start_date' => null,
+            'lama_pengerjaan' => null,
+            'description' => null,
+            // 'it_name' => $request->it_name,
+            // 'date_finish' => $request->date_finish,
+            // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
+        if ($ticket->date_finish) {
+            $start = $ticket->created_at;
+            $end = $ticket->date_finish;
+            $ticket->lama_pengerjaan = $start->diffInDays($end);
+            $ticket->save();
+        }
 
         return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
     
@@ -141,9 +109,12 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ticket $ticket)
+    public function show($id)
     {
-        //
+        // $ticket = Ticket::findOrFail($id);
+        $ticket = Ticket::where('id', $id)->get();
+
+        return view('tickets.detail', compact('ticket'));
     }
 
     /**
@@ -160,7 +131,7 @@ class TicketController extends Controller
 
         // $statusOptions = [
         //     'Open' => 'bg-red-500',
-        //     'InProgress' => 'bg-yellow-500',
+        //     'OnProgress' => 'bg-yellow-500',
         //     'Done' => 'bg-green-500',
         //     'Pending' => 'bg-blue-500'
         // ];
@@ -181,21 +152,34 @@ class TicketController extends Controller
             'status' => 'required|in:Open,InProgress,Done,Cancel',
             'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
-            'lama_pengerjaan' => $request->it_name == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
+            'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
+            'start_date' => 'nullable|date',
+            'desction' => 'nullable|string|max:255',
         ]);
         // dd($request->all());
 
         $ticket = Ticket::findOrFail($id);
         // $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
         // $lamaPengerjaan = null;
-        $createdAt = Carbon::parse($ticket->created_at);
+        // $createdAt = Carbon::parse($ticket->created_at);
+        $startDate = Carbon::parse($ticket->start_date);
+
+        // Ambil date_finish dari inputan user (form edit)
+        $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
+
+        if ($dateFinish) {
+            $diff = $startDate->diff($dateFinish);
+            $lamaPengerjaan = $diff->d . ' hari ' . $diff->h . ' jam ' . $diff->i . ' menit';
+        } else {
+            $lamaPengerjaan = null;
+        }
 
         // Jika status "Done", otomatis set date_finish ke sekarang
-        if ($request->status == "Done") {
-            $dateFinish = Carbon::now();
-        } else {
-            $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
-        }
+        // if ($request->status == "Done") {
+        //     $dateFinish = Carbon::now();
+        // } else {
+        //     $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
+        // }
         // if ($request->status == "Done") {
         //     $dateFinish = Carbon::now();
         //     $lamaPengerjaan = $ticket->created_at->diff($dateFinish)->format('%h jam %i menit'); 
@@ -203,7 +187,7 @@ class TicketController extends Controller
         // $dateFinish = Carbon::parse($request->date_finish);
 
         // Hitung selisih waktu jika date_finish tersedia
-        $lamaPengerjaan = $dateFinish ? $createdAt->diff($dateFinish)->format('%d hari %h jam %i menit') : null; 
+        $lamaPengerjaan = $dateFinish ? $startDate->diff($dateFinish)->format('%d hari %h jam %i menit') : null; 
 
 
         $ticket->update([
@@ -213,7 +197,9 @@ class TicketController extends Controller
             'status' => $request->status,
             'it_name' => $request->it_name,
             'date_finish' => $dateFinish,
+            'start_date' => $request->start_date,
             'lama_pengerjaan' => $lamaPengerjaan,
+            'description' => $request->description,
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
 
@@ -234,4 +220,6 @@ class TicketController extends Controller
     {
         //
     }
+
+    
 }

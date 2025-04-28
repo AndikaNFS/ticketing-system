@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,8 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
     Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard');
     Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
+    Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail');
     Route::put('/ticket/{id}', [TicketController::class, 'update'])->name('tickets.update');
     Route::post('/ticket/store', [TicketController::class, 'store'])->name('tickets.store');
+
+    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
+    Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
+    // Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
 });
 
 require __DIR__.'/auth.php';

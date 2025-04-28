@@ -18,9 +18,11 @@ return new class extends Migration
             $table->string('outlet');
             $table->enum('status', ['Open', 'InProgress', 'Done', 'Cancel'])->default('Open');
             $table->string('it_name')->nullable();
-            $table->string('date_finish')->nullable();
+            $table->dateTime('date_finish')->nullable();
+            $table->dateTime('start_date')->nullable();
             $table->string('lama_pengerjaan')->nullable();
             $table->string('user')->nullable();
+            $table->string('description')->nullable();
             // $table->dropColumn('user');
             $table->timestamps();
         });
