@@ -49,11 +49,11 @@ class TicketController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $outlets = Outlet::all();
         $user = Auth::user(); // ambil dari user login
-
+        // dd($request->all());
         return view('tickets.create', compact('outlets', 'user'));
     }
 
@@ -70,6 +70,7 @@ class TicketController extends Controller
             'it_name' => 'nullable|string|max:255',
             'date_finish' => 'nullable|string|max:255',
             'start_date' => 'nullable|string|max:255',
+            'user' => 'required|string|max:50',
             'lama_pengerjaan' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
         ]);
@@ -86,6 +87,7 @@ class TicketController extends Controller
             'problem' => $request->problem,
             'outlet' => $request->outlet,
             'status' => $request->status,
+            'user' => $request->user,
             'it_name' => null,
             'date_finish' => null,
             'start_date' => null,
