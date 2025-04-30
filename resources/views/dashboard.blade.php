@@ -47,9 +47,11 @@
                        <span class="sr-only">Search</span>
                     </button>
                  </form>
+                 @if (auth()->user()->hasRole('admin|superadmin'))
                  <a href="{{ route('tickets.create') }}">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>   
                  </a>
+                 @endif
                 </div>
             </div>
                 
@@ -132,12 +134,15 @@
                             <td class="px-6 py-4">
                                 {{ $ticket->lama_pengerjaan }}
                             </td>
+                            
                             <td class="px-6 py-4 text-right">
+                                @if (auth()->user()->hasRole('admin|superadmin'))
                                 <div class="flex space-x-4">
                                     <a href="{{ route('tickets.detail', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                                     <a href="{{ route('tickets.edit', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 
                                 </div>
+                                @endif
                             </td>
                             @endforeach
                         </tr>

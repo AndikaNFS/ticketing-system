@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\VisitController;
@@ -31,6 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
     Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
     // Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
+
+    Route::get('/admin/index', [AdminController::class, 'index'])->name('users.index')
+        ->middleware('role:superadmin');
+
+    Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin')
+    ->middleware('role:superadmin');
 });
 
 require __DIR__.'/auth.php';

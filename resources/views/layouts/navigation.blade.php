@@ -16,6 +16,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Ticketing') }}
                     </x-nav-link>
+                    @if(auth()->user()->hasRole('superadmin'))
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('User') }}
+                    </x-nav-link>
+                    @endif
                     {{-- <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
                         {{ __('Visit Schedule') }}
                     </x-nav-link> --}}
