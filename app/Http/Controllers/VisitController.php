@@ -12,11 +12,9 @@ class VisitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $ticketId)
     {
-        $visits = Visit::all();
-        $outlets = Outlet::all();
-        $tickets = Ticket::all();
+        $tickets = Ticket::with('visits')->findOrFail($ticketId);
 
         return view('visits.index', compact('visits'));
     }
@@ -28,6 +26,7 @@ class VisitController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.

@@ -72,6 +72,31 @@
         </p>
 
     </div>
+    {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"> --}}
+        <div class="" x-data="{ open: false, image: '' }">
+            <div class="flex flex-col">
+                {{-- @if ($detail->images->count()) --}}
+                    <div class="grid grid-cols-2 gap-6 mb-4">
+                        @foreach ($detail->images as $image)
+                            <div class="relative cursor-pointer" @click="open = true; image = '{{ asset('storage/' . $image->path) }}'">
+                                <img src="{{ asset('storage/' . $image->path) }}" alt="" class="w-full h-32 object-cover rounded" />
+                            </div>
+                        @endforeach
+                    </div>
+                {{-- @endif --}}
+            </div>
+            {{-- Modal --}}
+            <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+                <div class="relative">
+                    <img :src="image" class="max-h-[90vh] rounded shadow-lg">
+                    <button @click="open = false" class="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    {{-- </div> --}}
 </div>
 
     

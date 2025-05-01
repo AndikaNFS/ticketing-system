@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 // use Carbon\Carbon;
 
@@ -73,6 +75,7 @@ class TicketController extends Controller
             'user' => 'required|string|max:50',
             'lama_pengerjaan' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -93,6 +96,7 @@ class TicketController extends Controller
             'start_date' => null,
             'lama_pengerjaan' => null,
             'description' => null,
+            'images.*' => null,
             // 'it_name' => $request->it_name,
             // 'date_finish' => $request->date_finish,
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
@@ -102,6 +106,16 @@ class TicketController extends Controller
             $end = $ticket->date_finish;
             $ticket->lama_pengerjaan = $start->diffInDays($end);
             $ticket->save();
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images/ticketing') as $file) {
+                $path =$file->store('ticket_images', 'public');
+
+                $ticket->images()->create([
+                    'path' => $path,
+                ]);
+            }
         }
 
         return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
@@ -156,7 +170,8 @@ class TicketController extends Controller
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
-            'desction' => 'nullable|string|max:255',
+            'desription' => 'nullable|string|max:255',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
         // dd($request->all());
 
@@ -205,6 +220,13 @@ class TicketController extends Controller
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('images/ticketing', 'public');
+                $ticket->images()->create(['path' => $path]);
+            }
+        }
+
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
          
         // Jika statusnya "OnProgress", tetap di halaman edit
@@ -217,10 +239,23 @@ class TicketController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
+    */
     public function destroy(Ticket $ticket)
     {
         //
+    }
+
+    public function destroyImage($id)
+    {
+        $image = Image::findOrFail($id);
+
+        // Hapus file fisik
+        Storage::delete('public/' . $image->path);
+
+        // hapus dari database
+        $image->delete();
+
+        return back()->with('success', 'Gambar berhasil di hapus');
     }
 
     
