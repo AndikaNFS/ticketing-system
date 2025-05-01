@@ -21,9 +21,9 @@
                         {{ __('User') }}
                     </x-nav-link>
                     @endif
-                    {{-- <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                    <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
                         {{ __('Visit Schedule') }}
-                    </x-nav-link> --}}
+                    </x-nav-link>
                 </div>
             </div>
 

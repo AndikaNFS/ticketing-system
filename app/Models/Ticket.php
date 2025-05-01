@@ -19,6 +19,16 @@ class Ticket extends Model
         'description'
     ];
 
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
     public function scopeFilterStatus($query, $status)
     {
         if ($status && in_array($status, ['Open', 'InProgress', 'Done', 'Cancel'])) {

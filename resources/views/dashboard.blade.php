@@ -84,6 +84,9 @@
                                 Work Duration
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Description
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Edit</span>
                             </th>
                         </tr>
@@ -133,6 +136,15 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $ticket->lama_pengerjaan }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="hover:overflow-auto overflow-hidden h-20">
+                                    <div class="mr-1">
+                                        {{ $ticket->description }}
+
+                                    </div>
+
+                                </div>
                             </td>
                             
                             <td class="px-6 py-4 text-right">
