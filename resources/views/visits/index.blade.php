@@ -85,7 +85,10 @@
                                 <th class="px-4 py-3">Tanggal Visit</th>
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
-                                <th class="px-4 py-3">Action</th>
+                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                
+                                    <th class="px-4 py-3">Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -103,9 +106,12 @@
                                         <p>No Ticketing</p>
                                         @endif
                                     </td>
+                                     @if (auth()->user()->hasRole('admin|superadmin'))
+
                                     <td class="px-4 py-2">
                                         <a href="{{ route('visits.edit', $visit->id) }}" class="text-blue-500 hover:underline">Edit</a>
                                     </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>

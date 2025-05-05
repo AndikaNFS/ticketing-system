@@ -16,38 +16,38 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
-        $superAdminRole = Role::create([
-            'name' => 'superadmin'
-        ]);
+        // $superAdminRole = Role::create([
+        //     'name' => 'superadmin'
+        // ]);
 
-        $adminRole = Role::create([
-            'name' => 'admin'
-        ]);
+        // $adminRole = Role::create([
+        //     'name' => 'admin'
+        // ]);
 
-        $userRole = Role::create([
-            'name' => 'user'
-        ]);
+        // $userRole = Role::create([
+        //     'name' => 'user'
+        // ]);
 
-        $userSuperAdmin = User::create([
-            'name' => 'SuperAdmin',
-            'email' => 'superadmin@gmail.com',
-            'password' => bcrypt('*mhb2020')
-        ]);
-        $userAdmin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('*rci2120')
-        ]);
+        // $userSuperAdmin = User::create([
+        //     'name' => 'SuperAdmin',
+        //     'email' => 'superadmin@gmail.com',
+        //     'password' => bcrypt('*mhb2020')
+        // ]);
+        // $userAdmin = User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@gmail.com',
+        //     'password' => bcrypt('*rci2120')
+        // ]);
 
-        $user = User::create([
-                'name' => 'User',
-                'email' => 'user@gmail.com',
-                'password' => bcrypt('userlogin')
-        ]);
+        // $user = User::create([
+        //         'name' => 'User',
+        //         'email' => 'user@gmail.com',
+        //         'password' => bcrypt('userlogin')
+        // ]);
 
-        $userSuperAdmin->assignRole($superAdminRole);
-        $userAdmin->assignRole($adminRole);
-        $user->assignRole($userRole);
+        // $userSuperAdmin->assignRole($superAdminRole);
+        // $userAdmin->assignRole($adminRole);
+        // $user->assignRole($userRole);
 
         // DB::table('users')->insert([
         //     [
