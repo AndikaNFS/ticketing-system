@@ -22,15 +22,33 @@
                        </select>
                    </form> --}}
 
+                   <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="{{ route('visits.index') }}">   
+                    {{-- <label for="simple-search" class="sr-only">Search</label> --}}
+                    {{-- <input type="hidden" name="outlet_id" value="{{ $outlet_id }}"> --}}
+                    
+                    <div class="relative w-full">
+                       <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"/>
+                          </svg>
+                       </div>
+                       <input type="text" id="simple-search" name="search" value="{{ request('search') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search PIC / Ticketing ID..." />
+                    </div>
+                    <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                       <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                       </svg>
+                       <span class="sr-only">Search</span>
+                    </button>
+                 </form>
+
                 </div>
                 <div class="">
                     
                 </div>
                 <div class=" flex place-content-end">
 
-                <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="">   
-                    {{-- <label for="simple-search" class="sr-only">Search</label> --}}
-                    {{-- <input type="hidden" name="outlet_id" value="{{ $outlet_id }}"> --}}
+                {{-- <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="">   
                     
                     <div class="relative w-full">
                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -46,93 +64,59 @@
                        </svg>
                        <span class="sr-only">Search</span>
                     </button>
-                 </form>
+                 </form> --}}
                  <a href="{{ route('visits.create') }}">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Schedule</button>   
                  </a>
                 </div>
             </div>
                 
-            <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase sticky top-0 z-10 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Ticketing ID
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Tanggal
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                IT Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Problem
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Outlet
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Description
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{-- <span class="sr-only">Detail</span> --}}
-                                <span class="sr-only">Edit</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    @foreach ($visits as $visit )
-                    <tbody>     
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <div class="container mx-auto px-4 py-6">
+                <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">Visit List</h1>
+            
+                {{-- <a href="{{ route('visits.create') }}" class="mb-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">+ Tambah Kunjungan</a> --}}
+            
+                <div class="overflow-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold text-gray-600">
+                            <tr class="text-gray-200">
+                                {{-- <th class="px-4 py-3">#</th> --}}
+                                <th class="px-4 py-3">PIC</th>
+                                <th class="px-4 py-3">Tanggal Visit</th>
+                                <th class="px-4 py-3">Outlet</th>
+                                <th class="px-4 py-3">Ticket</th>
+                                <th class="px-4 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            @forelse ($visits as $visit)
+                                <tr class="bg-white border-b dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
-                            
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $visit->ticketing }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $visit->problem }}
-                                
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $visit->outlet }}
-                                
-                            </td>
-                            
-                            <td class="px-6 py-4">
-                                <span class=" px-2 py-1 rounded text-white">
-                                     
-                                     {{ $visit->status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $visit->it_name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $visit->start_date }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{-- @if ($ticket->date_finish) --}}
-                                 {{-- {{ $ticket->date_finish }} --}}
-                              {{-- @else --}}
-                                 <p>No date finish available</p>   
-                              {{-- @endif --}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{-- {{ $ticket->lama_pengerjaan }} --}}
-                            </td>
-                            <td class="flex space-x-2 px-6 py-4 text-right">
-                                {{-- <a href="{{ route('tickets.detail', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a> --}}
-                                {{-- <a href="{{ route('tickets.edit', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> --}}
-                            </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- Tambahkan Pagination -->
-                {{-- <div class="mt-4">
-                    {{ $tickets->links() }}
-                </div> --}}
-                
+                                    {{-- <td class="px-4 py-2">{{ $loop->iteration }}</td> --}}
+                                    <td scope="" class="px-4 py-2 ">{{ $visit->pic }}</td>
+                                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($visit->tanggal_visit)->format('d M Y H:i') }}</td>
+                                    <td class="px-4 py-2">{{ $visit->outlet->name }}</td>
+                                    <td class="px-4 py-2">
+                                        @if (isset($visit->ticket->ticketing))
+                                        {{ $visit->ticket->ticketing }}
+                                        @else
+                                        <p>No Ticketing</p>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-2">
+                                        <a href="{{ route('visits.edit', $visit->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-4 py-3 text-center text-gray-500">Belum ada data kunjungan.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                {{ $visits->links() }}
+
+                </div>
             </div>
         </div>
         

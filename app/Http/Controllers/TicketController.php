@@ -75,7 +75,7 @@ class TicketController extends Controller
             'user' => 'required|string|max:50',
             'lama_pengerjaan' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'images.*' => 'file|mimes:jpg,jpeg,png,mp4|max:20480',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -109,9 +109,12 @@ class TicketController extends Controller
         }
 
         if ($request->hasFile('images')) {
-            foreach ($request->file('images/ticketing') as $file) {
+            foreach ($request->file('images') as $file) {
                 $path =$file->store('ticket_images', 'public');
-
+                // Image::create([
+                //     'ticket_id' => $ticket->id,
+                //     'path' => $path,
+                // ]);
                 $ticket->images()->create([
                     'path' => $path,
                 ]);
@@ -171,7 +174,7 @@ class TicketController extends Controller
             'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
             'desription' => 'nullable|string|max:255',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:20480', // max 20MB
         ]);
         // dd($request->all());
 

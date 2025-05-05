@@ -123,9 +123,10 @@
             name="images[]" 
             id="images"
             multiple
-            accept="image/*"
+            accept="image/*,video/mp4"
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500">
         <p class="text-xs text-gray-500 mt-1">Boleh upload lebih dari satu.</p>
+
         <div class="grid grid-cols-3 gap-4 mt-4" id="imagePreview"></div>
     </div>
 
@@ -138,16 +139,47 @@
     @endif --}}
     
     @if (isset($ticket) && $ticket->images->count())
+
+    {{-- <div class="grid grid-cols-3 gap-4">
+        @foreach ($ticket->images as $media)
+            <div class="relative cursor-pointer mb-8"
+                 @click="open = true;
+                         media = '{{ asset('storage/' . $media->path) }}';
+                         isVideo = '{{ pathinfo($media->path, PATHINFO_EXTENSION) }}' === 'mp4'">
+                 
+                @if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp4')
+                    <video class="w-full h-32 object-cover rounded" muted loop>
+                        <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                    </video>
+                @else
+                    <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover rounded" />
+                @endif
+            </div>
+        @endforeach
+    </div> --}}
         <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
-            @foreach ($ticket->images as $image)
+            @foreach ($ticket->images as $media)
                 <div class="relative">
-                    <img src="{{ asset('storage/' . $image->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
-                    <form action="{{ route('images.destroy', $image->id) }}" method="POST" class="absolute top-1 right-1">
+                    {{-- <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" /> --}}
+                    @php
+                    $ext = pathinfo($media->path, PATHINFO_EXTENSION);
+                    @endphp
+            
+                    @if(in_array(strtolower($ext), ['mp4']))
+                        <video controls class="w-full h-32 object-cover mb-10 rounded">
+                            <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    @else
+                        <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
+                    @endif
+                    
+                    <form action="{{ route('images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
                         @csrf
                         @method('DELETE')
                         <button type="submit" 
                             class="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-                            onclick="return confirm('Yakin hapus gambar ini?')">
+                            onclick="return confirm('Yakin hapus media ini?')">
                             Hapus
                         </button>
                     </form>

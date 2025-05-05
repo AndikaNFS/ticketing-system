@@ -72,31 +72,48 @@
         </p>
 
     </div>
-    {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"> --}}
-        <div class="" x-data="{ open: false, image: '' }">
-            <div class="flex flex-col">
-                {{-- @if ($detail->images->count()) --}}
-                    <div class="grid grid-cols-2 gap-6 mb-4">
-                        @foreach ($detail->images as $image)
-                            <div class="relative cursor-pointer" @click="open = true; image = '{{ asset('storage/' . $image->path) }}'">
-                                <img src="{{ asset('storage/' . $image->path) }}" alt="" class="w-full h-32 object-cover rounded" />
-                            </div>
-                        @endforeach
-                    </div>
-                {{-- @endif --}}
-            </div>
-            {{-- Modal --}}
-            <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-                <div class="relative">
-                    <img :src="image" class="max-h-[90vh] rounded shadow-lg">
-                    <button @click="open = false" class="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
-                        Close
-                    </button>
-                </div>
-            </div>
+    
+    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
 
+    <div x-data="{ open: false, media: '', isVideo: false }">
+        <div class="grid grid-cols-3 gap-4">
+            @foreach ($detail->images as $media)
+                <div class="relative cursor-pointer mb-8"
+                     @click="open = true;
+                             media = '{{ asset('storage/' . $media->path) }}';
+                             isVideo = '{{ pathinfo($media->path, PATHINFO_EXTENSION) }}' === 'mp4'">
+
+                     
+                    @if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp4')
+                        <video class="w-full h-32 object-cover rounded" muted loop>
+                            <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                        </video>
+                    @else
+                        <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover rounded" />
+                    @endif
+                </div>
+            @endforeach
         </div>
-    {{-- </div> --}}
+    
+        {{-- Modal --}}
+    <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+            <div class="relative">
+                <template x-if="isVideo">
+                    <video controls autoplay class="max-h-[90vh] rounded shadow-lg">
+                        <source :src="media" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </template>
+                <template x-if="!isVideo">
+                    <img :src="media" class="max-h-[90vh] rounded shadow-lg">
+                </template>
+    
+                <button @click="open = false" class="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
     

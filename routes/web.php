@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
     Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
+    Route::post('/visits/store', [VisitController::class, 'store'])->name('visits.store');
+    Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
+    Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
     // Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
 
     Route::get('/admin/index', [AdminController::class, 'index'])->name('users.index')
