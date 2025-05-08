@@ -17,6 +17,7 @@ return new class extends Migration
             $table->dateTime('tanggal_visit');
             $table->foreignId('outlet_id')->constrained()->onDelete('cascade');
             $table->foreignId('ticket_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

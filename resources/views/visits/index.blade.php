@@ -72,19 +72,20 @@
             </div>
                 
             <div class="container mx-auto px-4 py-6">
-                <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">Visit List</h1>
+                {{-- <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">Visit List</h1> --}}
             
                 {{-- <a href="{{ route('visits.create') }}" class="mb-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">+ Tambah Kunjungan</a> --}}
             
-                <div class="overflow-auto">
-                    <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-5" style="max-height:30em;">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg ">
                         <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold text-gray-600">
-                            <tr class="text-gray-200">
+                            <tr class="text-black dark:text-gray-200">
                                 {{-- <th class="px-4 py-3">#</th> --}}
-                                <th class="px-4 py-3">PIC</th>
+                                <th class="px-4 py-3 ">PIC</th>
                                 <th class="px-4 py-3">Tanggal Visit</th>
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
+                                <th class="px-4 py-3">Description</th>
                                 @if (auth()->user()->hasRole('admin|superadmin'))
                                 
                                     <th class="px-4 py-3">Action</th>
@@ -103,13 +104,27 @@
                                         @if (isset($visit->ticket->ticketing))
                                         {{ $visit->ticket->ticketing }}
                                         @else
-                                        <p>No Ticketing</p>
+                                        <p class="text-gray-400">No Ticketing</p>
                                         @endif
+                                    </td>
+                                    <td class="px-4 py-2">
+                                        {{-- @if (isset($visit->description)) --}}
+                                        <div class="hover:overflow-auto overflow-hidden h-14 w-32">
+                                            <div class="mr-1">
+
+                                                {{ $visit->description }}
+                                            </div>
+
+                                        </div>
+                                        {{-- @else
+                                        <p class="text-gray-400">No Description</p>
+                                        @endif --}}
                                     </td>
                                      @if (auth()->user()->hasRole('admin|superadmin'))
 
                                     <td class="px-4 py-2">
                                         <a href="{{ route('visits.edit', $visit->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                                        <a href="{{ route('visits.detail', $visit->id) }}" class="text-blue-500 hover:underline">Detail</a>
                                     </td>
                                     @endif
                                 </tr>
@@ -120,7 +135,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                {{ $visits->links() }}
+                    {{ $visits->links() }}
 
                 </div>
             </div>

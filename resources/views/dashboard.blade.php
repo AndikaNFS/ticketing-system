@@ -6,6 +6,10 @@
             {{ __('Ticketing') }}
         </h2>
     </x-slot> --}}
+
+    {{-- @hasanyrole(['admin', 'manager'])
+        <p>Welcome admin or manager!</p>
+    @endhasanyrole --}}
     
 
     <div class="py-12">

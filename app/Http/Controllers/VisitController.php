@@ -52,6 +52,7 @@ class VisitController extends Controller
             'tanggal_visit' => 'required|string|max:255',
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
         ]);
 
         $visit = Visit::create([
@@ -59,6 +60,7 @@ class VisitController extends Controller
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
+            'description' => null,
         ]);
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
@@ -67,9 +69,11 @@ class VisitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Visit $visit)
+    public function show($id)
     {
-        //
+        $visits = Visit::where('id', $id)->get();
+
+        return view('visits.detail', compact('visits'));
     }
 
     /**
@@ -87,13 +91,15 @@ class VisitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Visit $visit, $id)
     {
         $request->validate([
             'pic' => 'required|string|max:255',
             'tanggal_visit' => 'required|date',
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
+            'description' => 'nullable|string|max:255',
+
         ]);
     
         $visit = Visit::findOrFail($id);
@@ -102,6 +108,7 @@ class VisitController extends Controller
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
+            'description' => $request->description,
         ]);
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');

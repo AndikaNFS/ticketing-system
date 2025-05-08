@@ -49,33 +49,48 @@ class UserSeeder extends Seeder
         // $userAdmin->assignRole($adminRole);
         // $user->assignRole($userRole);
 
-        // DB::table('users')->insert([
+        // DB::table('roles')->insert([
         //     [
-        //     'name' => 'Admin IT',
-        //     'email' => 'itrrchocolate@gmail.com',
-        //     'password' => bcrypt('*mhb2020'),
-
+        //         'name' => 'Admin1',
+        //         'guard_name' => 'web',
         //     ],
         //     [
-        //     'name' => 'Andika Nur Sasmito',
-        //     'email' => 'andika@gmail.com',
-        //     'password' => bcrypt('andikans'),
+        //         'name' => 'Admin2',
+        //         'guard_name' => 'web',
         //     ],
         //     [
-        //     'name' => 'Santo',
-        //     'email' => 'santo@gmail.com',
-        //     'password' => bcrypt('santo123'),
-        //     ],
-        //     [
-        //     'name' => 'Asep',
-        //     'email' => 'asep@gmail.com',
-        //     'password' => bcrypt('asep123'),
-        //     ],
-        //     [
-        //     'name' => 'Kodam',
-        //     'email' => 'kodam@gmail.com',
-        //     'password' => bcrypt('kodam123'),
+        //         'name' => 'Admin3',
+        //         'guard_name' => 'web',
         //     ],
         // ]);
+
+        DB::table('users')->insert([
+            [
+            'name' => 'Admin IT',
+            'email' => 'itrrchocolate@gmail.com',
+            'password' => bcrypt('*mhb2020'),
+
+            ],
+            [
+            'name' => 'Andika Nur Sasmito',
+            'email' => 'andika@gmail.com',
+            'password' => bcrypt('andikans'),
+            ],
+            [
+            'name' => 'Santo',
+            'email' => 'santo@gmail.com',
+            'password' => bcrypt('santo123'),
+            ],
+            [
+            'name' => 'Asep',
+            'email' => 'asep@gmail.com',
+            'password' => bcrypt('asep123'),
+            ],
+            [
+            'name' => 'Kodam',
+            'email' => 'kodam@gmail.com',
+            'password' => bcrypt('kodam123'),
+            ],
+        ]);
     }
 }
