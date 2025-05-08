@@ -49,6 +49,21 @@ class UserSeeder extends Seeder
         // $userAdmin->assignRole($adminRole);
         // $user->assignRole($userRole);
 
+        // DB::table('roles')->insert([
+        //     [
+        //         'name' => 'Admin1',
+        //         'guard_name' => 'web',
+        //     ],
+        //     [
+        //         'name' => 'Admin2',
+        //         'guard_name' => 'web',
+        //     ],
+        //     [
+        //         'name' => 'Admin3',
+        //         'guard_name' => 'web',
+        //     ],
+        // ]);
+
         DB::table('users')->insert([
             [
             'name' => 'Admin IT',

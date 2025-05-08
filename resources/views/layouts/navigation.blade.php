@@ -17,13 +17,39 @@
                         {{ __('Ticketing') }}
                     </x-nav-link>
                     @if(auth()->user()->hasRole('superadmin'))
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">Manage user <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                      </svg></button>
+                                <!-- Dropdown menu -->
+                                <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownLargeButton">
+                                      <li>
+                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Users</a>
+                                      </li>
+                                      <li>
+                                        <a href="{{ route('roles.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Roles</a>
+                                      </li>
+                                      <li>
+                                        <a href="{{ route('permissions.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Permissions</a>
+                                      </li>
+                                    </ul>
+                                    {{-- <div class="py-1">
+                                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                                    </div> --}}
+                                </div>
+                    {{-- <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                         {{ __('User') }}
                     </x-nav-link>
-                    @endif
-                    {{-- <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
-                        {{ __('Visit Schedule') }}
+                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                        {{ __('Roles') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
+                        {{ __('Permissions') }}
                     </x-nav-link> --}}
+                    @endif
+                    <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                        {{ __('Visit Schedule') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -78,9 +104,29 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            {{-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link> --}}
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Ticketing') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                {{ __('Visit Schedule') }}
+            </x-responsive-nav-link>
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+
+                @if(auth()->user()->hasRole('superadmin'))
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                    {{ __('User') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                    {{ __('Role') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
+                    {{ __('Permission') }}
+                </x-responsive-nav-link>
+                @endif
+            </div>
         </div>
 
         <!-- Responsive Settings Options -->

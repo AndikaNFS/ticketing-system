@@ -1,41 +1,54 @@
 <x-app-layout>
     <div class=" mt-5">
-        <a href="{{ route('dashboard') }}" class="text-white bg-gray-500 py-1 px-5 text-lg m-10 rounded dark:bg-gray-400 dark:text-gray-700">Back</a>
+        <a href="{{ route('visits.index') }}" class="text-white bg-gray-500 py-1 px-5 text-lg m-10 rounded dark:bg-gray-400 dark:text-gray-700">Back</a>
 
         </div>
 
-    <h1 class="text-gray-800 dark:text-gray-100 text-3xl m-5 max-w-md mx-auto text-center">Details Ticketing</h1>
+    <h1 class="text-gray-800 dark:text-gray-100 text-3xl m-5 max-w-md mx-auto text-center">Detail Visit Schedule</h1>
     
-@foreach ($ticket as $detail)
+@foreach ($visits as $detail)
 <div class="max-w-xl mx-auto ">
 
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticketing ID</label>
-        <p class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->ticketing }}</p>
+        @if (!empty($detail->ticket->ticketing))
+                        {{-- {{ $detail->ticket->name }} --}}
+                        <p class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            {{ $detail->ticket->ticketing }}
+                        </p>
+                    @else
+                        <span class="text-gray-400 italic">Tidak ada ticket</span>
+
+                        @endif
     </div> 
     {{-- <div class="flex justify-between"> --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="flex flex-col">
                 <label for="problem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Problem</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->problem }}</p>
+                @if (!@empty($detail->ticket->problem))
+                    <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->ticket->problem }}</p>
+                    
+                @else
+                    <span class="text-gray-400 italic">Tidak ada ticket</span> 
+                @endif
             </div>
             
             <div class="flex flex-col">
                 <label for="outlet" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->outlet }}</p>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->outlet->name }}</p>
             </div>
         
             <div class="flex flex-col">
-                <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->status }}</p>
+                <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Date</label>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->tanggal_visit }}</p>
             </div>
         
             <div class="flex flex-col">
                 <label for="it_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->it_name }}</p>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->pic }}</p>
             </div>
         
-            <div class="flex flex-col">
+            {{-- <div class="flex flex-col">
                 <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Date</label>
                 <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">
                     @if (!empty($detail->start_date))
@@ -56,7 +69,7 @@
                         <span class="text-gray-400 italic">Belum ada data</span>
                     @endif
                 </p>
-            </div>
+            </div> --}}
         </div>
         
     {{-- </div> --}}
@@ -73,7 +86,7 @@
 
     </div>
     
-    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+    {{-- <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
 
     <div x-data="{ open: false, media: '', isVideo: false }">
         <div class="grid grid-cols-3 gap-4">
@@ -93,10 +106,10 @@
                     @endif
                 </div>
             @endforeach
-        </div>
+        </div> --}}
     
         {{-- Modal --}}
-    <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+    {{-- <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
             <div class="relative">
                 <template x-if="isVideo">
                     <video controls autoplay class="max-h-[90vh] rounded shadow-lg">
@@ -113,7 +126,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
     

@@ -10,4 +10,9 @@ class Outlet extends Model
         'name',
         'location',
     ];
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

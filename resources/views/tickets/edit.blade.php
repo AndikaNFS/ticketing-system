@@ -14,9 +14,12 @@
 
 
         
-<form action="{{ route('tickets.update', $ticket->id) }}" method="POST" class="max-w-md mx-auto mt-10">
+{{-- <form action="{{ route('tickets.update', $ticket->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
+<form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
+    
     @csrf
     @method('PUT')
+
     {{-- <input type="hidden" name="user" id="user" value="{{ $user->name }}" class="rounded-xl border-gray-700 bg-gray-700 text-white" readonly> --}}
     <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
         <p class="text-l ">Created At : </p>
@@ -78,7 +81,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder=" "
                         {{-- required="{{ request()->status == 'Done' ? 'required' : '' }}"  --}}
-                        required
+                        {{-- required --}}
                     />
                     
         </div>
@@ -108,11 +111,102 @@
             id="description" 
             name="description" 
             rows="4" 
-            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
             
         </input>
     </div>
+
+    <div class="mb-4">
+        <label class="block text-sm text-gray-700 font-medium dark:text-gray-50">Upload Gambar</label>
+        <input 
+            type="file" 
+            name="images[]" 
+            id="images"
+            multiple
+            accept="image/*,video/mp4"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500">
+        <p class="text-xs text-gray-500 mt-1">Boleh upload lebih dari satu.</p>
+
+        <div class="grid grid-cols-3 gap-4 mt-4" id="imagePreview"></div>
+    </div>
+
     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
+{{-- <form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
+    {{-- @csrf --}}
+    {{-- @if(isset($ticket))
+        @method('PUT')
+    @endif --}}
+    
+    @if (isset($ticket) && $ticket->images->count())
+
+    {{-- <div class="grid grid-cols-3 gap-4">
+        @foreach ($ticket->images as $media)
+            <div class="relative cursor-pointer mb-8"
+                 @click="open = true;
+                         media = '{{ asset('storage/' . $media->path) }}';
+                         isVideo = '{{ pathinfo($media->path, PATHINFO_EXTENSION) }}' === 'mp4'">
+                 
+                @if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp4')
+                    <video class="w-full h-32 object-cover rounded" muted loop>
+                        <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                    </video>
+                @else
+                    <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover rounded" />
+                @endif
+            </div>
+        @endforeach
+    </div> --}}
+        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
+            @foreach ($ticket->images as $media)
+                <div class="relative">
+                    {{-- <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" /> --}}
+                    @php
+                    $ext = pathinfo($media->path, PATHINFO_EXTENSION);
+                    @endphp
+            
+                    @if(in_array(strtolower($ext), ['mp4']))
+                        <video controls class="w-full h-32 object-cover mb-10 rounded">
+                            <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    @else
+                        <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
+                    @endif
+                    
+                    <form action="{{ route('images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                            class="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                            onclick="return confirm('Yakin hapus media ini?')">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+{{-- </form> --}}
+
+<script>
+    document.getElementById('images').addEventListener('change', function(event) {
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.innerHTML = ''; // Clear preview
+    
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('w-full', 'h-32', 'object-cover', 'rounded');
+                imagePreview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+    </script>
+    
 
 </x-app-layout>
