@@ -72,6 +72,48 @@
         </p>
 
     </div>
+    
+    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+
+    <div x-data="{ open: false, media: '', isVideo: false }">
+        <div class="grid grid-cols-3 gap-4">
+            @foreach ($detail->images as $media)
+                <div class="relative cursor-pointer mb-8"
+                     @click="open = true;
+                             media = '{{ asset('storage/' . $media->path) }}';
+                             isVideo = '{{ pathinfo($media->path, PATHINFO_EXTENSION) }}' === 'mp4'">
+
+                     
+                    @if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp4')
+                        <video class="w-full h-32 object-cover rounded" muted loop>
+                            <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                        </video>
+                    @else
+                        <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover rounded" />
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    
+        {{-- Modal --}}
+    <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+            <div class="relative">
+                <template x-if="isVideo">
+                    <video controls autoplay class="max-h-[90vh] rounded shadow-lg">
+                        <source :src="media" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </template>
+                <template x-if="!isVideo">
+                    <img :src="media" class="max-h-[90vh] rounded shadow-lg">
+                </template>
+    
+                <button @click="open = false" class="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
     
