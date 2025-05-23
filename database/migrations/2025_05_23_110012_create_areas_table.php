@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ticket_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('visit_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('path'); // path gambar di simpan
+            $table->string('name');
+            $table->string('location');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('areas');
     }
 };

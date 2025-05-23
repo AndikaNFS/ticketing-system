@@ -96,7 +96,7 @@
         </div>
     
         {{-- Modal --}}
-    <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+        <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
             <div class="relative">
                 <template x-if="isVideo">
                     <video controls autoplay class="max-h-[90vh] rounded shadow-lg">

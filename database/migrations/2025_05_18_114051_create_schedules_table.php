@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ticket_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('visit_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('path'); // path gambar di simpan
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->date('date');
+            $table->enum('status', ['Work', 'Off', 'Holiday']); // Off, Work, Holiday
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('schedules');
     }
 };

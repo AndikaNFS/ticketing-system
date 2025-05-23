@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
 use App\Models\Visit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VisitController extends Controller
 {
@@ -53,6 +55,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
+            'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $visit = Visit::create([
@@ -61,7 +64,21 @@ class VisitController extends Controller
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
             'description' => null,
+            'images.*' => null,
         ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path =$file->store('visit_images', 'public');
+                // Image::create([
+                //     'ticket_id' => $ticket->id,
+                //     'path' => $path,
+                // ]);
+                $visit->images()->create([
+                    'path' => $path,
+                ]);
+            }
+        }
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
     }
@@ -99,6 +116,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
+            'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);
     
@@ -111,6 +129,13 @@ class VisitController extends Controller
             'description' => $request->description,
         ]);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('images/visit', 'public');
+                $visit->images()->create(['path' => $path]);
+            }
+        }
+
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
     
     }
@@ -122,4 +147,18 @@ class VisitController extends Controller
     {
         //
     }
+
+    public function destroyImage($id)
+    {
+        $image = Image::findOrFail($id);
+
+        // Hapus file fisik
+        Storage::delete('public/' . $image->path);
+
+        // hapus dari database
+        $image->delete();
+
+        return back()->with('success', 'Gambar berhasil di hapus');
+    }
+
 }

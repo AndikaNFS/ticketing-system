@@ -20,4 +20,8 @@ class Visit extends Model
     public function ticket() {
         return $this->belongsTo(Ticket::class);
     }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 }

@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TicketsExport;
 use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+// use PDF;
+// use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use Carbon\Carbon;
 
@@ -36,6 +41,21 @@ class TicketController extends Controller
         })
         ->orderBy('created_at', 'desc')
         ->paginate(10);
+
+        // $from = Carbon::createFromDate(null, null, 1)->startDay();
+        // $to = Carbon::createFromDate(null, null, 30)->endDay();
+
+        // $visits = Ticket::whereBetween('created_at', [$from, $to])->get();
+        $query = Ticket::query();
+
+        if ($request->start_date && $request->end_date) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+
+            $query->whereBetween('created_at', [$start, $end]);
+        }
+
+        $tickets = $query->orderBy('created_at', 'desc')->paginate(10);
 
         // $tickets = Ticket::where('ticketing', 'like', "%{$search}%")
         //     ->orWhere('problem', 'like', "%{$search}%")
@@ -142,6 +162,7 @@ class TicketController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
+        $outlets = Outlet::all();
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
@@ -155,7 +176,7 @@ class TicketController extends Controller
         //     'Pending' => 'bg-blue-500'
         // ];
 
-        return view('tickets.edit', compact('ticket'));
+        return view('tickets.edit', compact('ticket', 'outlets'));
     }
 
     /**
@@ -259,6 +280,19 @@ class TicketController extends Controller
         $image->delete();
 
         return back()->with('success', 'Gambar berhasil di hapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new TicketsExport, 'tickets.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $tickets = Ticket::all();
+        $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
+        
+        return $pdf->download('tickets.pdf');
     }
 
     

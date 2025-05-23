@@ -1,7 +1,7 @@
 <x-app-layout>
     <h1>Tambah Permission</h1>
 
-    <form action="{{ route('admin.permissions.store') }}" method="POST">
+    <form action="{{ route('permissions.store') }}" method="POST">
         @csrf
         <label>Nama Permission:</label>
         <input type="text" name="name" required>

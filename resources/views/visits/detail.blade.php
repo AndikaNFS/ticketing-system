@@ -86,7 +86,7 @@
 
     </div>
     
-    {{-- <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
 
     <div x-data="{ open: false, media: '', isVideo: false }">
         <div class="grid grid-cols-3 gap-4">
@@ -106,10 +106,10 @@
                     @endif
                 </div>
             @endforeach
-        </div> --}}
+        </div>
     
         {{-- Modal --}}
-    {{-- <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+        <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
             <div class="relative">
                 <template x-if="isVideo">
                     <video controls autoplay class="max-h-[90vh] rounded shadow-lg">
@@ -126,7 +126,7 @@
                 </button>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 
     

@@ -2,9 +2,9 @@
     <div class="container mx-auto px-4 py-6 mt-10">
         <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">User List</h1>
         <div class="grid justify-end mb-10">
-            {{-- <a href="{{ route('roles.create') }}"> --}}
+            <a href="{{ url('/register') }}">
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add User</button>   
-             {{-- </a> --}}
+             </a>
 
         </div>
         {{-- <a href="{{ route('roles.create') }}">Add Role</a>     --}}

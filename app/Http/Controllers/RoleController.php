@@ -33,7 +33,7 @@ class RoleController extends Controller
         $request->validate(['name' => 'required|unique:roles']);
         Role::create(['name' => $request->name]);
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role created.');
+        return redirect()->route('roles.index')->with('success', 'Role created.');
     }
 
     /**

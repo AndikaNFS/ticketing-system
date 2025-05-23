@@ -33,7 +33,7 @@ class PermissionController extends Controller
         $request->validate(['name' => 'required|unique:permissions']);
         Permission::create(['name' => $request->name]);
 
-        return redirect()->route('admin.permissions.index')->with('success', 'Permissions created.');
+        return redirect()->route('permissions.index')->with('success', 'Permissions created.');
     }
 
     /**

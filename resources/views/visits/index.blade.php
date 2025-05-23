@@ -78,10 +78,10 @@
             
                 <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-5" style="max-height:30em;">
                     <table class="min-w-full bg-white border border-gray-200 rounded-lg ">
-                        <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold text-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-600 uppercase sticky top-0 z-10 text-left text-sm font-semibold text-gray-600">
                             <tr class="text-black dark:text-gray-200">
                                 {{-- <th class="px-4 py-3">#</th> --}}
-                                <th class="px-4 py-3 ">PIC</th>
+                                <th class="px-4 py-3 ">IT Name</th>
                                 <th class="px-4 py-3">Tanggal Visit</th>
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
@@ -123,8 +123,11 @@
                                      @if (auth()->user()->hasRole('admin|superadmin'))
 
                                     <td class="px-4 py-2">
-                                        <a href="{{ route('visits.edit', $visit->id) }}" class="text-blue-500 hover:underline">Edit</a>
-                                        <a href="{{ route('visits.detail', $visit->id) }}" class="text-blue-500 hover:underline">Detail</a>
+                                        @can('edit visit')
+                                            <a href="{{ route('visits.edit', $visit->id) }}" class="hover:text-blue-400">Edit</a>
+                                        @endcan
+                                        |
+                                        <a href="{{ route('visits.detail', $visit->id) }}" class="hover:text-blue-400">Detail</a>
                                     </td>
                                     @endif
                                 </tr>

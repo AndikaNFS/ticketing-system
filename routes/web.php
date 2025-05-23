@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPermissionController;
@@ -27,6 +29,8 @@ Route::post('/store', [TicketController::class, 'storeUser'])->name('tickets.use
 
 
 Route::middleware('auth')->group(function () {
+   
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -53,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin')
     ->middleware('role:superadmin');
 
+    Route::get('/schedules/{id}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+    Route::put('/schedules/{id}/update', [ScheduleController::class, 'update'])->name('schedules.update');
+
     Route::get('/roles/{role}/permissions', [RolePermissionController::class, 'edit'])->name('roles.permissions');
     Route::put('/roles/{role}/permissions', [RolePermissionController::class, 'update'])->name('roles.permissions.update');
     
@@ -65,12 +72,21 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
 
+    Route::get('/ticket/export-excel', [TicketController::class, 'exportExcel'])->name('ticket.export.excel');
+    Route::get('/ticket/export-pdf', [TicketController::class, 'exportPDF'])->name('ticket.export.pdf');
+
+    Route::get('/outlets/index', [OutletController::class, 'index'])->name('outlets.index');
+    Route::get('/outlets/{id}/edit', [OutletController::class, 'edit'])->name('outlets.edit');
+    Route::get('/outlets/create', [OutletController::class, 'create'])->name('outlets.create');
+    Route::post('/outlets/store', [OutletController::class, 'store'])->name('outlets.store');
+    Route::put('/outlets/{id}/update', [OutletController::class, 'update'])->name('outlets.update');
     
 });
 
 Route::prefix('admin')->middleware('role:superadmin')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('schedules', ScheduleController::class);
     
 });
 
