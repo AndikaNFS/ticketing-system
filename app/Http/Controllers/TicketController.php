@@ -49,10 +49,15 @@ class TicketController extends Controller
         $query = Ticket::query();
 
         if ($request->start_date && $request->end_date) {
-            $start = Carbon::parse($request->start_date)->startOfDay();
-            $end = Carbon::parse($request->end_date)->endOfDay();
+            try{
 
-            $query->whereBetween('created_at', [$start, $end]);
+                $start = Carbon::parse($request->start_date)->startOfDay();
+                $end = Carbon::parse($request->end_date)->endOfDay();
+                
+                $query->whereBetween('created_at', [$start, $end]);
+            } catch (\Exception $e) {
+            dd("Format tanggal tidak valid:", $e->getMessage());
+            }
         }
 
         $tickets = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -64,7 +69,7 @@ class TicketController extends Controller
         //     // })
         //     ->orderBy('created_at', 'desc')
         //     ->paginate(10);
-
+        // dd($request->start_date, $request->end_date);
         return view('dashboard', compact('tickets', 'status'));
     }
 

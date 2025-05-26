@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('areaits', function (Blueprint $table) {
             $table->id();
             $table->string('area_id');
-            $table->string('location');
+            // $table->string('location');
             $table->string('it_name')->nullable();
             $table->string('outlet_id')->nullable();
             $table->timestamps();

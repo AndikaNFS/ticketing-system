@@ -11,5 +11,9 @@ class Area extends Model
         'location',
     ];
 
+    public function areaits()
+    {
+        return $this->hasMany(Areait::class);
+    }
 
 }

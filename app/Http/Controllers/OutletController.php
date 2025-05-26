@@ -15,9 +15,10 @@ class OutletController extends Controller
     public function index()
     {
         // $outlets = Outlet::all();
-        $areas = Areait::all();
+        // $search = $request->input
+        $areaits = Areait::all();
 
-        return view('outlets.index', compact('areas'));
+        return view('outlets.index', compact('areaits'));
     }
 
     /**
@@ -38,17 +39,17 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required|string|max:255',
+            'area_id'=>'required|string|max:255',
             'it_name'=>'required|string|max:50',
-            'pic'=>'required|string|max:50',
+            // 'pic'=>'required|string|max:50',
             'outlet_id'=>'required|string|max:50',
             
         ]);
 
         Areait::create([
-            'name' => $request->name,
+            'area_id' => $request->area_id,
             'it_name' => $request->it_name,
-            'pic' => $request->pic,
+            // 'pic' => $request->pic,
             'outlet_id' => $request->outlet_id,
         ]);
 
@@ -82,7 +83,7 @@ class OutletController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'it_name'=>'required|string|max:50',
-            'pic'=>'required|string|max:50',
+            // 'pic'=>'required|string|max:50',
             'outlet_id'=>'required|string|max:50',
             
         ]);
@@ -91,7 +92,7 @@ class OutletController extends Controller
         $area->update([
             'name' => $request->name,
             'it_name' => $request->it_name,
-            'pic' => $request->pic,
+            // 'pic' => $request->pic,
             'outlet_id' => $request->outlet_id,
 
         ]);

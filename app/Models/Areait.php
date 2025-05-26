@@ -8,15 +8,15 @@ class Areait extends Model
 {
     protected $fillable = [
         'area_id',
-        'location',
+        // 'location',
         'it_name',
         'outlet_id',
     ];
 
-    public function outlets() {
+    public function outlet() {
         return $this->belongsTo(Outlet::class);
     }
-    public function areas() {
+    public function area() {
         return $this->belongsTo(Area::class);
     }
 }

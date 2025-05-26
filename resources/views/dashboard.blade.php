@@ -28,7 +28,7 @@
 
                 </div>
                 <div class="flex bg-gray-500 p-2 rounded">
-                    <form method="GET" action="{{ url()->current() }}" class="flex gap-4 items-center mx-auto" autocomplete="off">
+                    {{-- <form method="GET" action="{{ url()->current() }}" class="flex gap-4 items-center mx-auto" autocomplete="off">
                         <div id="date-range-picker" date-rangepicker datepicker-buttons datepicker-autoselect-today class="flex items-center">
                             <div class="relative">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -67,7 +67,26 @@
                         <div class="flex items-end">
                             <button type="submit" class="bg-blue-600 text-white px-4 py-1 h-10 rounded">Filter</button>
                         </div>
-                    </form>
+                    </form> --}}
+
+                    <form method="GET" action="{{ url()->current() }}" class="flex gap-4 mb-6">
+    <div>
+        <label for="start_date">Dari Tanggal:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
+               class="border border-gray-300 rounded px-2 py-1">
+    </div>
+
+    <div>
+        <label for="end_date">Sampai Tanggal:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
+               class="border border-gray-300 rounded px-2 py-1">
+    </div>
+
+    <div class="flex items-end">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded">Filter</button>
+    </div>
+</form>
+
 
                 </div>
                 <div class=" flex place-content-end">
