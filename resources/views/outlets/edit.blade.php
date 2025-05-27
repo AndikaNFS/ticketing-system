@@ -28,6 +28,7 @@
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                         >
                  
+                        <option value="All" {{  old('it_name', $areaits->it_name == 'All' ? 'selected' : '') }}>All</option>
                         <option value="Andika" {{  old('it_name', $areaits->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
                         <option value="Usman" {{  old('it_name', $areaits->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
                         <option value="Asep" {{  old('it_name', $areaits->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>

@@ -28,6 +28,7 @@
                         >
                  
                         <option class="text-black" value="Pilih PIC">Pilih IT Support</option>
+                        <option class="text-black" value="All">All</option>
                         <option class="text-black" value="Andika">Andika</option>
                         <option class="text-gray-400" value="Usman"  disabled>Usman</option>
                         <option class="text-black" value="Asep" >Asep</option>

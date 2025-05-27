@@ -31,7 +31,7 @@
             @foreach($tickets as $ticket)
                 <tr>
                     <td>{{ $ticket->id }}</td>
-                    <td>{{ $ticket->kode_tiket }}</td>
+                    <td>{{ $ticket->ticketing }}</td>
                     <td>{{ $ticket->problem }}</td>
                     <td>{{ $ticket->outlet->name ?? '-' }}</td>
                     <td>{{ $ticket->status }}</td>
