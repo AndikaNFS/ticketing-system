@@ -27,7 +27,7 @@
                    </form>
 
                 </div>
-                <div class="flex bg-gray-500 p-2 rounded">
+                {{-- <div class="flex bg-gray-500 p-2 rounded"> --}}
                     {{-- <form method="GET" action="{{ url()->current() }}" class="flex gap-4 items-center mx-auto" autocomplete="off">
                         <div id="date-range-picker" date-rangepicker datepicker-buttons datepicker-autoselect-today class="flex items-center">
                             <div class="relative">
@@ -69,26 +69,26 @@
                         </div>
                     </form> --}}
 
-                    <form method="GET" action="{{ url()->current() }}" class="flex gap-4 mb-6">
-    <div>
-        <label for="start_date">Dari Tanggal:</label>
-        <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
-               class="border border-gray-300 rounded px-2 py-1">
-    </div>
+                    {{-- <form method="GET" action="{{ url()->current() }}" class="flex gap-4 mb-6">
+                        <div>
+                            <label for="start_date">Dari Tanggal:</label>
+                            <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
+                                class="border border-gray-300 rounded px-2 py-1">
+                        </div>
 
-    <div>
-        <label for="end_date">Sampai Tanggal:</label>
-        <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
-               class="border border-gray-300 rounded px-2 py-1">
-    </div>
+                        <div>
+                            <label for="end_date">Sampai Tanggal:</label>
+                            <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
+                                class="border border-gray-300 rounded px-2 py-1">
+                        </div>
 
-    <div class="flex items-end">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded">Filter</button>
-    </div>
-</form>
+                        <div class="flex items-end">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded">Filter</button>
+                        </div>
+                    </form> --}}
 
 
-                </div>
+                {{-- </div> --}}
                 <div class=" flex place-content-end">
 
                 <form class="flex items-center max-w-sm mx-auto px-5" method="GET" action="{{ route('dashboard') }}">   
@@ -123,9 +123,9 @@
                     <!-- Dropdown menu -->
                     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('ticket.export.excel') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="{{ route('ticket.export.pdf') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">PDF</a>
                         </li>

@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ScheduleExport;
 use App\Models\Employee;
 use App\Models\Schedule;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Employee $employee)
     {
         
 
@@ -34,7 +37,7 @@ class ScheduleController extends Controller
         // for ($date = $start->copy(); $date <= $end; $date->addDay()) {
         //     $dates->push($date->copy());
         // }
-
+        // dd($employee->id);
         $bulan = $request->input('bulan', now()->format('Y-m'));
 
         $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::MONDAY);
@@ -97,15 +100,38 @@ class ScheduleController extends Controller
      */
     public function create()
     {
+        // $employeeModel = \App\Models\Employee::find($employee);
+    // dd($employee, $employeeModel);
+    // dd($employee->id);
 
+        // $employee = Employee::findOrFail($id);
+        $start = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $end = $start->copy()->addDays(6); // Senin - Minggu
+
+        $dates = collect();
+        for ($date = $start->copy(); $date <= $end; $date->addDay()) {
+            $dates->push($date->copy());
+        }
+
+        // $existing = $employee->schedules()->whereBetween('date', [$start, $end])->get()->keyBy('date');
+        return view('admin.schedules.edit', compact('employee', 'dates', 'existing'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+
+        foreach ($request->input('schedule') as $date => $data) {
+            Schedule::updateOrCreate(
+                ['employee_id' => $employee->id, 'date' => $date],
+                ['status' => $data['status'], 'remarks' => $data['remarks'] ?? null]
+            );
+        }
+        // dd($employee->id);
+        return redirect()->route('schedules.edit', $employee->id)->with('Success', 'Jadwal berhasil disimpan');
     }
 
     /**
@@ -119,12 +145,25 @@ class ScheduleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $shedule = Schedule::findOrFail($id);
-
-        return view ('schedules.edit', compact('schedule'));
         
+        // $employeeModel = \App\Models\Employee::find($employee);
+    // dd($employee, $employeeModel);
+    // dd($employee);
+
+        $employee = Employee::findOrFail($id);
+        $start = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $end = $start->copy()->addDays(6); // Senin - Minggu
+
+        $dates = collect();
+        for ($date = $start->copy(); $date <= $end; $date->addDay()) {
+            $dates->push($date->copy());
+        }
+
+        $existing = $employee->schedules()->whereBetween('date', [$start, $end])->get()->keyBy('date');
+        return view('admin.schedules.edit', compact('employee', 'dates', 'existing'));
+        // return view('admin.schedules.edit', compact('employee'));
     }
 
     /**
@@ -141,5 +180,46 @@ class ScheduleController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $bulan = $request->input('bulan', now()->format('Y-m'));
+        $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::MONDAY);
+        $endOfMonth = Carbon::parse($bulan)->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+
+        // sama seperti index() sebelumnya
+        $weeks = [];
+        $weekStart = $startOfMonth->copy();
+        while ($weekStart <= $endOfMonth) {
+            $weekEnd = $weekStart->copy()->addDays(6);
+            $weeks[] = [
+                'start' => $weekStart->copy(),
+                'end' => $weekEnd->copy(),
+                'dates' => collect(),
+            ];
+            $weekStart = $weekStart->copy()->addWeek();
+        }
+
+        foreach ($weeks as &$week) {
+            $dates = collect();
+            for ($date = $week['start']->copy(); $date <= $week['end']; $date->addDay()) {
+                $dates->push($date->copy());
+            }
+            $week['dates'] = $dates;
+        }
+
+        $employees = Employee::with(['schedules' => function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+        }])->get();
+
+        $pdf = Pdf::loadView('schedules.export-pdf', compact('employees', 'weeks', 'bulan'))->setPaper('A4', 'landscape');
+        return $pdf->download("jadwal-{$bulan}.pdf");
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $bulan = $request->input('bulan', now()->format('Y-m'));
+        return Excel::download(new ScheduleExport($bulan), "jadwal-{$bulan}.xlsx");
     }
 }

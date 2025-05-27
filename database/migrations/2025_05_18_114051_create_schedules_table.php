@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->date('date');
-            $table->enum('status', ['Work', 'Off', 'Holiday']); // Off, Work, Holiday
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->date('date')->index();
+            $table->string('status')->default('Work');
+            // $table->enum('status', ['Work', 'Off', 'Holiday']); // Off, Work, Holiday
             $table->string('remarks')->nullable();
             $table->timestamps();
         });

@@ -41,7 +41,7 @@ class OutletController extends Controller
         $request->validate([
             'area_id'=>'required|string|max:255',
             'it_name'=>'required|string|max:50',
-            // 'pic'=>'required|string|max:50',
+            'pic'=>'required|string|max:50',
             'outlet_id'=>'required|string|max:50',
             
         ]);
@@ -49,7 +49,7 @@ class OutletController extends Controller
         Areait::create([
             'area_id' => $request->area_id,
             'it_name' => $request->it_name,
-            // 'pic' => $request->pic,
+            'pic' => $request->pic,
             'outlet_id' => $request->outlet_id,
         ]);
 
@@ -69,9 +69,11 @@ class OutletController extends Controller
      */
     public function edit($id)
     {
-        $areas = Areait::findOrFail($id);
+        $areaits = Areait::findOrFail($id);
+        $outlets = Outlet::all();
+        $areas = Area::all();
 
-        return view('outlets.edit', compact('areas'));
+        return view('outlets.edit', compact('areaits', 'outlets', 'areas'));
         
     }
 
@@ -83,7 +85,7 @@ class OutletController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'it_name'=>'required|string|max:50',
-            // 'pic'=>'required|string|max:50',
+            'pic'=>'required|string|max:50',
             'outlet_id'=>'required|string|max:50',
             
         ]);
@@ -92,7 +94,7 @@ class OutletController extends Controller
         $area->update([
             'name' => $request->name,
             'it_name' => $request->it_name,
-            // 'pic' => $request->pic,
+            'pic' => $request->pic,
             'outlet_id' => $request->outlet_id,
 
         ]);

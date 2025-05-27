@@ -13,7 +13,7 @@ class Schedule extends Model
         'remarks',
     ];
 
-    public function employees()
+    public function employee()
     {
         return $this->belongsTo(Employee::class);
     }

@@ -8,111 +8,77 @@
     <input type="date" name="end_date" value="{{ $endDate }}">
     <button type="submit">Filter</button>
 </form> --}}
+<div class="container mx-auto px-4 pt-8">
+    <h1 class="text-2xl font-bold mb-4">Jadwal IT Support - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h1>
 
-<form method="GET" action="{{ route('schedules.index') }}" class="mb-4">
-    <label for="bulan">Pilih Bulan:</label>
-    <input type="month" name="bulan" value="{{ $bulan }}">
-    <button type="submit">Tampilkan</button>
-</form>
+    <form method="GET" class="mb-6 flex items-center gap-4">
+        <label class="font-semibold">Pilih Bulan:</label>
+        <input type="month" name="bulan" value="{{ $bulan }}" class="border px-3 py-1 rounded">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Tampilkan</button>
+        {{-- <a href="{{ route('schedules.export.pdf', ['bulan' => $bulan]) }}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Export PDF</a>
+        <a href="{{ route('schedules.export.excel', ['bulan' => $bulan]) }}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Export Excel</a> --}}
+    </form>
 
-
-        {{-- <table border="2" class="border border-black gap-4">
-            <thead>
-                <tr class="gap-4">
-                    <th>Nama</th>
-                    <th>Position</th>
-                    @foreach ($dates as $date)
-                        <th>{{ $date->format('d') }}<br>{{ $date->translatedFormat('l') }}</th>
-                    @endforeach
-                    <th>Total WD</th>
-                    <th>Total OFF</th>
-                    <th>REMARKS</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($employees as $employee)
-                    @php
-                        $workDays = 0;
-                        $offDays = 0;
-                        $remarks = [];
-                        $schedules = $employee->schedules->keyBy('date');
-                    @endphp
+    @foreach ($weeks as $index => $week)
+        <div class="mb-10 bg-white shadow rounded-lg overflow-x-auto">
+            <div class="bg-gray-100 px-4 py-2 font-semibold text-lg">
+                📅 Minggu ke-{{ $index + 1 }} ({{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }})
+            </div>
+            <table class="min-w-full border border-gray-300 text-sm text-center">
+                <thead class="bg-gray-200 text-gray-700">
                     <tr>
-                        <td>{{ $employee->name }}</td>
-                        <td>{{ $employee->position }}</td>
-                        @foreach ($dates as $date)
-                            @php
-                                $schedule = $schedules[$date->toDateString()] ?? null;
-                                $status = $schedule->status ?? 'Work';
-                                if ($status === 'Off') $offDays++;
-                                if ($status === 'Work') $workDays++;
-                                if ($schedule && $schedule->remarks) $remarks[] = $schedule->remarks;
-                            @endphp
-                            <td>{{ $status === 'Work' ? '' : $status }}</td>
+                        <th class="border px-2 py-1">Nama</th>
+                        <th class="border px-2 py-1">Posisi</th>
+                        @foreach ($week['dates'] as $date)
+                            <th class="border px-2 py-1">
+                                {{ $date->format('d') }}<br>
+                                <span class="text-xs text-gray-500">{{ $date->translatedFormat('D') }}</span>
+                            </th>
                         @endforeach
-                        <td>{{ $workDays }}</td>
-                        <td>{{ $offDays }}</td>
-                        <td>{{ implode(', ', array_unique($remarks)) }}</td>
-                        <td>
-                            <a href="{{ route('schedules.edit', $employee->id) }}" class="hover:text-blue-400">Edit</a>
-                            
-                        </td>
+                        <th class="border px-2 py-1">Total WD</th>
+                        <th class="border px-2 py-1">Total OFF</th>
+                        <th class="border px-2 py-1">Remarks</th>
+                        <th class="border px-2 py-1">Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table> --}}
-
-        @foreach ($weeks as $index => $week)
-    <h3 style="margin-top: 20px;">
-        📅 Minggu ke-{{ $index + 1 }} ({{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }})
-    </h3>
-    <table border="1" cellpadding="5">
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Posisi</th>
-                @foreach ($week['dates'] as $date)
-                    <th>{{ $date->format('d') }}<br>{{ $date->translatedFormat('D') }}</th>
-                @endforeach
-                <th>Total WD</th>
-                <th>Total OFF</th>
-                <th>Remarks</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($employees as $employee)
-                @php
-                    $workDays = 0;
-                    $offDays = 0;
-                    $remarks = [];
-                    $schedules = $employee->schedules->keyBy('date');
-                @endphp
-                <tr>
-                    <td>{{ $employee->name }}</td>
-                    <td>{{ $employee->position }}</td>
-                    @foreach ($week['dates'] as $date)
+                </thead>
+                <tbody>
+                    @foreach ($employees as $employee)
                         @php
-                            $schedule = $schedules[$date->toDateString()] ?? null;
-                            $status = $schedule->status ?? '';
-                            if ($status === 'Work') $workDays++;
-                            if ($status === 'Off') $offDays++;
-                            if ($schedule && $schedule->remarks) $remarks[] = $schedule->remarks;
+                            $workDays = 0;
+                            $offDays = 0;
+                            $remarks = [];
+                            $schedules = $employee->schedules->keyBy('date');
                         @endphp
-                        <td>{{ $status }}</td>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-2 py-1">{{ $employee->name }}</td>
+                            <td class="border px-2 py-1">{{ $employee->position }}</td>
+                            @foreach ($week['dates'] as $date)
+                                @php
+                                    $schedule = $schedules[$date->toDateString()] ?? null;
+                                    $status = $schedule->status ?? '-';
+                                    if ($status === 'Work') $workDays++;
+                                    if ($status === 'Off') $offDays++;
+                                    if ($schedule && $schedule->remarks) $remarks[] = $schedule->remarks;
+                                @endphp
+                                <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                    {{ $status }}
+                                </td>
+                            @endforeach
+                            <td class="border px-2 py-1">{{ $workDays }}</td>
+                            <td class="border px-2 py-1">{{ $offDays }}</td>
+                            <td class="border px-2 py-1 text-left">{{ implode(', ', array_unique($remarks)) }}</td>
+                            <td class="border px-2 py-1">
+                                <a href="{{ route('schedules.edit', $employee->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                            </td>
+                        </tr>
                     @endforeach
-                    <td>{{ $workDays }}</td>
-                    <td>{{ $offDays }}</td>
-                    <td>{{ implode(', ', array_unique($remarks)) }}</td>
-                    <td>
-                        <a href="{{ route('schedules.edit', $employee->id) }}">Edit</a>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-@endforeach
+                </tbody>
+            </table>
+        </div>
+    @endforeach
+</div>
+
+
 
 
     </div>

@@ -16,9 +16,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Ticketing') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                    {{-- <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
                         {{ __('Visit Schedule') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
                     <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                         {{ __('Schedule IT') }}
                     </x-nav-link>
@@ -70,9 +70,9 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        <x-dropdown-link :href="route('profile.edit')">
+                        {{-- <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Report') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> --}}
                         @endif
 
                         <!-- Authentication -->

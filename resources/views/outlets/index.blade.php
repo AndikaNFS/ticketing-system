@@ -42,23 +42,34 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                     {{ $areait->id }}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{ $areait->it_name }}
                                     
                                 </td>
-                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                                <td class="px-6 py-4 text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-white">
                                     {{-- @foreach ($outlets as $outlet) --}}
                                     {{ $areait->outlet->name }}
                                         
                                     {{-- @endforeach --}}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{-- @foreach ( $areas as area ) --}}
                                     {{ $areait->area->name }}
                                         
                                     {{-- @endforeach --}}
                                     
                                 </td>
+                                <td class="px-6 py-4 text-gray-900 dark:text-white">
+                                    {{-- @foreach ( $areas as area ) --}}
+                                    {{ $areait->pic }}
+                                        
+                                    {{-- @endforeach --}}
+                                    
+                                </td>
+                                {{-- <td>
+                                            <a href="{{ route('outlets.edit', $areait->id) }}" class="hover:text-blue-400">Edit</a>
+
+                                </td> --}}
                             </tr>
                             @endforeach
 

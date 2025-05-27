@@ -27,13 +27,20 @@
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                         >
                  
-                        <option class="text-black" value="Pilih PIC">Pilih PIC</option>
+                        <option class="text-black" value="Pilih PIC">Pilih IT Support</option>
                         <option class="text-black" value="Andika">Andika</option>
                         <option class="text-gray-400" value="Usman"  disabled>Usman</option>
                         <option class="text-black" value="Asep" >Asep</option>
                         <option class="text-black" value="Santo" >Santo</option>
                         <option class="text-black" value="Kodam" >Kodam</option>
                     </select>
+               {{-- <select id="pic" name="pic" 
+                        class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                        >
+                 
+                        <option class="text-black" value="Santo" >Santo</option>
+                    </select> --}}
+                    <input type="hidden" name="pic" id="pic" value="{{ "Santo" }}">
             </div>
         </div>
         <div class="relative z-0 w-full mb-5 group mt-10">

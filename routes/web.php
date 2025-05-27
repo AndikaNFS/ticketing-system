@@ -57,8 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin')
     ->middleware('role:superadmin');
 
+    // Route::get('/schedules/{employee}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+    // Route::post('/schedules/{employee}/store', [ScheduleController::class, 'store'])->name('schedules.store');
     Route::get('/schedules/{id}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
-    Route::put('/schedules/{id}/update', [ScheduleController::class, 'update'])->name('schedules.update');
+    Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
+    Route::get('/schedules/export/pdf', [ScheduleController::class, 'exportPDF'])->name('schedules.export.pdf');
+    Route::get('/schedules/export-excel', [ScheduleController::class, 'exportExcel'])->name('schedules.export.excel');
 
     Route::get('/roles/{role}/permissions', [RolePermissionController::class, 'edit'])->name('roles.permissions');
     Route::put('/roles/{role}/permissions', [RolePermissionController::class, 'update'])->name('roles.permissions.update');

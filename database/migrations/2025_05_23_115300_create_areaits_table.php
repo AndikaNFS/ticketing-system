@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('area_id');
             // $table->string('location');
             $table->string('it_name')->nullable();
+            $table->string('pic')->nullable();
             $table->string('outlet_id')->nullable();
             $table->timestamps();
         });

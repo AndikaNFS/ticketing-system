@@ -297,7 +297,7 @@ class TicketController extends Controller
         $tickets = Ticket::all();
         $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
         
-        return $pdf->download('tickets.pdf');
+        return $pdf->download('RR-Ticketing.pdf');
     }
 
     

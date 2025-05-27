@@ -10,7 +10,9 @@ class Areait extends Model
         'area_id',
         // 'location',
         'it_name',
+        'pic',
         'outlet_id',
+        
     ];
 
     public function outlet() {
