@@ -110,8 +110,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Ticketing') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+            {{-- <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
                 {{ __('Visit Schedule') }}
+            </x-responsive-nav-link> --}}
+            <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
+                {{ __('Schedule IT') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('outlets.index')" :active="request()->routeIs('outlets.index')">
+                {{ __('Area Outlet') }}
             </x-responsive-nav-link>
             <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
 

@@ -6,7 +6,7 @@
         </div>
     @endif
     <div class=" mt-5">
-    <a href="{{ route('visits.index') }}" class="text-black py-1 px-5 text-lg m-10 rounded bg-gray-400">Back</a>
+    <a href="{{ route('outlets.index') }}" class="text-black py-1 px-5 text-lg m-10 rounded bg-gray-400">Back</a>
 
     </div>
 
