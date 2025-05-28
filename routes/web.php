@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::prefix('admin')->middleware('role:superadmin')->group(function () {
+Route::prefix('admin')->middleware('role:superadmin|admin')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('schedules', ScheduleController::class);
