@@ -125,8 +125,8 @@
                                     <td class="px-4 py-2">
                                         @can('edit visit')
                                             <a href="{{ route('visits.edit', $visit->id) }}" class="hover:text-blue-400">Edit</a>
+                                            |
                                         @endcan
-                                        |
                                         <a href="{{ route('visits.detail', $visit->id) }}" class="hover:text-blue-400">Detail</a>
                                     </td>
                                     @endif

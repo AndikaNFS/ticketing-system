@@ -24,6 +24,7 @@ class VisitController extends Controller
                 $query->where('pic', 'like', '%' . $search . '%')
                         ->orWhereHas('ticket', function ($q) use ($search) {
                             $q->where('ticketing', 'like', '%' . $search . '%')
+                                ->orWhere('it_name', 'like', '%' . $search . '%')
                                 ->orWhere('problem', 'like', '%' . $search . '%');
                         });
             })
@@ -55,7 +56,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
-            'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
+            // 'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $visit = Visit::create([
@@ -64,7 +65,6 @@ class VisitController extends Controller
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
             'description' => null,
-            'images.*' => null,
         ]);
 
         if ($request->hasFile('images')) {
@@ -116,7 +116,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
-            'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            // 'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);
     
@@ -129,12 +129,12 @@ class VisitController extends Controller
             'description' => $request->description,
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('images/visit', 'public');
-                $visit->images()->create(['path' => $path]);
-            }
-        }
+        // if ($request->hasFile('images')) {
+        //     foreach ($request->file('images') as $file) {
+        //         $path = $file->store('images/visit', 'public');
+        //         $visit->images()->create(['path' => $path]);
+        //     }
+        // }
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
     

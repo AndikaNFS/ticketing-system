@@ -92,7 +92,7 @@
         
     </input>
 
-    <div class="mb-4 mt-5">
+    {{-- <div class="mb-4 mt-5">
         <label class="block text-sm text-gray-700 font-medium dark:text-gray-50">Upload Gambar</label>
         <input 
             type="file" 
@@ -104,29 +104,29 @@
         <p class="text-xs text-gray-500 mt-1">Boleh upload lebih dari satu.</p>
 
         <div class="grid grid-cols-3 gap-4 mt-4" id="imagePreview"></div>
-    </div>
+    </div> --}}
     {{-- @endforeach --}}
     </div>
         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
     </form>
 
-    @if (isset($visits) && $visits->images->count())
+    {{-- @if (isset($visits) && $visits->images->count())
     <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
         @foreach ($visits->images as $media)
             <div class="relative">
-                {{-- <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" /> --}}
+                <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
                 @php
                 $ext = pathinfo($media->path, PATHINFO_EXTENSION);
                 @endphp
         
-                {{-- @if(in_array(strtolower($ext), ['mp4']))
+                @if(in_array(strtolower($ext), ['mp4']))
                     <video controls class="w-full h-32 object-cover mb-10 rounded">
                         <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                @else --}}
+                @else
                     <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
-                {{-- @endif --}}
+                @endif
                 
                 <form action="{{ route('images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
                     @csrf
@@ -138,9 +138,9 @@
                     </button>
                 </form>
             </div>
-        @endforeach
+        @endforeach --}}
     </div>
-@endif
+{{-- @endif --}}
 
 {{-- </form> --}}
 

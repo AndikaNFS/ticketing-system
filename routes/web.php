@@ -14,7 +14,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('auth.login');
 });
 Route::get('/register', function () {

@@ -36,11 +36,13 @@ class TicketController extends Controller
         ->when($search, function ($query) use ($search) {
             return $query->where(function ($q) use ($search) {
                 $q->where('ticketing', 'like', "%{$search}%")
+                  ->orWhere('it_name', 'like', "%{$search}%")
                   ->orWhere('problem', 'like', "%{$search}%");
             });
         })
         ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
 
         // $from = Carbon::createFromDate(null, null, 1)->startDay();
         // $to = Carbon::createFromDate(null, null, 30)->endDay();
@@ -70,7 +72,7 @@ class TicketController extends Controller
         //     ->orderBy('created_at', 'desc')
         //     ->paginate(10);
         // dd($request->start_date, $request->end_date);
-        return view('dashboard', compact('tickets', 'status' ));
+        return view('dashboard', compact('tickets', 'status','search' ));
     }
 
     /**
