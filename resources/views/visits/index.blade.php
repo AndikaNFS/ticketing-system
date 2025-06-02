@@ -94,7 +94,7 @@
                         </thead>
                         <tbody class="text-sm text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             @forelse ($visits as $visit)
-                                <tr class="bg-white border-b dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr class="bg-white border-b  h-14 dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
                                     {{-- <td class="px-4 py-2">{{ $loop->iteration }}</td> --}}
                                     <td scope="" class="px-4 py-2 ">{{ $visit->pic }}</td>
@@ -109,11 +109,13 @@
                                     </td>
                                     <td class="px-4 py-2">
                                         {{-- @if (isset($visit->description)) --}}
-                                        <div class="hover:overflow-auto overflow-hidden h-14 w-32">
-                                            <div class="mr-1">
-
+                                        <div class="hover:overflow-auto overflow-hidden">
+                                            {{-- <div class="mr-1 flex place-items-center"> --}}
+                                                {{-- @foreach ($visit as $visit) --}}
                                                 {{ $visit->description }}
-                                            </div>
+                                                    
+                                                {{-- @endforeach --}}
+                                            {{-- </div> --}}
 
                                         </div>
                                         {{-- @else

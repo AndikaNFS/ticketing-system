@@ -63,22 +63,22 @@ class VisitController extends Controller
             'pic' => $request->pic,
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
-            'ticket_id' => $request->ticket_id,
-            'description' => null,
+            'ticket_id' => null,
+            'description' => $request->description,
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path =$file->store('visit_images', 'public');
+        // if ($request->hasFile('images')) {
+        //     foreach ($request->file('images') as $file) {
+        //         $path =$file->store('visit_images', 'public');
                 // Image::create([
                 //     'ticket_id' => $ticket->id,
                 //     'path' => $path,
                 // ]);
-                $visit->images()->create([
-                    'path' => $path,
-                ]);
-            }
-        }
+        //         $visit->images()->create([
+        //             'path' => $path,
+        //         ]);
+        //     }
+        // }
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
     }
