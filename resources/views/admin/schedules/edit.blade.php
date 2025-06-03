@@ -8,7 +8,7 @@
 <div class="max-w-3xl mx-auto mt-6 bg-white p-6 rounded shadow">
     <h2 class="text-xl font-bold mb-4">Input Jadwal: {{ $employee->name }}</h2>
 
-    <form action="{{ url('/schedules/' . $employee->id . '/store') }}" method="POST">
+    <form action="{{ url('/schedules/' . $employee->id . '/store?start_date=' . request('start_date')) }}" method="POST">
 
         @csrf
 

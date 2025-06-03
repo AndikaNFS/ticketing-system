@@ -130,8 +130,12 @@ class ScheduleController extends Controller
                 ['status' => $data['status'], 'remarks' => $data['remarks'] ?? null]
             );
         }
+
+        $start_date = $request->query('start_date');
+
         // dd($employee->id);
-        return redirect()->route('schedules.edit', $employee->id)->with('Success', 'Jadwal berhasil disimpan');
+        // return redirect()->route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $start_date,])->with('Success', 'Jadwal berhasil disimpan');
+        return redirect()->route('schedules.index')->with('Success', 'Jadwal berhasil disimpan');
     }
 
     /**
