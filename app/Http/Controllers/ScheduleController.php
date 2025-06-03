@@ -40,8 +40,8 @@ class ScheduleController extends Controller
         // dd($employee->id);
         $bulan = $request->input('bulan', now()->format('Y-m'));
 
-        $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::MONDAY);
-        $endOfMonth = Carbon::parse($bulan)->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+        $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::SATURDAY);
+        $endOfMonth = Carbon::parse($bulan)->endOfMonth()->endOfWeek(Carbon::FRIDAY);
 
         // BUat array minggu
         $week = [];
@@ -105,7 +105,7 @@ class ScheduleController extends Controller
     // dd($employee->id);
 
         // $employee = Employee::findOrFail($id);
-        $start = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $start = Carbon::now()->startOfWeek(Carbon::SATURDAY);
         $end = $start->copy()->addDays(6); // Senin - Minggu
 
         $dates = collect();
@@ -142,10 +142,11 @@ class ScheduleController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($id, $start_date = null)
     {
         
         // $employeeModel = \App\Models\Employee::find($employee);
@@ -153,8 +154,13 @@ class ScheduleController extends Controller
     // dd($employee);
 
         $employee = Employee::findOrFail($id);
-        $start = Carbon::now()->startOfWeek(Carbon::MONDAY);
-        $end = $start->copy()->addDays(6); // Senin - Minggu
+        // $start = Carbon::now()->startOfWeek(Carbon::SATURDAY);
+        // $end = $start->copy()->addDays(6); // Senin - Minggu
+        $start = $start_date
+            ? Carbon::parse($start_date)->startOfWeek(Carbon::SATURDAY)
+            : Carbon::now()->startOfWeek(Carbon::SATURDAY);
+        
+        $end = $start->copy()->addDays(6);
 
         $dates = collect();
         for ($date = $start->copy(); $date <= $end; $date->addDay()) {

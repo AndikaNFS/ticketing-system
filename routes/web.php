@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/schedules/{employee}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
     // Route::post('/schedules/{employee}/store', [ScheduleController::class, 'store'])->name('schedules.store');
-    Route::get('/schedules/{id}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+    Route::get('/schedules/{id}/edit/{start_date?}', [ScheduleController::class, 'edit'])->name('schedules.edit.weekly');
     Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
     Route::get('/schedules/export/pdf', [ScheduleController::class, 'exportPDF'])->name('schedules.export.pdf');
     Route::get('/schedules/export-excel', [ScheduleController::class, 'exportExcel'])->name('schedules.export.excel');

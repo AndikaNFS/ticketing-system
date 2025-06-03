@@ -21,8 +21,19 @@
 
     @foreach ($weeks as $index => $week)
         <div class="mb-10 bg-white shadow rounded-lg overflow-x-auto">
-            <div class="bg-gray-100 px-4 py-2 font-semibold text-lg">
-                📅 Minggu ke-{{ $index + 1 }} ({{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }})
+            <div class="flex bg-gray-100 px-4 py-2 font-semibold text-lg">
+                <div class="flex items-start">
+                    📅 Minggu ke-{{ $index + 1 }} ({{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }})
+
+                </div>
+                <div class="flex items-end">
+                    {{-- @foreach ($weeks as $week)
+                        <a href="{{ route('schedules.edit', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
+                            Edit Minggu {{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }}
+                        </a>
+                        
+                    @endforeach --}}
+                </div>
             </div>
             <table class="min-w-full border border-gray-300 text-sm text-center">
                 <thead class="bg-gray-200 text-gray-700">
@@ -68,7 +79,18 @@
                             <td class="border px-2 py-1">{{ $offDays }}</td>
                             <td class="border px-2 py-1 text-left">{{ implode(', ', array_unique($remarks)) }}</td>
                             <td class="border px-2 py-1">
-                                <a href="{{ route('schedules.edit', $employee->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                                {{-- @foreach ($weeks as $week)
+                                    <a href="{{ route('schedules.edit', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
+                                        Edit Minggu {{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }}
+                                    </a>
+                                    
+                                @endforeach --}}
+                                {{-- <a href="{{ route('schedules.edit', ['start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
+                                    Edit
+                                </a> --}}
+                                <a href="{{ route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">Edit</a>
+
+
                             </td>
                         </tr>
                     @endforeach

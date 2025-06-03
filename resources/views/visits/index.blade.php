@@ -85,7 +85,7 @@
                                 <th class="px-4 py-3">Tanggal Visit</th>
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
-                                <th class="px-4 py-3">Description</th>
+                                <th class="px-4 py-3">Job Desk</th>
                                 @if (auth()->user()->hasRole('admin|superadmin'))
                                 
                                     <th class="px-4 py-3">Action</th>
