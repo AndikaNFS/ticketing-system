@@ -17,7 +17,23 @@ class AuthenticatedSessionController extends Controller
     public function create(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('/dashboard');
+            $user = Auth::user();
+
+            if ($user->hasRole(['superadmin','admin'])) {
+                return redirect()->route('dashboard');
+            } elseif ($user->hasRole('hrd')) {
+                return redirect()->route('schedules.index');
+            } elseif ($user->hasRole('building')) {
+                return redirect()->route('building.tickets.index');
+            } else {
+                abort(403, 'Unauthorized.');
+            }
+        //     return match ($user->hasRole) {
+        //     'superadmin|admin' => redirect()->route('dashboard'),
+        //     'hrd' => redirect()->route('schedules'),
+        //     'building' => redirect()->route('building.tickets.index'),
+        //     default => abort(403, 'Unauthorized hasRole'),
+        // };
         }
         return view('auth.login');
     }
@@ -30,6 +46,18 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        if ($user->hasRole(['superadmin','admin'])) {
+            return redirect()->route('dashboard');
+        } elseif ($user->hasRole('hrd')) {
+            return redirect()->route('schedules.index');
+        } elseif ($user->hasRole('building')) {
+            return redirect()->route('building.tickets.index');
+        }
+        abort(403, 'Unauthorized role');
+        
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
