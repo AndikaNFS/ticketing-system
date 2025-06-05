@@ -19,4 +19,9 @@ class Outlet extends Model
     {
         return $this->hasMany(Areait::class);
     }
+
+    public function buildings()
+    {
+        return $this->hasMany(Building::class);
+    }
 }

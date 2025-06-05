@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -85,6 +86,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/outlets/store', [OutletController::class, 'store'])->name('outlets.store');
     Route::put('/outlets/{id}/update', [OutletController::class, 'update'])->name('outlets.update');
     
+    Route::get('/building/index', [BuildingController::class, 'index'])->name('building.tickets.index');
+    Route::get('/building/create', [BuildingController::class, 'create'])->name('building.tickets.create');
+    Route::post('/building/store', [BuildingController::class, 'store'])->name('building.tickets.store');
+    Route::get('/building/{id}/detail', [BuildingController::class, 'show'])->name('building.tickets.detail');
+    Route::get('/building/{id}/edit', [BuildingController::class, 'edit'])->name('building.tickets.edit');
+    Route::put('/building/{id}/update', [BuildingController::class, 'update'])->name('building.tickets.update');
+    
+    Route::get('/building/vendors/create', [BuildingController::class, 'createVendor'])->name('building.vendors.create');
+    Route::get('/building/vendors/', [BuildingController::class, 'indexVendor'])->name('building.vendors.index');
+    Route::get('/building/vendors/{id}/edit', [BuildingController::class, 'editVendor'])->name('building.vendors.edit');
+    Route::put('/building/vendors/{id}/update', [BuildingController::class, 'updateVendor'])->name('building.vendors.update');
+    
+    Route::get('/building/pics/create', [BuildingController::class, 'createPic'])->name('building.pics.create');
+    Route::get('/building/pics/', [BuildingController::class, 'indexPic'])->name('building.pics.index');
+    Route::get('/building/pics/{id}/edit', [BuildingController::class, 'editPic'])->name('building.pics.edit');
+    Route::put('/building/pics/{id}/update', [BuildingController::class, 'updatePic'])->name('building.vendors.update');
+    
 });
 
 Route::prefix('admin')->middleware('role:superadmin|admin')->group(function () {
@@ -92,6 +110,10 @@ Route::prefix('admin')->middleware('role:superadmin|admin')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('schedules', ScheduleController::class);
     
+});
+
+Route::prefix('building')->middleware('role:superadmin')->group(function () {
+    Route::resource('tickets', BuildingController::class);
 });
 
 // // Hanya user dengan role 'admin'
