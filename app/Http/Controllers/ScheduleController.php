@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ScheduleExport;
 use App\Models\Employee;
 use App\Models\Schedule;
+use App\Services\HolidayService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -38,7 +39,11 @@ class ScheduleController extends Controller
         //     $dates->push($date->copy());
         // }
         // dd($employee->id);
+        
         $bulan = $request->input('bulan', now()->format('Y-m'));
+        
+        // $year = Carbon::parse($bulan)->year;
+        // $liburNasional = HolidayService::getIndonesianHolidays($year);
 
         $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::SATURDAY);
         $endOfMonth = Carbon::parse($bulan)->endOfMonth()->endOfWeek(Carbon::FRIDAY);
@@ -64,11 +69,17 @@ class ScheduleController extends Controller
             $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
         }])->get();
 
+
         // Isi tanggal per minggu
         foreach ($weeks as &$week) {
             $dates = collect();
             for ($date = $week['start']->copy(); $date <= $week['end']; $date->addDay()) {
                 $dates->push($date->copy());
+                // $isLibur = in_array($date->format('Y-m-d'), $liburNasional);
+
+                // Menyisipkan informasi apakah tanggal tersebut libur nasional
+                // $date->is_libur_nasional = $isLibur;
+                // $dates->push($date->copy());
             }
             $week['dates'] = $dates;
         }
@@ -100,9 +111,6 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        // $employeeModel = \App\Models\Employee::find($employee);
-    // dd($employee, $employeeModel);
-    // dd($employee->id);
 
         // $employee = Employee::findOrFail($id);
         $start = Carbon::now()->startOfWeek(Carbon::SATURDAY);

@@ -103,12 +103,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/building/pics/{id}/edit', [BuildingController::class, 'editPic'])->name('building.pics.edit');
     Route::put('/building/pics/{id}/update', [BuildingController::class, 'updatePic'])->name('building.vendors.update');
     
+    Route::resource('schedules', ScheduleController::class);
 });
 
 Route::prefix('admin')->middleware('role:superadmin|admin')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::resource('schedules', ScheduleController::class);
     
 });
 

@@ -1,13 +1,5 @@
 <x-app-layout>
     <div class="bg-white">
-
-        {{-- <form method="GET" action="{{ url('/schedules') }}" class="mb-4">
-    <label for="start_date">Start Date:</label>
-    <input type="date" name="start_date" value="{{ $startDate }}">
-    <label for="end_date">End Date:</label>
-    <input type="date" name="end_date" value="{{ $endDate }}">
-    <button type="submit">Filter</button>
-</form> --}}
 <div class="container mx-auto px-4 pt-8">
     <h1 class="text-2xl font-bold mb-4">Jadwal IT Support - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h1>
 
@@ -27,12 +19,6 @@
 
                 </div>
                 <div class="flex items-end">
-                    {{-- @foreach ($weeks as $week)
-                        <a href="{{ route('schedules.edit', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
-                            Edit Minggu {{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }}
-                        </a>
-                        
-                    @endforeach --}}
                 </div>
             </div>
             <table class="min-w-full border border-gray-300 text-sm text-center">
@@ -49,7 +35,9 @@
                         <th class="border px-2 py-1">Total WD</th>
                         <th class="border px-2 py-1">Total OFF</th>
                         <th class="border px-2 py-1">Remarks</th>
-                        <th class="border px-2 py-1">Aksi</th>
+                        @if(auth()->user()->hasRole('superadmin|admin'))
+                            <th class="border px-2 py-1">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -67,31 +55,27 @@
                                 @php
                                     $schedule = $schedules[$date->toDateString()] ?? null;
                                     $status = $schedule->status ?? '-';
+                                    // $isLiburNasional = $date->is_libur_nasional ?? false;
+                                    // $status = $schedule->status ?? ($isLiburNasional ? 'Libur Nasional' : '-');
+
                                     if ($status === 'Work') $workDays++;
                                     if ($status === 'Off') $offDays++;
                                     if ($schedule && $schedule->remarks) $remarks[] = $schedule->remarks;
                                 @endphp
-                                <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-100 text-red-700' : 
+                                                             ( $status === 'Work' ? 'bg-green-100 text-green-700' : 
+                                                             ( $status === 'Libur Nasional' ? 'bg-yellow-300 text-yellow-700' : 'bg-green-100 text-green-700' )) }}">
                                     {{ $status }}
                                 </td>
                             @endforeach
                             <td class="border px-2 py-1">{{ $workDays }}</td>
                             <td class="border px-2 py-1">{{ $offDays }}</td>
                             <td class="border px-2 py-1 text-left">{{ implode(', ', array_unique($remarks)) }}</td>
+                            @if(auth()->user()->hasRole('superadmin|admin'))
                             <td class="border px-2 py-1">
-                                {{-- @foreach ($weeks as $week)
-                                    <a href="{{ route('schedules.edit', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
-                                        Edit Minggu {{ $week['start']->format('d M') }} - {{ $week['end']->format('d M') }}
-                                    </a>
-                                    
-                                @endforeach --}}
-                                {{-- <a href="{{ route('schedules.edit', ['start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">
-                                    Edit
-                                </a> --}}
-                                <a href="{{ route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">Edit</a>
-
-
-                            </td>
+                                    <a href="{{ route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">Edit</a>
+                                </td>
+                                @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -100,19 +84,6 @@
     @endforeach
 </div>
 
-
-
-
     </div>
-    {{-- <form method="GET" action="{{ route('schedules.index') }}">
-    <input type="month" name="bulan" value="{{ $bulan }}">
-    <button type="submit">Lihat Jadwal</button>
-</form> --}}
-
-{{-- <ul>
-@foreach ($dates as $item)
-    <li>{{ ucfirst($item['hari']) }}, {{ \Carbon\Carbon::parse($item['tanggal'])->format('d M Y') }}</li>
-@endforeach
-</ul> --}}
 
 </x-app-layout>
