@@ -120,21 +120,26 @@
             {{-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link> --}}
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Ticketing') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
-                {{ __('Visit Schedule') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
-                {{ __('Schedule IT') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('outlets.index')" :active="request()->routeIs('outlets.index')">
-                {{ __('Area Outlet') }}
-            </x-responsive-nav-link>
+            @if(auth()->user()->hasRole('superadmin|admin'))
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Ticketing') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                    {{ __('Visit Schedule') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('outlets.index')" :active="request()->routeIs('outlets.index')">
+                    {{ __('Area Outlet') }}
+                </x-responsive-nav-link>
+            @endif
+             @if(auth()->user()->hasRole('superadmin|admin|hrd'))
+
+                <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
+                    {{ __('Schedule IT') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(auth()->user()->hasRole('superadmin'))
             <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
 
-                @if(auth()->user()->hasRole('superadmin'))
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                     {{ __('User') }}
                 </x-responsive-nav-link>
@@ -144,8 +149,8 @@
                 <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                     {{ __('Permission') }}
                 </x-responsive-nav-link>
-                @endif
             </div>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
