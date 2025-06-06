@@ -39,6 +39,19 @@ class BuildingController extends Controller
         return view('building.tickets.index', compact('buildings', 'status', 'search'));
     }
 
+    public function indexPic()
+    {
+        $pics = Pic::all();
+
+        return view('building.pics.index', compact('pics'));
+    }
+    public function indexVendor()
+    {
+        $vendors = Vendor::all();
+
+        return view('building.vendors.index', compact('vendors'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -54,11 +67,15 @@ class BuildingController extends Controller
 
     public function createVendor()
     {
-        return view('building.vendors.create');
+        $user = Auth::user();
+
+        return view('building.vendors.create'.compact('user'));
     }
     public function createPic()
     {
-        return view('building.pics.create');
+        $user = Auth::user();
+
+        return view('building.pics.create', compact('user'));
     }
 
     /**
@@ -128,19 +145,37 @@ class BuildingController extends Controller
     public function storeVendor(Request $request)
     {
         $request->validate([
-            // 'ticketing' => 'required|string|max:255',
             'name' => 'required|string|max:255',
+            'user' => 'required|string|max:50',
             'alamat' => 'required|string|max:255',
             'no_telp' => 'required|string|max:255',
         ]);
 
         Vendor::created([
-            'problem' => $request->problem,
-            'alamaat' => $request->alamaat,
+            'name' => $request->name,
+            'user' => $request->user,
+            'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
 
-        return redirect()->route('building.tickets.index')->with('success', 'Data berhasil tersimpan');
+        return redirect()->route('building.vendors.index')->with('success', 'Data berhasil tersimpan');
+        
+    }
+    public function storePic(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'no_telp' => 'required|string|max:255',
+            'user' => 'required|string|max:50',
+        ]);
+
+        Pic::created([
+            'name' => $request->name,
+            'no_telp' => $request->no_telp,
+            'user' => $request->user,
+        ]);
+
+        return redirect()->route('building.pics.index')->with('success', 'Data berhasil tersimpan');
         
     }
 
@@ -240,6 +275,41 @@ class BuildingController extends Controller
         // }
 
         return redirect()->route('building.tickets.index')->with('success', 'Data berhasil disimpan!');
+    }
+
+    public function updateVendor(Request $request, Vendor $vendor, $id)
+    {
+        $request->validate([ 
+            'name' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'no_telp' => 'required|string|max:255',
+        ]);
+
+        $vendor = Vendor::findOrFail($id);
+
+        $vendor->update([
+            'problem' => $request->problem,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp,
+        ]);
+
+        return redirect()->route('building.vendors.index')->with('success', 'Data berhasil terupdate');
+    }
+    public function updatePic(Request $request, Pic $pic, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'no_telp' => 'required|string|max:255',
+        ]);
+
+        $pic = Pic::findOrFail($id);
+
+        $pic->update([
+            'problem' => $request->problem,
+            'no_telp' => $request->no_telp,
+        ]);
+
+        return redirect()->route('building.vendors.index')->with('success', 'Data berhasil terupdate');
     }
 
     /**

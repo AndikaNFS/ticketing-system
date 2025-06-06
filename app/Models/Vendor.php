@@ -10,6 +10,7 @@ class Vendor extends Model
         'name',
         'alamat',
         'no_telp',
+        'user',
     ];
 
     public function buildings()

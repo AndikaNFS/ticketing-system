@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('no_telp')->nullable();
+            $table->string('user')->nullable();
             $table->timestamps();
         });
     }

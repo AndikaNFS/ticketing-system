@@ -97,11 +97,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/building/vendors/', [BuildingController::class, 'indexVendor'])->name('building.vendors.index');
     Route::get('/building/vendors/{id}/edit', [BuildingController::class, 'editVendor'])->name('building.vendors.edit');
     Route::put('/building/vendors/{id}/update', [BuildingController::class, 'updateVendor'])->name('building.vendors.update');
+    Route::post('/building/vendors/store', [BuildingController::class, 'storeVendor'])->name('building.vendors.store');
     
     Route::get('/building/pics/create', [BuildingController::class, 'createPic'])->name('building.pics.create');
     Route::get('/building/pics/', [BuildingController::class, 'indexPic'])->name('building.pics.index');
     Route::get('/building/pics/{id}/edit', [BuildingController::class, 'editPic'])->name('building.pics.edit');
     Route::put('/building/pics/{id}/update', [BuildingController::class, 'updatePic'])->name('building.vendors.update');
+    Route::post('/building/pics/store', [BuildingController::class, 'storePic'])->name('building.pics.store');
+
+    
     
     Route::resource('schedules', ScheduleController::class);
 });
@@ -113,7 +117,7 @@ Route::prefix('admin')->middleware('role:superadmin|admin')->group(function () {
 });
 
 Route::prefix('building')->middleware('role:superadmin')->group(function () {
-    Route::resource('tickets', BuildingController::class);
+    // Route::resource('tickets', BuildingController::class);
 });
 
 // // Hanya user dengan role 'admin'

@@ -33,7 +33,7 @@
                     @endif
                     @if(auth()->user()->hasRole('superadmin|admin|building'))
 
-                    {{-- <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                    {{-- <x-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                         {{ __('Building') }}
                     </x-nav-link> --}}
                     @endif

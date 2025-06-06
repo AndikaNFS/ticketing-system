@@ -9,6 +9,7 @@ class Pic extends Model
      protected $fillable = [
         'name',
         'no_telp',
+        'user',
     ];
 
     public function building()
