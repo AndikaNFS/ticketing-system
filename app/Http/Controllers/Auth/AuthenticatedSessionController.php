@@ -19,11 +19,11 @@ class AuthenticatedSessionController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->hasRole(['superadmin','admin'])) {
+            if ($user->hasRole(['superadmin','admin','direksi'])) {
                 return redirect()->route('dashboard');
             } elseif ($user->hasRole('hrd')) {
                 return redirect()->route('schedules.index');
-            } elseif ($user->hasRole(['building','user'])) {
+            } elseif ($user->hasRole(['building','building-user'])) {
                 return redirect()->route('building.tickets.index');
             } else {
                 abort(403, 'Unauthorized.');
@@ -49,11 +49,11 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->hasRole(['superadmin','admin'])) {
+        if ($user->hasRole(['superadmin','admin','direksi'])) {
             return redirect()->route('dashboard');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');
-        } elseif ($user->hasRole(['building','user'])) {
+        } elseif ($user->hasRole(['building','building-user'])) {
             return redirect()->route('building.tickets.index');
         }
         abort(403, 'Unauthorized role');

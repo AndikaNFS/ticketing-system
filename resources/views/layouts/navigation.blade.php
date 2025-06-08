@@ -13,7 +13,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                    @if(auth()->user()->hasRole('superadmin|admin'))
+                    @if(auth()->user()->hasRole('superadmin|admin|user'))
                     
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Ticketing') }}
@@ -25,13 +25,13 @@
                         {{ __('Area Outlet') }}
                     </x-nav-link>
                     @endif
-                    @if(auth()->user()->hasRole('superadmin|admin|hrd'))
+                    @if(auth()->user()->hasRole('superadmin|admin|hrd|user'))
 
                     <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                         {{ __('Schedule IT') }}
                     </x-nav-link>
                     @endif
-                    @if(auth()->user()->hasRole('superadmin|admin|building|user'))
+                    @if(auth()->user()->hasRole('superadmin|admin|building'))
 
                     <x-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                         {{ __('Building') }}
@@ -120,7 +120,7 @@
             {{-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link> --}}
-            @if(auth()->user()->hasRole('superadmin|admin'))
+            @if(auth()->user()->hasRole('superadmin|admin|user'))
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Ticketing') }}
                 </x-responsive-nav-link>
@@ -131,13 +131,13 @@
                     {{ __('Area Outlet') }}
                 </x-responsive-nav-link>
             @endif
-             @if(auth()->user()->hasRole('superadmin|admin|hrd'))
+             @if(auth()->user()->hasRole('superadmin|admin|hrd|user'))
 
                 <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                     {{ __('Schedule IT') }}
                 </x-responsive-nav-link>
             @endif
-             @if(auth()->user()->hasRole('superadmin|admin|building|user'))
+             @if(auth()->user()->hasRole('superadmin|admin|building'))
 
                 <x-responsive-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                     {{ __('Building') }}

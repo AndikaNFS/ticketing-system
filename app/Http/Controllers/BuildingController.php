@@ -211,6 +211,21 @@ class BuildingController extends Controller
         return view('building.tickets.edit', compact('building', 'outlets', 'pics', 'vendors'));
 
     }
+    
+    public function editPic($id)
+    {
+        $pic = Pic::findOrFail($id);
+        $user = Auth::user();
+
+        return view('building.pics.edit', compact('pic', 'user'));
+    }
+    public function editVendor($id)
+    {
+        $vendor = Vendor::findOrFail($id);
+        $user = Auth::user();
+
+        return view('building.vendors.edit', compact('vendor', 'user'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -291,7 +306,7 @@ class BuildingController extends Controller
         $vendor = Vendor::findOrFail($id);
 
         $vendor->update([
-            'problem' => $request->problem,
+            'name' => $request->name,
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
@@ -308,11 +323,11 @@ class BuildingController extends Controller
         $pic = Pic::findOrFail($id);
 
         $pic->update([
-            'problem' => $request->problem,
+            'name' => $request->name,
             'no_telp' => $request->no_telp,
         ]);
 
-        return redirect()->route('building.vendors.index')->with('success', 'Data berhasil terupdate');
+        return redirect()->route('building.pics.index')->with('success', 'Data berhasil terupdate');
     }
 
     /**

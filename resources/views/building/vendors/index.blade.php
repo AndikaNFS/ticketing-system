@@ -41,6 +41,9 @@
                                 <th scope="col" class="px-6 py-3 ">
                                     No Telp
                                 </th>
+                                <th scope="col" class="px-6 py-3 ">
+                                    Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,10 +65,10 @@
                                     {{ $vendor->no_telp }}
                                     
                                 </td>
-                                {{-- <td>
-                                            <a href="{{ route('outlets.edit', $areait->id) }}" class="hover:text-blue-400">Edit</a>
+                                <td>
+                                            <a href="{{ route('building.vendors.edit', $vendor->id) }}" class="hover:text-blue-400">Edit</a>
 
-                                </td> --}}
+                                </td>
                             </tr>
                             @endforeach
 
