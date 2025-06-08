@@ -6,7 +6,7 @@
 
         </div> --}}
             <div class="flex place-content-end">
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|superadmin|building'))
                     
                         
                     <a href="{{ route('building.vendors.create') }}">
