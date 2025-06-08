@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Building;
 use App\Http\Controllers\Controller;
+use App\Models\ImageBuilding;
 use App\Models\Outlet;
 use App\Models\Pic;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BuildingController extends Controller
 {
@@ -69,7 +72,7 @@ class BuildingController extends Controller
     {
         $user = Auth::user();
 
-        return view('building.vendors.create'.compact('user'));
+        return view('building.vendors.create',compact('user'));
     }
     public function createPic()
     {
@@ -86,16 +89,16 @@ class BuildingController extends Controller
         $request->validate([
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet_id' => 'required|integer|exists:outlets,id',
-            'vendor_id' => 'required|integer|exists:vendors,id',
+            'outlet_id' => 'required|exists:outlets,id',
+            'vendor_id' => 'required|exists:vendors,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
-            'pic_id' => 'required|integer|exists:pics,id',
+            'pic_id' => 'required|exists:pics,id',
             'finish_date' => 'nullable|date',
             'start_date' => 'nullable|date',
             'user' => 'required|string|max:50',
             'work_duration' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
-            'images.*' => 'file|mimes:jpg,jpeg,png,mp4|max:20480',
+            'image_buildings.*' => 'file|mimes:jpg,jpeg,png,mp4|max:20480',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -125,14 +128,14 @@ class BuildingController extends Controller
             $building->save();
         }
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
+        if ($request->hasFile('image_buildings')) {
+            foreach ($request->file('image_buildings') as $file) {
                 $path =$file->store('building_images', 'public');
                 // Image::create([
                 //     'ticket_id' => $ticket->id,
                 //     'path' => $path,
                 // ]);
-                $building->images()->create([
+                $building->image_buildings()->create([
                     'path' => $path,
                 ]);
             }
@@ -151,7 +154,7 @@ class BuildingController extends Controller
             'no_telp' => 'required|string|max:255',
         ]);
 
-        Vendor::created([
+        Vendor::create([
             'name' => $request->name,
             'user' => $request->user,
             'alamat' => $request->alamat,
@@ -165,11 +168,11 @@ class BuildingController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:255',
+            'no_telp' => 'nullable|string|max:255',
             'user' => 'required|string|max:50',
         ]);
 
-        Pic::created([
+        Pic::create([
             'name' => $request->name,
             'no_telp' => $request->no_telp,
             'user' => $request->user,
@@ -185,6 +188,7 @@ class BuildingController extends Controller
     public function show($id)
     {
         $ticket = Building::where('id', $id)->get();
+        // $detail = Building::with('image_building')->find($id);
 
         return view('building.tickets.detail', compact('ticket'));
     }
@@ -216,15 +220,15 @@ class BuildingController extends Controller
         $request->validate([
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet_id' => 'required|string|max:255',
-            'vendor_id' => 'required|string|max:255',
+            'outlet_id' => 'required|exists:outlets,id',
+            'vendor_id' => 'required|exists:vendors,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
-            'pic_id' => $request->pic_id == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
+            'pic_id' => $request->pic_id == 'Done' ? 'required|exists:pics,id' : 'required|exists:pics,id',
             'finish_date' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'work_duration' => $request->work_duration == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
             'desription' => 'nullable|string|max:255',
-            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:20480', // max 20MB
+            'image_buildings.*' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:20480', // max 20MB
         ]);
         // dd($request->all());
 
@@ -260,10 +264,10 @@ class BuildingController extends Controller
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('images/building/ticketing', 'public');
-                $building->images()->create(['path' => $path]);
+        if ($request->hasFile('image_buildings')) {
+            foreach ($request->file('image_buildings') as $file) {
+                $path = $file->store('image_building/building/ticketing', 'public');
+                $building->image_buildings()->create(['path' => $path]);
             }
         }
 
@@ -274,7 +278,7 @@ class BuildingController extends Controller
         //     return redirect()->back()->with('success', 'Status updated to OnProgress');
         // }
 
-        return redirect()->route('building.tickets.index')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('building.tickets.detail', $building->id)->with('success', 'Data berhasil disimpan!');
     }
 
     public function updateVendor(Request $request, Vendor $vendor, $id)
@@ -319,4 +323,30 @@ class BuildingController extends Controller
     {
         //
     }
+
+    public function destroyImage($id)
+    {
+        $image = ImageBuilding::findOrFail($id);
+
+        // Hapus file fisik
+        Storage::delete('public/' . $image->path);
+
+        // hapus dari database
+        $image->delete();
+
+        return back()->with('success', 'Gambar berhasil di hapus');
+    }
+
+    //  public function exportExcel()
+    // {
+    //     return Excel::download(new BuildingExport, 'tickets.xlsx');
+    // }
+
+    // public function exportPDF()
+    // {
+    //     $tickets = Building::all();
+    //     $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
+        
+    //     return $pdf->download('RR-Ticketing.pdf');
+    // }
 }

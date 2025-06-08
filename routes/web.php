@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/building/{id}/detail', [BuildingController::class, 'show'])->name('building.tickets.detail');
     Route::get('/building/{id}/edit', [BuildingController::class, 'edit'])->name('building.tickets.edit');
     Route::put('/building/{id}/update', [BuildingController::class, 'update'])->name('building.tickets.update');
+    Route::delete('/images/{id}', [BuildingController::class, 'destroyImage'])->name('images.destroy');
     
     Route::get('/building/vendors/create', [BuildingController::class, 'createVendor'])->name('building.vendors.create');
     Route::get('/building/vendors/', [BuildingController::class, 'indexVendor'])->name('building.vendors.index');

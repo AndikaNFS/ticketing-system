@@ -34,4 +34,17 @@ class Building extends Model
     {
         return $this->belongsTo(Pic::class);
     }
+
+    public function image_building()
+    {
+        return $this->hasMany(ImageBuilding::class);
+    }
+
+    public function scopeFilterStatus($query, $status)
+    {
+        if ($status && in_array($status, ['Open', 'InProgress', 'Done', 'Cancel'])) {
+            return $query->where('status', $status);
+        }
+        return $query;
+    }
 }

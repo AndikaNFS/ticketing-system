@@ -6,8 +6,16 @@
             </div>
         @endif
 
+        @if ($errors->any())
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li class="text-red-500">{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
         <div class=" mt-5">
-            <a href="{{ route('dashboard') }}" class="text-white bg-gray-500 py-1 px-5 text-lg m-10 rounded dark:bg-gray-400 dark:text-gray-700">Back</a>
+            <a href="{{ route('building.tickets.index') }}" class="text-white bg-gray-500 py-1 px-5 text-lg m-10 rounded dark:bg-gray-400 dark:text-gray-700">Back</a>
     
             </div>
 
@@ -35,12 +43,18 @@
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vendor</label>
-            <input value="{{ $building->vendors->name }}" type="text" name="vendor_id" id="vendor_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
+            {{-- <input value="{{ $building->vendors->name }}" type="text" name="vendor_id" id="vendor_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required /> --}}
+            <select id="vendor_id" name="vendor_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                <option selected >Pilih Vendor</option>
+                @foreach ($vendors as $vendor)
+                    <option value="{{ $vendor->id}}"  {{ $building->vendor_id == $vendor->id ? 'selected' : ''}}>{{ $vendor->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div>
             <label for="problem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
-            <input value="{{ $building->outlet->name }}" type="text" disabled name="outlet_id" id="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
-            <input value="{{ $building->outlet->name }}" type="hidden" name="outlet_id" id="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
+            <input value="{{ $building->outlet->name }}" type="text" disabled name="" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
+            <input value="{{ $building->outlet->id }}" type="hidden" name="outlet_id" id="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
             
         </div>
         <div>
@@ -56,11 +70,12 @@
         </div>  
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC</label>
-            <select id="pic_id" name="pic_id" 
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        >
-                        {{-- <option value="{{ $building->pic->id }}" {{  old('pic_id', $building->pic->name) == '{{ $building->pic->name }}' ? 'selected' : '' }}>{{ $building->pic->name }}</option> --}}
-                    </select>
+            <select id="pic_id" name="pic_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                <option selected >Pilih Lokasi</option>
+                @foreach ($pics as $pic)
+                    <option value="{{ $pic->id}}"  {{ $building->pic_id == $pic->id ? 'selected' : ''}}>{{ $pic->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div>
             
@@ -117,8 +132,8 @@
         <label class="block text-sm text-gray-700 font-medium dark:text-gray-50">Upload Gambar</label>
         <input 
             type="file" 
-            name="images[]" 
-            id="images"
+            name="image_buildings[]" 
+            id="image_buildings"
             multiple
             accept="image/*,video/mp4"
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500">
@@ -135,8 +150,6 @@
         @method('PUT')
     @endif --}}
     
-    {{-- @if (isset($building) && $building->images->count()) --}}
-
     {{-- <div class="grid grid-cols-3 gap-4">
         @foreach ($ticket->images as $media)
             <div class="relative cursor-pointer mb-8"
@@ -154,8 +167,10 @@
             </div>
         @endforeach
     </div> --}}
-        {{-- <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
-            @foreach ($ticket->images as $media)
+    @if (isset($building) && $building->image_buildings?->count())
+
+        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
+            @foreach ($building->image_buildings as $media)
                 <div class="relative">
                     @php
                     $ext = pathinfo($media->path, PATHINFO_EXTENSION);
@@ -182,12 +197,12 @@
                 </div>
             @endforeach
         </div>
-    @endif --}}
+    @endif
 
 {{-- </form> --}}
 
-{{-- <script>
-    document.getElementById('images').addEventListener('change', function(event) {
+<script>
+    document.getElementById('image_buildings').addEventListener('change', function(event) {
         const imagePreview = document.getElementById('imagePreview');
         imagePreview.innerHTML = ''; // Clear preview
     
@@ -202,7 +217,7 @@
             reader.readAsDataURL(file);
         });
     });
-    </script> --}}
+    </script>
     
 
 </x-app-layout>

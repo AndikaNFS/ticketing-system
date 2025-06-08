@@ -20,4 +20,8 @@ class Image extends Model
     {
         return $this->belongsTo(Visit::class);
     }
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
+    }
 }

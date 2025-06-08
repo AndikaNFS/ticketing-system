@@ -14,6 +14,12 @@
     
                 </div>
 
+        <div class="grid w-full mt-10">
+            <h2 class="flex justify-center font-semibold text-3xl items-center text-gray-800 dark:text-white leading-tight">
+                List PIC
+            </h2>
+
+        </div>
             <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
                 
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
