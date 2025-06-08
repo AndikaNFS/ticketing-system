@@ -70,7 +70,7 @@
 
                 </div>
                 <div class="flex place-content-end">
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|superadmin|building'))
                     
                     <div class="relative z-20 mr-5">
                     
@@ -207,18 +207,18 @@
                             </td> --}}
                             
                             <td class="px-6 py-4 text-right">
-                                @if (auth()->user()->hasRole('admin|superadmin'))
-
+                                
                                 <div class="flex space-x-4">
-                                    @can('detail ticket')
+                                    {{-- @can('detail ticket') --}}
+                                    {{-- @can('edit ticket') --}}
                                     <a href="{{ route('building.tickets.detail', $building->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                                    @endcan
-                                    @can('edit ticket')
+                                    @if (auth()->user()->hasRole('admin|superadmin|building'))
+                                    {{-- @endcan --}}
                                     <a href="{{ route('building.tickets.edit', $building->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                            
-                                        @endcan
+                                    
+                                    {{-- @endcan --}}
+                                    @endif
                                 </div>
-                                @endif
                             </td>
                             @endforeach
                         </tr>
