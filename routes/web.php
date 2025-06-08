@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard')->middleware('role:admin|superadmin|user');
-    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|user');
+    Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard')->middleware('role:admin|superadmin|direksi');
+    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|direksi');
     Route::middleware(['role:admin|superadmin'])->group(function () {
         Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');

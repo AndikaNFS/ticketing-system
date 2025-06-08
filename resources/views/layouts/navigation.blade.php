@@ -13,7 +13,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                    @if(auth()->user()->hasRole('superadmin|admin|user'))
+                    @if(auth()->user()->hasRole('superadmin|admin|direksi'))
                     
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Ticketing') }}
@@ -25,7 +25,7 @@
                         {{ __('Area Outlet') }}
                     </x-nav-link>
                     @endif
-                    @if(auth()->user()->hasRole('superadmin|admin|hrd|user'))
+                    @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
 
                     <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                         {{ __('Schedule IT') }}
@@ -120,7 +120,7 @@
             {{-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link> --}}
-            @if(auth()->user()->hasRole('superadmin|admin|user'))
+            @if(auth()->user()->hasRole('superadmin|admin|direksi'))
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Ticketing') }}
                 </x-responsive-nav-link>
@@ -131,7 +131,7 @@
                     {{ __('Area Outlet') }}
                 </x-responsive-nav-link>
             @endif
-             @if(auth()->user()->hasRole('superadmin|admin|hrd|user'))
+             @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
 
                 <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                     {{ __('Schedule IT') }}
