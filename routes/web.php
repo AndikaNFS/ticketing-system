@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
@@ -27,6 +28,12 @@ Route::get('/register', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/ticket', [TicketController::class, 'userCreate'])->name('tickets.users.create');
 Route::post('/store', [TicketController::class, 'storeUser'])->name('tickets.users.storeUser');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/', [AuthenticatedSessionController::class, 'store']);
+
+});
 
 
 Route::middleware('auth')->group(function () {
