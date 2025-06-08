@@ -137,6 +137,12 @@
                     {{ __('Schedule IT') }}
                 </x-responsive-nav-link>
             @endif
+             @if(auth()->user()->hasRole('superadmin|admin|building'))
+
+                <x-responsive-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
+                    {{ __('Building') }}
+                </x-responsive-nav-link>
+            @endif
             @if(auth()->user()->hasRole('superadmin'))
             <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
 
