@@ -84,8 +84,8 @@
 
     <div x-data="{ open: false, media: '', isVideo: false }">
         <div class="grid grid-cols-3 gap-4">
-            @if($detail->image_building?->count())
-            @foreach ($detail->image_building as $media)
+            @if($detail->image_buildings?->count())
+            @foreach ($detail->image_buildings as $media)
                 <div class="relative cursor-pointer mb-8"
                      @click="open = true;
                              media = '{{ asset('storage/' . $media->path) }}';

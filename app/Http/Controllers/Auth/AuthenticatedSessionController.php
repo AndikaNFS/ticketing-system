@@ -23,7 +23,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('dashboard');
             } elseif ($user->hasRole('hrd')) {
                 return redirect()->route('schedules.index');
-            } elseif ($user->hasRole('building')) {
+            } elseif ($user->hasRole(['building','user'])) {
                 return redirect()->route('building.tickets.index');
             } else {
                 abort(403, 'Unauthorized.');
@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('dashboard');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');
-        } elseif ($user->hasRole('building')) {
+        } elseif ($user->hasRole(['building','user'])) {
             return redirect()->route('building.tickets.index');
         }
         abort(403, 'Unauthorized role');

@@ -35,7 +35,7 @@ class Building extends Model
         return $this->belongsTo(Pic::class);
     }
 
-    public function image_building()
+    public function image_buildings()
     {
         return $this->hasMany(ImageBuilding::class);
     }

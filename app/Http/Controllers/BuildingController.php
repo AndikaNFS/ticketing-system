@@ -93,8 +93,8 @@ class BuildingController extends Controller
             'vendor_id' => 'required|exists:vendors,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'pic_id' => 'required|exists:pics,id',
-            'finish_date' => 'nullable|date',
-            'start_date' => 'nullable|date',
+            'finish_date' => 'nullable|string|max:255',
+            'start_date' => 'nullable|string|max:255',
             'user' => 'required|string|max:50',
             'work_duration' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
@@ -261,7 +261,6 @@ class BuildingController extends Controller
             'start_date' => $request->start_date,
             'work_duration' => $workDuration,
             'description' => $request->description,
-            // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
 
         if ($request->hasFile('image_buildings')) {
@@ -278,7 +277,7 @@ class BuildingController extends Controller
         //     return redirect()->back()->with('success', 'Status updated to OnProgress');
         // }
 
-        return redirect()->route('building.tickets.detail', $building->id)->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('building.tickets.index')->with('success', 'Data berhasil disimpan!');
     }
 
     public function updateVendor(Request $request, Vendor $vendor, $id)

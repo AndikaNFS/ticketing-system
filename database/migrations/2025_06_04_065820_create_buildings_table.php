@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignId('vendor_id')->nullable();
             $table->foreignId('outlet_id');
             $table->foreignId('pic_id')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('finish_date')->nullable();
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('finish_date')->nullable();
             $table->string('work_duration')->nullable();
             $table->enum('status', ['Open', 'InProgress', 'Done', 'Cancel'])->default('Open');
             $table->timestamps();

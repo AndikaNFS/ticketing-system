@@ -31,7 +31,7 @@
                         {{ __('Schedule IT') }}
                     </x-nav-link>
                     @endif
-                    @if(auth()->user()->hasRole('superadmin|admin|building'))
+                    @if(auth()->user()->hasRole('superadmin|admin|building|user'))
 
                     <x-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                         {{ __('Building') }}
