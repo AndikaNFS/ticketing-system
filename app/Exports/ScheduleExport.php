@@ -85,37 +85,44 @@ class ScheduleExport implements FromView
 
     // return view('schedules.export-excel', ['weeks' => $weeks, 'employees' => $employees, 'bulan' => $this->bulan]);
      public function view(): View
-    {
-        $start = Carbon::parse($this->bulan)->startOfMonth()->startOfWeek(Carbon::MONDAY);
-        $end = Carbon::parse($this->bulan)->endOfMonth()->endOfWeek(Carbon::SUNDAY);
-
-        $weeks = [];
-        $weekStart = $start->copy();
-        while ($weekStart <= $end) {
-            $weekEnd = $weekStart->copy()->addDays(6);
-            $dates = collect();
-            for ($date = $weekStart->copy(); $date <= $weekEnd; $date->addDay()) {
-                $dates->push($date->copy());
-            }
-
-            $weeks[] = [
-                'start' => $weekStart->copy(),
-                'end' => $weekEnd->copy(),
-                'dates' => $dates,
-            ];
-
-            $weekStart = $weekStart->copy()->addWeek();
-        }
-
-        $employees = Employee::with(['schedules' => function ($q) use ($start, $end) {
-            $q->whereBetween('date', [$start, $end]);
-        }])->get();
-
-        return view('schedules.export-excel', [
-            'weeks' => $weeks,
-            'employees' => $employees,
+     {
+        $schedules = app(\App\Http\Controllers\ScheduleController::class)->getScheduleData($this->bulan);
+        return view('admin.schedules.exports.schedule-excel', [
+            'schedules' => $schedules,
             'bulan' => $this->bulan,
         ]);
-    }
+     }
+    // {
+    //     $start = Carbon::parse($this->bulan)->startOfMonth()->startOfWeek(Carbon::MONDAY);
+    //     $end = Carbon::parse($this->bulan)->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+
+    //     $weeks = [];
+    //     $weekStart = $start->copy();
+    //     while ($weekStart <= $end) {
+    //         $weekEnd = $weekStart->copy()->addDays(6);
+    //         $dates = collect();
+    //         for ($date = $weekStart->copy(); $date <= $weekEnd; $date->addDay()) {
+    //             $dates->push($date->copy());
+    //         }
+
+    //         $weeks[] = [
+    //             'start' => $weekStart->copy(),
+    //             'end' => $weekEnd->copy(),
+    //             'dates' => $dates,
+    //         ];
+
+    //         $weekStart = $weekStart->copy()->addWeek();
+    //     }
+
+    //     $employees = Employee::with(['schedules' => function ($q) use ($start, $end) {
+    //         $q->whereBetween('date', [$start, $end]);
+    //     }])->get();
+
+    //     return view('schedules.export-excel', [
+    //         'weeks' => $weeks,
+    //         'employees' => $employees,
+    //         'bulan' => $this->bulan,
+    //     ]);
+    // }
 }
 

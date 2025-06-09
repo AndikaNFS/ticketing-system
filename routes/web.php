@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -71,11 +72,13 @@ Route::middleware('auth')->group(function () {
     // Route::get('/schedules/{employee}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
     // Route::post('/schedules/{employee}/store', [ScheduleController::class, 'store'])->name('schedules.store');
     
+    Route::get('/schedules/exports/pdf', [ScheduleController::class, 'exportPdf'])->name('schedules.exports.pdf');
+    Route::get('/schedules/exports/excel', [ScheduleController::class, 'exportExcel'])->name('schedules.exports.excel');
     Route::middleware(['role:admin|superadmin'])->group(function () {
         Route::get('/schedules/{id}/edit/{start_date?}', [ScheduleController::class, 'edit'])->name('schedules.edit.weekly');
         Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
-        Route::get('/schedules/export/pdf', [ScheduleController::class, 'exportPDF'])->name('schedules.export.pdf');
-        Route::get('/schedules/export-excel', [ScheduleController::class, 'exportExcel'])->name('schedules.export.excel');
+        // Route::get('/schedules/export/pdf', [ScheduleController::class, 'exportPDF'])->name('schedules.export.pdf');
+        // Route::get('/schedules/export-excel', [ScheduleController::class, 'exportExcel'])->name('schedules.export.excel');
         
     });
     Route::resource('schedules', ScheduleController::class);
@@ -128,7 +131,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/building/pics/store', [BuildingController::class, 'storePic'])->name('building.pics.store');
     });
     
-    
+    Route::resource('reports', DailyReportController::class);
+    Route::get('/reports/export/exportexcel', [DailyReportController::class, 'exportExcel'])->name('reports.export.export_excel');
 });
 
 Route::prefix('admin')->middleware('role:superadmin')->group(function () {
