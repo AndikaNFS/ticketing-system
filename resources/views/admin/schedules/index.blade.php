@@ -7,8 +7,8 @@
         <label class="font-semibold">Pilih Bulan:</label>
         <input type="month" name="bulan" value="{{ $bulan }}" class="border px-3 py-1 rounded">
         <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Tampilkan</button>
-        {{-- <a href="{{ route('schedules.exports.pdf', ['bulan' => $bulan]) }}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Export PDF</a>
-        <a href="{{ route('schedules.exports.excel', ['bulan' => $bulan]) }}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Export Excel</a> --}}
+        <a href="{{ route('schedules.exports.pdf', ['bulan' => $bulan]) }}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Export PDF</a>
+        <a href="{{ route('schedules.exports.excel', ['bulan' => $bulan]) }}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Export Excel</a>
     </form>
 
     @foreach ($weeks as $index => $week)

@@ -204,10 +204,10 @@ class ScheduleController extends Controller
     {
          $bulan = $request->input('bulan', now()->format('Y-m'));
 
-    $schedules = $this->getScheduleData($bulan); // fungsi custom untuk ambil data
-    $pdf = Pdf::loadView('admin.schedules.exports.schedule-pdf', compact('schedules', 'bulan'));
+        $schedules = $this->getScheduleData($bulan); // fungsi custom untuk ambil data
+        $pdf = Pdf::loadView('admin.schedules.exports.schedule-pdf', compact('schedules', 'bulan'));
 
-    return $pdf->download("jadwal-it-support-$bulan.pdf");
+        return $pdf->download("jadwal-it-support-$bulan.pdf");
     }
     // {
     //     $bulan = $request->input('bulan', now()->format('Y-m'));
@@ -248,23 +248,20 @@ class ScheduleController extends Controller
         $bulan = $request->input('bulan', now()->format('Y-m'));
         return Excel::download(new ScheduleExport($bulan), "jadwal-it-support-$bulan.xlsx");
     }
-
     public function getScheduleData($bulan)
-    {
-        $startDate = Carbon::parse($bulan)->startOfMonth();
-        $endDate = Carbon::parse($bulan)->endOfMonth();
+{
+    $startDate = Carbon::parse($bulan)->startOfMonth();
+    $endDate = Carbon::parse($bulan)->endOfMonth();
 
-        // Ambil semua data jadwal dalam rentang bulan
-    $scheduleData = Schedule::with(['employee'])
+    // Ambil data schedule dan group by employee_id
+    $scheduleData = Schedule::with('employee')
         ->whereBetween('date', [$startDate, $endDate])
         ->get()
         ->groupBy('employee_id');
-        // $employees = Employee::with('position')->whereIn('id', $scheduleData->keys())->get();
-        // $employees = Employee::all();
-        $employees = Employee::whereIn('id', $scheduleData->keys())->get();
-        // dd($scheduleData);
 
-    // Kelompokkan tanggal per minggu (minggu dimulai hari Sabtu, bisa disesuaikan)
+    // Ambil employee yang memiliki jadwal
+    $employees = Employee::whereIn('id', $scheduleData->keys())->get();
+
     $weeks = [];
     $current = $startDate->copy()->startOfWeek(Carbon::SATURDAY);
 
@@ -272,7 +269,6 @@ class ScheduleController extends Controller
         $weekStart = $current->copy();
         $weekEnd = $current->copy()->addDays(6);
 
-        // Ambil tanggal per minggu
         $dates = [];
         for ($d = 0; $d < 7; $d++) {
             $date = $weekStart->copy()->addDays($d);
@@ -280,8 +276,8 @@ class ScheduleController extends Controller
             $dates[] = $date->format('Y-m-d');
         }
 
-        // Ambil data karyawan untuk minggu tersebut
-        $employees = [];
+        $employeeRows = [];
+
         foreach ($employees as $employee) {
             $days = [];
             $totalWork = 0;
@@ -292,15 +288,15 @@ class ScheduleController extends Controller
                 $record = $scheduleData[$employee->id]->firstWhere('date', $date);
                 if ($record) {
                     $days[] = $record->status;
-                    if ($record->status == 'Work') $totalWork++;
-                    if ($record->status == 'Off') $totalOff++;
+                    if ($record->status === 'Work') $totalWork++;
+                    if ($record->status === 'Off') $totalOff++;
                     if ($record->remarks) $remarks = $record->remarks;
                 } else {
                     $days[] = '-';
                 }
             }
 
-            $employees[] = [
+            $employeeRows[] = [
                 'name' => $employee->name,
                 'position' => $employee->position,
                 'days' => $days,
@@ -314,12 +310,85 @@ class ScheduleController extends Controller
             'start' => $weekStart->format('d M'),
             'end' => $weekEnd->format('d M'),
             'dates' => $dates,
-            'employees' => $employees
+            'employees' => $employeeRows
         ];
 
         $current->addWeek();
     }
 
     return $weeks;
-    }
+}
+    // public function getScheduleData($bulan)
+    // {
+    //     $startDate = Carbon::parse($bulan)->startOfMonth();
+    //     $endDate = Carbon::parse($bulan)->endOfMonth();
+
+    //     // Ambil semua data jadwal dalam rentang bulan
+    //     $scheduleData = Schedule::with(['employee'])
+    //         ->whereBetween('date', [$startDate, $endDate])
+    //         ->get()
+    //         ->groupBy('employee_id');
+    //         // $employees = Employee::with('position')->whereIn('id', $scheduleData->keys())->get();
+    //     // $employees = Employee::all();
+    //     $employees = Employee::whereIn('id', $scheduleData->keys())->get();
+    //     // dd($scheduleData);
+
+    // // Kelompokkan tanggal per minggu (minggu dimulai hari Sabtu, bisa disesuaikan)
+    //     $weeks = [];
+    //     $current = $startDate->copy()->startOfWeek(Carbon::SATURDAY);
+
+    //     while ($current->lte($endDate)) {
+    //         $weekStart = $current->copy();
+    //         $weekEnd = $current->copy()->addDays(6);
+
+    //         // Ambil tanggal per minggu
+    //         $dates = [];
+    //         for ($d = 0; $d < 7; $d++) {
+    //             $date = $weekStart->copy()->addDays($d);
+    //             if ($date->gt($endDate)) break;
+    //             $dates[] = $date->format('Y-m-d');
+    //         }
+
+    //         // Ambil data karyawan untuk minggu tersebut
+    //         // $employees = [];
+    //         foreach ($employees as $schedule) {
+    //             $days = [];
+    //             $totalWork = 0;
+    //             $totalOff = 0;
+    //             $remarks = '';
+
+    //             foreach ($dates as $date) {
+    //                 $record = $scheduleData[$schedule->id]->firstWhere('date', $date);
+    //                 if ($record) {
+    //                     $days[] = $record->status;
+    //                     if ($record->status == 'Work') $totalWork++;
+    //                     if ($record->status == 'Off') $totalOff++;
+    //                     if ($record->remarks) $remarks = $record->remarks;
+    //                 } else {
+    //                     $days[] = '-';
+    //                 }
+    //             }
+
+    //             $employees[] = [
+    //                 'name' => $schedule->employee->name,
+    //                 'position' => $schedule->employee->position,
+    //                 'days' => $days,
+    //                 'total_work' => $totalWork,
+    //                 'total_off' => $totalOff,
+    //                 'remarks' => $remarks
+    //             ];
+    //         }
+
+    //         $weeks[] = [
+    //             'start' => $weekStart->format('d M'),
+    //             'end' => $weekEnd->format('d M'),
+    //             'dates' => $dates,
+    //             'employees' => $employees
+    //         ];
+
+    //         $current->addWeek();
+    //     }
+
+    //     return $weeks;
+    // }
 }
