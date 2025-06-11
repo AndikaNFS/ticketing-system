@@ -2,14 +2,20 @@
     <div class="bg-white">
 <div class="container mx-auto px-4 pt-8">
     <h1 class="text-2xl font-bold mb-4">Jadwal IT Support - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h1>
+    <div class="grip col-span-2 gap-4">
+        <form method="GET" class="mb-6 flex items-center gap-4">
+            
+            <label class="font-semibold">Pilih Bulan:</label>
+            <input type="month" name="bulan" value="{{ $bulan }}" class="border px-3 py-1 rounded">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Tampilkan</button>
+        </form>
+        <div class="mb-6 flex items-center gap-4 ">
+            <a href="{{ route('schedules.exports.pdf', ['bulan' => $bulan]) }}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Export PDF</a>
+            <a href="{{ route('schedules.exports.excel', ['bulan' => $bulan]) }}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Export Excel</a>
+    
+        </div>
 
-    <form method="GET" class="mb-6 flex items-center gap-4">
-        <label class="font-semibold">Pilih Bulan:</label>
-        <input type="month" name="bulan" value="{{ $bulan }}" class="border px-3 py-1 rounded">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Tampilkan</button>
-        <a href="{{ route('schedules.exports.pdf', ['bulan' => $bulan]) }}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Export PDF</a>
-        <a href="{{ route('schedules.exports.excel', ['bulan' => $bulan]) }}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Export Excel</a>
-    </form>
+    </div>
 
     @foreach ($weeks as $index => $week)
         <div class="mb-10 bg-white shadow rounded-lg overflow-x-auto">
