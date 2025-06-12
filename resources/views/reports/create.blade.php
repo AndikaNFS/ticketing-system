@@ -22,16 +22,26 @@
 
                     </div>
                     <div>
-                    <label for="status" class="block font-semibold">Status</label>
-                    <select name="status" id="status" class="w-full border rounded px-3 py-2" required>
-                        <option value=""> Pilih Status </option>
-                        <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                        <option value="belum" {{ old('status') == 'belum' ? 'selected' : '' }}>Belum</option>
-                        <option value="libur" {{ old('status') == 'libur' ? 'selected' : '' }}>Libur</option>
+                        <label for="status" class="block font-semibold">Status</label>
+                        <select name="status" id="status" class="w-full border rounded px-3 py-2" required>
+                            <option value=""> Pilih Status </option>
+                            <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                            <option value="belum" {{ old('status') == 'belum' ? 'selected' : '' }}>Belum</option>
+                            <option value="libur" {{ old('status') == 'libur' ? 'selected' : '' }}>Libur</option>
+                        </select>
+                    </div>
+                </div>
+                {{-- <div class="">
+                    <label for="outlet_id" class="block font-semibold">Outlet</label>
+                    <select name="outlet_id" id="outlet_id" class="w-full border rounded px-3 py-2" required>
+                        <option value=""> Pilih Outlet </option>
+                        @foreach ($outlets as $outlet)
+                            <option value="{{ $outlet->id }}">
+                                {{ $outlet->name }}
+                            </option>
+                        @endforeach
                     </select>
-                </div>
-                </div>
-        
+                </div> --}}
                 <div>
                     <label for="prev_work" class="block font-semibold">Pekerjaan Sebelumnya</label>
                     <textarea name="prev_work" id="prev_work" rows="3" class="w-full border rounded px-3 py-2">{{ old('prev_work') }}</textarea>

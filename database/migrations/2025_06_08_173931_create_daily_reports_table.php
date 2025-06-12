@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('daily_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('outlet_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->text('prev_work')->nullable();
             $table->text('today_work')->nullable();

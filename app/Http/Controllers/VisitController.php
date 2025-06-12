@@ -56,15 +56,17 @@ class VisitController extends Controller
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
             // 'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $visit = Visit::create([
+        Visit::create([
             'pic' => $request->pic,
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
             'ticket_id' => null,
             'description' => $request->description,
+            'status' => $request->status,
         ]);
 
         // if ($request->hasFile('images')) {
@@ -116,6 +118,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
             // 'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);
@@ -127,6 +130,7 @@ class VisitController extends Controller
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
             'description' => $request->description,
+            'status' => $request->status,
         ]);
 
         // if ($request->hasFile('images')) {

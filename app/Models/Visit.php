@@ -11,6 +11,7 @@ class Visit extends Model
         'tanggal_visit',
         'ticket_id',
         'outlet_id',
+        'status',
         'description',
     ];
 

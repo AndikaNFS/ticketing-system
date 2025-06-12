@@ -17,4 +17,8 @@ class Employee extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+    public function outlets()
+    {
+        return $this->hasMany(Outlet::class);
+    }
 }

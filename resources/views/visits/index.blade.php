@@ -89,6 +89,7 @@
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
                                 <th class="px-4 py-3">Job Desk</th>
+                                <th class="px-4 py-3">Status</th>
                                 @if (auth()->user()->hasRole('admin|superadmin'))
                                 
                                     <th class="px-4 py-3">Action</th>
@@ -125,13 +126,22 @@
                                         <p class="text-gray-400">No Description</p>
                                         @endif --}}
                                     </td>
+                                    <td class="px-4 py-6">
+                                       <span class=" px-2 py-1 rounded text-white
+                                     {{ 
+                                        $visit->status == 'InProgress' ? 'bg-blue-500' : 
+                                        ($visit->status == 'Finished' ? 'bg-green-500' : 
+                                        ($visit->status == 'Reschedule' ? 'bg-yellow-500' : 'bg-red-500')) }}">
+                                     {{ $visit->status }}
+                                </span>
+                                    </td>
                                      @if (auth()->user()->hasRole('admin|superadmin'))
 
                                     <td class="px-4 py-2">
-                                        @can('edit visit')
+                                        {{-- @can('edit visit') --}}
                                             <a href="{{ route('visits.edit', $visit->id) }}" class="hover:text-blue-400">Edit</a>
                                             |
-                                        @endcan
+                                        {{-- @endcan --}}
                                         <a href="{{ route('visits.detail', $visit->id) }}" class="hover:text-blue-400">Detail</a>
                                     </td>
                                     @endif

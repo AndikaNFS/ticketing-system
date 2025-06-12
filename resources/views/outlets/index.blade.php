@@ -36,40 +36,43 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($areaits as $areait)
+                            @foreach ($outlets as $outlet)
                                 
                             <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                    {{ $areait->id }}
+                                    {{ $outlet->id }}
                                 </th>
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
-                                    {{ $areait->it_name }}
-                                    
+                                    @if (isset($outlet->employee->name))
+                                        {{ $outlet->employee->name }}
+                                    @else
+                                        <p class="text-gray-400">Belum Ada</p>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-white">
                                     {{-- @foreach ($outlets as $outlet) --}}
-                                    {{ $areait->outlet->name }}
+                                    {{ $outlet->name }}
                                         
                                     {{-- @endforeach --}}
                                 </td>
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{-- @foreach ( $areas as area ) --}}
-                                    {{ $areait->area->name }}
+                                    {{ $outlet->area }}
                                         
                                     {{-- @endforeach --}}
                                     
                                 </td>
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{-- @foreach ( $areas as area ) --}}
-                                    {{ $areait->pic }}
+                                    {{ $outlet->pic }}
                                         
                                     {{-- @endforeach --}}
                                     
                                 </td>
-                                {{-- <td>
-                                            <a href="{{ route('outlets.edit', $areait->id) }}" class="hover:text-blue-400">Edit</a>
+                                <td>
+                                            <a href="{{ route('outlets.edit', $outlet->id) }}" class="hover:text-blue-400">Edit</a>
 
-                                </td> --}}
+                                </td>
                             </tr>
                             @endforeach
 

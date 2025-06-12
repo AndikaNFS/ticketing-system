@@ -8,6 +8,10 @@ class Outlet extends Model
 {
     protected $fillable = [
         'name',
+        'area',
+        'employee_id',
+        'it_name',
+        'pic',
         'location',
     ];
 
@@ -24,4 +28,20 @@ class Outlet extends Model
     {
         return $this->hasMany(Building::class);
     }
+
+    public function outlets()
+    {
+        return $this->hasMany(Outlet::class);
+    }
+    
+    public function employees()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+    // public function daily_reports()
+    // {
+    //     return $this->hasMany(DailyReport::class);
+    // }
+
+
 }

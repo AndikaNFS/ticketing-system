@@ -11,6 +11,7 @@ class DailyReport extends Model
 
     protected $fillable = [
         'user_id',
+        // 'outlet_id',
         'date',
         'prev_work',
         'today_work',
@@ -24,4 +25,9 @@ class DailyReport extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // public function outlets()
+    // {
+    //     return $this->belongsTo(Outlet::class);
+    // }
 }

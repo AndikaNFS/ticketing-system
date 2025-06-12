@@ -85,7 +85,20 @@
             </div>
     </div>
 
-    <div class="mb-5">
+    <div>
+        <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        {{-- <input value="{{ $ticket->outlet }}" type="text" name="outlet" id="outlet" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required /> --}}
+        <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    onchange="this.form.submit()"
+                    >
+                        <option value="Finished" {{ old('status', $visits->status) == 'Finished' ? 'selected' : '' }}>Finished</option>
+                        <option value="InProgress" {{ old('status', $visits->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
+                        <option value="Reschedule" {{ old('status', $visits->status) == 'Reschedule' ? 'selected' : '' }}>Reschedule</option>
+                        <option value="Cancelled" {{ old('status', $visits->status) == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    </select>
+    </div>  
+
+    <div class="mb-5 mt-5">
         
         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
         

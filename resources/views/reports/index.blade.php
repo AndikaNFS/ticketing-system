@@ -63,6 +63,7 @@
                     <tr>
                         <th class="border px-3 py-2">No</th>
                         <th class="border px-3 py-2">Tanggal</th>
+                        {{-- <th class="border px-3 py-2">Outlet</th> --}}
                         <th class="border px-3 py-2">Pekerjaan Sebelumnya</th>
                         <th class="border px-3 py-2">Pekerjaan Hari Ini</th>
                         <th class="border px-3 py-2">Keterangan</th>
@@ -75,6 +76,13 @@
                     <tr class="{{ $report->status == 'libur' ? 'bg-red-100' : '' }}">
                         <td class="border px-3 py-2 text-center">{{ $index + 1 }}</td>
                         <td class="border px-3 py-2">{{ \Carbon\Carbon::parse($report->date)->format('d-M-Y') }}</td>
+                        {{-- <td class="border px-3 py-2">
+                            @if(isset($report->outlet->name))
+                                {{ $report->outlet->name }}
+                            @else
+                            <p class="text-gray-300">Belum ada outlet</p>
+                            @endif
+                        </td> --}}
                         <td class="border px-3 py-2 whitespace-pre-line">{{ $report->prev_work }}</td>
                         <td class="border px-3 py-2 whitespace-pre-line">{{ $report->today_work }}</td>
                         <td class="border px-3 py-2">{{ $report->notes }}</td>

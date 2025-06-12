@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Areait;
+use App\Models\Employee;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
 
@@ -14,11 +15,12 @@ class OutletController extends Controller
      */
     public function index()
     {
-        // $outlets = Outlet::all();
+        $outlets = Outlet::all();
         // $search = $request->input
-        $areaits = Areait::all();
+        // $outlets = Outlet::with(['employee']);
+        $employees = Employee::all();
 
-        return view('outlets.index', compact('areaits'));
+        return view('outlets.index', compact('outlets','employees'));
     }
 
     /**
@@ -27,10 +29,10 @@ class OutletController extends Controller
     public function create(Request $request)
     {
         $outlets = Outlet::all();
-        $areas = Area::all();
+        // $areas = Area::all();
 
 
-        return view('outlets.create', compact('outlets','areas'));
+        return view('outlets.create', compact('outlets'));
     }
 
     /**
@@ -39,18 +41,24 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'area_id'=>'required|string|max:255',
-            'it_name'=>'required|string|max:50',
+            'area'=>'required|string|max:255',
+            'it_name'=>'nullable|string|max:50',
             'pic'=>'required|string|max:50',
-            'outlet_id'=>'required|string|max:50',
+            // 'outlet_id'=>'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'employee_id' => 'nullable|string|max:50',
             
         ]);
 
         Areait::create([
-            'area_id' => $request->area_id,
+            'area' => $request->area,
             'it_name' => $request->it_name,
             'pic' => $request->pic,
-            'outlet_id' => $request->outlet_id,
+            'area' => $request->area,
+            'location' => $request->location,
+            'employee_id' => $request->employee_id,
+            // 'outlet_id' => $request->outlet_id,
         ]);
 
         return redirect()->route('outlets.index')->with('success', 'Data berhasil di simpan');
@@ -69,11 +77,11 @@ class OutletController extends Controller
      */
     public function edit($id)
     {
-        $areaits = Areait::findOrFail($id);
-        $outlets = Outlet::all();
+        // $areaits = Areait::findOrFail($id);
+        $outlets = Outlet::findOrFail($id);
         $areas = Area::all();
 
-        return view('outlets.edit', compact('areaits', 'outlets', 'areas'));
+        return view('outlets.edit', compact( 'outlets', 'areas'));
         
     }
 
@@ -84,9 +92,11 @@ class OutletController extends Controller
     {
         $request->validate([
             'name'=>'required|string|max:255',
-            'it_name'=>'required|string|max:50',
+            'it_name'=>'nullable|string|max:50',
             'pic'=>'required|string|max:50',
-            'outlet_id'=>'required|string|max:50',
+            'area' => 'required|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'employee_id'=>'nullable|string|max:50',
             
         ]);
 
@@ -95,7 +105,9 @@ class OutletController extends Controller
             'name' => $request->name,
             'it_name' => $request->it_name,
             'pic' => $request->pic,
-            'outlet_id' => $request->outlet_id,
+            'area' => $request->area,
+            'location' => $request->location,
+            'employee_id' => $request->outlet_id,
 
         ]);
 
