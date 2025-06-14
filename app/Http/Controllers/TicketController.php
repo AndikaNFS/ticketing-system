@@ -94,7 +94,7 @@ class TicketController extends Controller
         $request->validate([
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet' => 'required|string|max:255',
+            'outlet_id' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'it_name' => 'nullable|string|max:255',
             'date_finish' => 'nullable|string|max:255',
@@ -115,7 +115,7 @@ class TicketController extends Controller
         $ticket = Ticket::create([
             'ticketing' => $ticketNumber,
             'problem' => $request->problem,
-            'outlet' => $request->outlet,
+            'outlet_id' => $request->outlet_id,
             'status' => $request->status,
             'user' => $request->user,
             'it_name' => null,
@@ -195,7 +195,7 @@ class TicketController extends Controller
         $request->validate([
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet' => 'required|string|max:255',
+            'outlet' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
             'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
@@ -241,7 +241,7 @@ class TicketController extends Controller
         $ticket->update([
             'ticketing' => $request->ticketing,
             'problem' => $request->problem,
-            'outlet' => $request->outlet,
+            'outlet_id' => $request->outlet_id,
             'status' => $request->status,
             'it_name' => $request->it_name,
             'date_finish' => $dateFinish,

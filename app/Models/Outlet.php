@@ -29,12 +29,12 @@ class Outlet extends Model
         return $this->hasMany(Building::class);
     }
 
-    public function outlets()
-    {
-        return $this->hasMany(Outlet::class);
-    }
+    // public function outlets()
+    // {
+    //     return $this->hasMany(Outlet::class);
+    // }
     
-    public function employees()
+    public function employee()
     {
         return $this->belongsTo(Employee::class);
     }

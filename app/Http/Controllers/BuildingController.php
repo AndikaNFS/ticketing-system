@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BuildingExport;
 use App\Models\Building;
 use App\Http\Controllers\Controller;
 use App\Models\ImageBuilding;
 use App\Models\Outlet;
 use App\Models\Pic;
 use App\Models\Vendor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -351,16 +353,16 @@ class BuildingController extends Controller
         return back()->with('success', 'Gambar berhasil di hapus');
     }
 
-    //  public function exportExcel()
-    // {
-    //     return Excel::download(new BuildingExport, 'tickets.xlsx');
-    // }
+     public function exportExcel()
+    {
+        return Excel::download(new BuildingExport, 'buildings.xlsx');
+    }
 
-    // public function exportPDF()
-    // {
-    //     $tickets = Building::all();
-    //     $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
+    public function exportPDF()
+    {
+        $buildings = Building::all();
+        $pdf = Pdf::loadView('building.export-pdf', compact('buildings'));
         
-    //     return $pdf->download('RR-Ticketing.pdf');
-    // }
+        return $pdf->download('RR-Building.pdf');
+    }
 }

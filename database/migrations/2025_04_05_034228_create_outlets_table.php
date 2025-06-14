@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('area')->nullable();
-            $table->string('employee_id')->nullable();
+            $table->foreignId('employee_id')->nullable()->constrained()->nullOnDelete();
             $table->string('pic')->nullable();
             $table->string('location')->nullable();
             $table->timestamps();

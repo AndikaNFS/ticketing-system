@@ -23,17 +23,16 @@
         @method('PUT')
         <div class="relative z-0 w-full mb-5 group">
             <div>
-                <label for="it_name" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">IT Name</label>
-               <select id="it_name" name="it_name" 
+                <label for="employee_id" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">IT Name</label>
+               <select id="employee_id" name="employee_id" 
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                         >
                  
-                        <option value="All" {{  old('it_name', $outlets->it_name == 'All' ? 'selected' : '') }}>All</option>
-                        <option value="Andika" {{  old('it_name', $outlets->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
-                        <option value="Usman" {{  old('it_name', $outlets->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
-                        <option value="Asep" {{  old('it_name', $outlets->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
-                        <option value="Santo" {{  old('it_name', $outlets->it_name) == 'Santo' ? 'selected' : '' }}>Santo</option>
-                        <option value="Kodam" {{  old('it_name', $outlets->it_name) == 'Kodam' ? 'selected' : '' }}>Kodam</option>
+                        {{-- <option value="All" {{  old('employee_id', $employee->id == 'All' ? 'selected' : '') }}>All</option> --}}
+                        @foreach ($employees as $employee )
+                            <option value="{{ $employee->id }}" {{ $outlets->employee_id == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                            
+                        @endforeach
                     </select>
                {{-- <select id="pic" name="pic" 
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
@@ -41,22 +40,14 @@
                  
                         <option class="text-black" value="Santo" >Santo</option>
                     </select> --}}
-                    <input type="hidden" name="pic" id="pic" value="{{ "Santo" }}">
+
+                    {{-- @php
+                        $defaultEmployee = \App\Models\Employee::find(1);
+                    @endphp --}}
+                    <input type="hidden" name="pic" id="pic" value= "{{ old('pic', 'Santo') }}">
             </div>
         </div>
         <div class="relative z-0 w-full mb-5 group mt-10">
-            {{-- <label for="outlet_id" class="peer-focus:font-medium absolute text-xl  text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label>
-            @error('outlet_id')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-            <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                 <option disabled {{ old('outlet_id') ? '' : 'selected' }}>Pilih Lokasi</option>
-                @foreach ($outlets as $outlet)
-                    <option class="text-black" value="{{ $outlets->name }}"
-                        {{ old('name') == $outlets->id ? 'selected' : '' }}>
-                        {{ $outlets->name }}
-        </option>
-            </select> --}}
             <div class="relative z-0 w-full mb-5 group mt-10">
                   {{-- <input type="hidden" value=" " name="it_name" id="it_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> --}}
                   <label for="name" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama Outlet</label>
@@ -70,24 +61,28 @@
                  <div class="relative z-0 w-full mb-5 group mt-10">
                   {{-- <input type="hidden" value=" " name="it_name" id="it_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> --}}
                   <label for="area" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Area</label>
-                  <input type="text" area="area" id="area" value="{{ old('area', $outlets->area)  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                  <input type="text" name="area" id="area" value="{{ old('area', $outlets->area)  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                   {{-- <label for="it_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label> --}}
               </div>
-                    {{-- <div class="r'elative z-0 w-full mb-5 group mt-10">
-                        <label for="area_id" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Area</label>
-                        <select name="area" id="area" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                            <option value="" class="text-black"> Pilih Area </option>
-                            @foreach ($areas as $area)
-                                <option
-                                    class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500" 
-                                    value="{{ old('area' ) }}">{{ old('area', $outlets->area ) }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>' --}}
                 </div>
         </div>
         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
     </form>
+    
+    
 </x-app-layout>
+    {{-- <script>
+    const employeeSelect = document.getElementById('employee_id');
+    const picInput = document.getElementById('pic');
+
+    function setPicFromSelectedOption() {
+        const selectedOption = employeeSelect.options[employeeSelect.selectedIndex];
+        picInput.value = selectedOption.text;
+    }
+
+    employeeSelect.addEventListener('change', setPicFromSelectedOption);
+
+    // 🛠 Set default saat pertama kali halaman dibuka
+    window.addEventListener('DOMContentLoaded', setPicFromSelectedOption);
+</script> --}}
 

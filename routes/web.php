@@ -132,6 +132,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/building/pics/{id}/edit', [BuildingController::class, 'editPic'])->name('building.pics.edit');
         Route::put('/building/pics/{id}/update', [BuildingController::class, 'updatePic'])->name('building.pics.update');
         Route::post('/building/pics/store', [BuildingController::class, 'storePic'])->name('building.pics.store');
+
+        Route::get('/building/export-excel', [BuildingController::class, 'exportExcel'])->name('building.export.excel');
+        Route::get('/building/export-pdf', [BuildingController::class, 'exportPDF'])->name('building.export.pdf');
+
     });
     
     Route::resource('reports', DailyReportController::class);

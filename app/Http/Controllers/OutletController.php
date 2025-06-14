@@ -28,11 +28,12 @@ class OutletController extends Controller
      */
     public function create(Request $request)
     {
-        $outlets = Outlet::all();
+        // $outlets = Outlet::all();
+        $employees = Employee::all();
         // $areas = Area::all();
 
 
-        return view('outlets.create', compact('outlets'));
+        return view('outlets.create', compact( 'employees'));
     }
 
     /**
@@ -42,7 +43,7 @@ class OutletController extends Controller
     {
         $request->validate([
             'area'=>'required|string|max:255',
-            'it_name'=>'nullable|string|max:50',
+            // 'it_name'=>'nullable|string|max:50',
             'pic'=>'required|string|max:50',
             // 'outlet_id'=>'required|string|max:50',
             'name' => 'required|string|max:255',
@@ -51,9 +52,9 @@ class OutletController extends Controller
             
         ]);
 
-        Areait::create([
+        Outlet::create([
             'area' => $request->area,
-            'it_name' => $request->it_name,
+            'name' => $request->name,
             'pic' => $request->pic,
             'area' => $request->area,
             'location' => $request->location,
@@ -79,20 +80,21 @@ class OutletController extends Controller
     {
         // $areaits = Areait::findOrFail($id);
         $outlets = Outlet::findOrFail($id);
-        $areas = Area::all();
+        // $areas = Area::all();
+        $employees = Employee::all();
 
-        return view('outlets.edit', compact( 'outlets', 'areas'));
+        return view('outlets.edit', compact( 'outlets', 'employees'));
         
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Area $area, $id)
+    public function update(Request $request, Outlet $outlet, $id)
     {
         $request->validate([
             'name'=>'required|string|max:255',
-            'it_name'=>'nullable|string|max:50',
+            // 'it_name'=>'nullable|string|max:50',
             'pic'=>'required|string|max:50',
             'area' => 'required|string|max:255',
             'location' => 'nullable|string|max:255',
@@ -100,14 +102,14 @@ class OutletController extends Controller
             
         ]);
 
-        $area = Areait::findOrFail($id);
-        $area->update([
+        $outlet = Outlet::findOrFail($id);
+        $outlet->update([
             'name' => $request->name,
-            'it_name' => $request->it_name,
+            // 'it_name' => $request->it_name,
             'pic' => $request->pic,
             'area' => $request->area,
             'location' => $request->location,
-            'employee_id' => $request->outlet_id,
+            'employee_id' => $request->employee_id,
 
         ]);
 
