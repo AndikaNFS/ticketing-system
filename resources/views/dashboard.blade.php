@@ -197,7 +197,7 @@
                                 
                             </td>
                             <td class="px-6 py-4">
-                                {{ $ticket->outlet }}
+                                    {{ $ticket->outlet->name }}
                                 
                             </td>
                             

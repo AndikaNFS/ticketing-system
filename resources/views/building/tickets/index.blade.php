@@ -110,10 +110,10 @@
                                 Ticketing ID
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Outlet
+                                Problem
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Problem
+                                Outlet
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Status

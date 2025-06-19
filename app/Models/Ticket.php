@@ -28,7 +28,7 @@ class Ticket extends Model
     {
         return $this->hasMany(Image::class);
     }
-    public function outlets()
+    public function outlet()
     {
         return $this->belongsTo(Outlet::class);
     }

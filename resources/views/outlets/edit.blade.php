@@ -18,7 +18,7 @@
 
     </div>
 
-    <form action="{{ route('outlets.update', $outlets->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
+    <form action="{{ isset($outlets) ? route('outlets.update', $outlets->id) : route('outlets.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
         @csrf
         @method('PUT')
         <div class="relative z-0 w-full mb-5 group">

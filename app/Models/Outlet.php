@@ -29,10 +29,10 @@ class Outlet extends Model
         return $this->hasMany(Building::class);
     }
 
-    // public function outlets()
-    // {
-    //     return $this->hasMany(Outlet::class);
-    // }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
     
     public function employee()
     {

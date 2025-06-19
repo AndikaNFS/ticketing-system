@@ -113,7 +113,7 @@ class OutletController extends Controller
 
         ]);
 
-        return redirect()->route('outlets.index')->with('success', 'Data berhasil di simpan');
+        return redirect()->route('outlets.index')->with('success', 'Data berhasil di simpan!');
     }
 
     /**

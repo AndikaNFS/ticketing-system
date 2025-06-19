@@ -22,7 +22,7 @@
             
             <div class="flex flex-col">
                 <label for="outlet" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->outlet }}</p>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->outlet->name }}</p>
             </div>
         
             <div class="flex flex-col">

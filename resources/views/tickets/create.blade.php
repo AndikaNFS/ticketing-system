@@ -36,14 +36,14 @@
                 </div>
                 <div class="relative z-0 w-full mb-5 group mt-10">
                     {{-- <input type="text" name="outlet" id="outlet" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> --}}
-                    <label for="outlet" class="peer-focus:font-medium absolute text-xl  text-gray-800 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label>
-                    @error('outlet')
+                    <label for="outlet_id" class="peer-focus:font-medium absolute text-xl  text-gray-800 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label>
+                    @error('outlet_id')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    <select id="outlet" name="outlet" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                    <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                         <option selected >Pilih Lokasi</option>
                         @foreach ($outlets as $outlet)
-                            <option value="{{ $outlet->name }}">{{ $outlet->name }}</option>
+                            <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
                         @endforeach
                         {{-- <option value="US">United States</option>
                         <option value="CA">Canada</option>
