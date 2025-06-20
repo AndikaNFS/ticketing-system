@@ -40,10 +40,10 @@
                     @error('outlet_id')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                    <select id="outlet" name="outlet" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                         <option selected >Pilih Lokasi</option>
                         @foreach ($outlets as $outlet)
-                            <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+                            <option value="{{ $outlet->name }}">{{ $outlet->name }}</option>
                         @endforeach
                         {{-- <option value="US">United States</option>
                         <option value="CA">Canada</option>

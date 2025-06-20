@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ticketing');
             $table->string('problem');
-            $table->foreignId('outlet_id')->constrained()->onDelete('cascade');
+            $table->string('outlet');
             $table->enum('status', ['Open', 'InProgress', 'Done', 'Cancel'])->default('Open');
             $table->string('it_name')->nullable();
             $table->dateTime('date_finish')->nullable();
