@@ -28,7 +28,7 @@ class TicketController extends Controller
         $status = $request->query('status'); //Ambil filter status dari query string
         $tickets = Ticket::filterStatus($status);
         $search = $request->input('search');
-        $outlets = Outlet::all();
+        // $outlets = Outlet::all();
 
         // $tickets = Ticket::All();
         $tickets = Ticket::when($status, function ($query) use ($status) {
@@ -73,7 +73,7 @@ class TicketController extends Controller
         //     ->orderBy('created_at', 'desc')
         //     ->paginate(10);
         // dd($request->start_date, $request->end_date);
-        return view('dashboard', compact('tickets', 'status','search', 'outlets' ));
+        return view('dashboard', compact('tickets', 'status','search' ));
     }
 
     /**
@@ -95,7 +95,7 @@ class TicketController extends Controller
         $request->validate([
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            // 'problem' => 'required|string|max:255',
+            // 'outlet' => 'nullable|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'it_name' => 'nullable|string|max:255',

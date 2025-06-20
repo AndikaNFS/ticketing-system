@@ -203,7 +203,7 @@
                                 @else
                                     <p>No Outlet</p>
                                 @endif
-                                
+                                {{-- {{ $ticket->outlet->name ?? '-'}} --}}
                             </td>
                             
                             <td class="px-6 py-4">
