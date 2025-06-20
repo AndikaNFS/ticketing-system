@@ -197,7 +197,12 @@
                                 
                             </td>
                             <td class="px-6 py-4">
-                                    {{ $ticket->outlet->name }}
+                                @if (isset( $ticket->outlet->name))
+                                {{ $ticket->outlet->name }}
+                                    
+                                @else
+                                    <p>No Outlet</p>
+                                @endif
                                 
                             </td>
                             
