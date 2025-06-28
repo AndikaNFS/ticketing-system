@@ -240,7 +240,7 @@ class BuildingController extends Controller
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
-            'vendor_id' => 'required|exists:vendors,id',
+            'vendor_id' => 'nullable|exists:vendors,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
             'pic_id' => $request->pic_id == 'Done' ? 'required|exists:pics,id' : 'required|exists:pics,id',
             'finish_date' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
