@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/building/index', [BuildingController::class, 'index'])->name('building.tickets.index');
     });
     
-    Route::middleware(['role:admin|superadmin|admin|building'])->group(function () {
+    Route::middleware(['role:admin|superadmin|admin|building|maintenance|maintenance1'])->group(function () {
     
         Route::get('/building/create', [BuildingController::class, 'create'])->name('building.tickets.create');
         Route::post('/building/store', [BuildingController::class, 'store'])->name('building.tickets.store');
