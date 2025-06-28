@@ -43,15 +43,16 @@
             @error('outlet_id')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
-            <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+            <select id="outlet_id" name="outlet_id" 
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                 <option disabled selected >Pilih Lokasi</option>
                 @if ($specialOutlet)
-                    <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                    <option value="{{ $specialOutlet->id}}" class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500">{{ $specialOutlet->name }}</option>
                 @endif
 
                 @foreach ($outlets as $outlet)
                     @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
-                        <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+                        <option value="{{ $outlet->id }}" class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500">{{ $outlet->name }}</option>
                     @endif
                 @endforeach
             </select>

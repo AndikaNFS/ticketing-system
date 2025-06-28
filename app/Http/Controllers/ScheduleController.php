@@ -67,7 +67,9 @@ class ScheduleController extends Controller
         // Ambil pegawai dengan jadwal antara awal hingga akhir bulan
         $employees = Employee::with(['schedules' => function ($query) use ($startOfMonth, $endOfMonth) {
             $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
-        }])->get();
+        }])
+        ->where('name', '!=', 'All')
+        ->get();
 
 
         // Isi tanggal per minggu

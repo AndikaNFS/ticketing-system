@@ -30,10 +30,12 @@ class OutletController extends Controller
     {
         // $outlets = Outlet::all();
         $employees = Employee::all();
+        $specialEmployee = Employee::find(5);
+
         // $areas = Area::all();
 
 
-        return view('outlets.create', compact( 'employees'));
+        return view('outlets.create', compact( 'employees', 'specialEmployee'));
     }
 
     /**
@@ -82,8 +84,9 @@ class OutletController extends Controller
         $outlets = Outlet::findOrFail($id);
         // $areas = Area::all();
         $employees = Employee::all();
+        $specialEmployee = Employee::find(5);
 
-        return view('outlets.edit', compact( 'outlets', 'employees'));
+        return view('outlets.edit', compact( 'outlets', 'employees','specialEmployee'));
         
     }
 

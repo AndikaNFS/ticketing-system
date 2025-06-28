@@ -39,7 +39,7 @@ class VisitController extends Controller
      */
     public function create(Request $request)
     {
-        $tickets = Ticket::all();
+        $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $outlets = Outlet::all();
         $specialOutlet = Outlet::find(22);
         return view('visits.create', compact('tickets', 'outlets', 'specialOutlet'));
@@ -103,7 +103,7 @@ class VisitController extends Controller
     {
         $visits = Visit::findOrFail($id);
         $outlets = Outlet::all();
-        $tickets = Ticket::all();
+        $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $specialOutlet = Outlet::find(22);
 
 

@@ -29,8 +29,14 @@
                         >
                  
                         {{-- <option value="All" {{  old('employee_id', $employee->id == 'All' ? 'selected' : '') }}>All</option> --}}
+                        @if ($specialEmployee)
+                            <option value="{{ $specialEmployee->id }}">{{ $specialEmployee->name }}</option>
+                        @endif
                         @foreach ($employees as $employee )
-                            <option value="{{ $employee->id }}" {{ $outlets->employee_id == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                            @if (!$specialEmployee || $employee->id != $specialEmployee->id)
+                                
+                            <option value="{{ $employee->id }}" {{ $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                            @endif
                             
                         @endforeach
                     </select>

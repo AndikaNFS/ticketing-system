@@ -39,7 +39,7 @@ class VisitBuildingController extends Controller
      */
     public function create()
     {
-        $tickets = Building::all();
+        $tickets = Building::orderBy('created_at', 'desc')->get();
         $outlets = Outlet::all();
         $specialOutlet = Outlet::find(22);
         $employees = Employeebuild::all();
@@ -90,8 +90,8 @@ class VisitBuildingController extends Controller
     public function edit(VisitBuilding $visitBuilding, $id)
     {
         $visits = VisitBuilding::findOrFail($id);
+        $tickets = Building::orderBy('created_at', 'desc')->get();
         $outlets = Outlet::all();
-        $tickets = Building::all();
         $employees = Employeebuild::all();
         $specialOutlet = Outlet::find(22);
 
