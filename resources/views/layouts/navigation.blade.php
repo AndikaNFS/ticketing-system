@@ -175,10 +175,13 @@
                 </x-responsive-nav-link>
             @endif
             
-            @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
+            @if(auth()->user()->hasRole('superadmin|admin|hrd|maintenance|maintenance1'))
 
                 <x-responsive-nav-link :href="route('schedulebuilds.index')" :active="request()->routeIs('schedulebuilds.index')">
                     {{ __('Schedule') }}
+            @endif
+            @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
+
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('building.visits.index')" :active="request()->routeIs('building.visits.index')">
                     {{ __('Visit') }}
