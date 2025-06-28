@@ -70,7 +70,7 @@
 
                 </div>
                 <div class="flex place-content-end">
-                    @if (auth()->user()->hasRole('admin|superadmin|building'))
+                    @if (auth()->user()->hasRole('admin|superadmin|building|maintenance|maintenance1'))
                     
                     <div class="relative z-20 mr-5">
                     
@@ -212,7 +212,7 @@
                                     {{-- @can('detail ticket') --}}
                                     {{-- @can('edit ticket') --}}
                                     <a href="{{ route('building.tickets.detail', $building->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                                    @if (auth()->user()->hasRole('admin|superadmin|building'))
+                                    @if (auth()->user()->hasRole('admin|superadmin|building|maintenance|maintenance1'))
                                     {{-- @endcan --}}
                                     <a href="{{ route('building.tickets.edit', $building->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                     

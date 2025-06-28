@@ -19,6 +19,10 @@ class Outlet extends Model
     {
         return $this->hasMany(Visit::class);
     }
+    public function visitbuildings()
+    {
+        return $this->hasMany(VisitBuilding::class);
+    }
     public function areaits()
     {
         return $this->hasMany(Areait::class);

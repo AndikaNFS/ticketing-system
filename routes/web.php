@@ -9,11 +9,13 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ScheduleBuildingController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\VisitBuildingController;
 use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +27,7 @@ Route::get('/register', function () {
 });
 Route::get('/welcome', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -80,10 +82,24 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:admin|superadmin'])->group(function () {
         Route::get('/schedules/{id}/edit/{start_date?}', [ScheduleController::class, 'edit'])->name('schedules.edit.weekly');
         Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
-        // Route::get('/schedules/export/pdf', [ScheduleController::class, 'exportPDF'])->name('schedules.export.pdf');
-        // Route::get('/schedules/export-excel', [ScheduleController::class, 'exportExcel'])->name('schedules.export.excel');
-        
     });
+
+    Route::get('/building/schedules/exports/pdf', [ScheduleBuildingController::class, 'exportPdf'])->name('building.schedules.exports.pdf');
+    Route::get('/building/schedules/exports/excel', [ScheduleBuildingController::class, 'exportExcel'])->name('building.schedules.exports.excel');
+    Route::middleware(['role:admin|superadmin|maintenance'])->group(function () {
+        Route::get('/building/schedules/{id}/edit/{start_date?}', [ScheduleBuildingController::class, 'edit'])->name('building.schedules.edit.weekly');
+        Route::post('/building/schedules/{id}/store', [ScheduleBuildingController::class, 'store'])->name('building.schedules.store');
+
+        Route::get('/building/visits/index', [VisitBuildingController::class, 'index'])->name('building.visits.index');
+        Route::get('/building/visits/create', [VisitBuildingController::class, 'create'])->name('building.visits.create');
+        Route::post('/building/visits/store', [VisitBuildingController::class, 'store'])->name('building.visits.store');
+        Route::get('/building/visits/{id}/edit', [VisitBuildingController::class, 'edit'])->name('building.visits.edit');
+        Route::put('/building/visits/{id}', [VisitBuildingController::class, 'update'])->name('building.visits.update');
+        Route::get('/building/visits/{id}/detail', [VisitBuildingController::class, 'show'])->name('building.visits.detail');
+    });
+    Route::resource('schedulebuilds', ScheduleBuildingController::class);
+    
+    
     Route::resource('schedules', ScheduleController::class);
     Route::middleware(['role:superadmin'])->group(function () {
         Route::get('/roles/{role}/permissions', [RolePermissionController::class, 'edit'])->name('roles.permissions');
@@ -108,7 +124,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/outlets/store', [OutletController::class, 'store'])->name('outlets.store');
     Route::put('/outlets/{id}/update', [OutletController::class, 'update'])->name('outlets.update');
     
-    Route::middleware(['role:admin|superadmin|building'])->group(function () {
+    Route::middleware(['role:admin|superadmin|building|maintenance|maintenance1'])->group(function () {
         Route::get('/building/index', [BuildingController::class, 'index'])->name('building.tickets.index');
     });
     

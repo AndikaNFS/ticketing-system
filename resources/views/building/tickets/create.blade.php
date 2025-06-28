@@ -32,12 +32,16 @@
                 @error('outlet')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
-                <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option selected>Pilih Lokasi</option>
-                   @foreach ($outlets as $outlet)
-                    <option value="{{ $outlet->id }}">
-                    {{ $outlet->name }}
-                    </option>
+                <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                    <option disabled selected >Pilih Lokasi</option>
+                    @if ($specialOutlet)
+                        <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                    @endif
+
+                    @foreach ($outlets as $outlet)
+                        @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                            <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -61,7 +65,7 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
                 <select id="vendor_id" name="vendor_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option selected>Pilih Vendor</option>
+                    <option selected value="">Pilih Vendor</option>
                     @foreach ($vendors as $vendor)
                         <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
                     @endforeach

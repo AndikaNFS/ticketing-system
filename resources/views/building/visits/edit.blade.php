@@ -6,7 +6,7 @@
         </div>
     @endif
     <div class=" mt-5">
-    <a href="{{ route('visits.index') }}" class="text-black py-1 px-5 text-lg m-10 rounded bg-gray-400">Back</a>
+    <a href="{{ route('building.visits.index') }}" class="text-black py-1 px-5 text-lg m-10 rounded bg-gray-400">Back</a>
 
     </div>
 
@@ -18,21 +18,21 @@
 
     </div>
 
-    <form action="{{ route('visits.update', $visits->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
+    <form action="{{ route('building.visits.update', $visits->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
         @csrf
         @method('PUT')
         <div class="relative z-0 w-full mb-5 group">
             {{-- <input type="text" name="problem" id="problem" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
             <label for="problem" class="peer-focus:font-medium absolute text-sm  text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Problem</label> --}}
             <div>
-                <label for="pic" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">IT Name</label>
+                <label for="employeebuild" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">IT Name</label>
                 {{-- <input type="text" name="pic" id="pic" value="{{ old('pic') }}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300"> --}}
-                <select id="pic" name="pic" 
+                <select id="employeebuild" name="employeebuild" 
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                         >
                  
-                        @foreach (['Andika', 'Usman', 'Asep', 'Santo', 'Kodam'] as $pic)
-                           <option value="{{ $pic }}" {{ $visits->pic === $pic ? 'selected' : '' }}>{{ $pic }}</option>
+                         @foreach (['Bambang', 'Irfan', 'Sandi', 'Handoko', 'Reza'] as $employeebuild)
+                           <option value="{{ $employeebuild }}" {{ $visits->employeebuild === $employeebuild ? 'selected' : '' }}>{{ $employeebuild }}</option>
                         @endforeach
                     </select>
             </div>
@@ -63,7 +63,7 @@
             </select>
         </div>
         {{-- <div class="relative z-0 w-full mb-5 group mt-10">
-            <label for="description" class="peer-focus:font-medium absolute text-xl  text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Job Desk</label>
+            <label for="jobdesk" class="peer-focus:font-medium absolute text-xl  text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Job Desk</label>
            
             <input id="description" name="description" value="{{ $visit->description }}" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" placeholder="Job Desk..." required />
                 
@@ -76,12 +76,12 @@
             {{-- <input type="" value="Open" name="status" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> --}}
             {{-- <label for="it_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label> --}}
             <label for="ticket_id" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Ticket</label>
-            <select name="ticket_id" id="ticket_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+            <select name="building_id" id="building_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                 <option value="" class="text-black dark:text-gray-700"> Tidak ada ticket </option>
             @foreach ($tickets as $ticket)
                 <option
                     class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500" 
-                    value="{{ $ticket->id }}" {{ $visits->ticket_id == $ticket->id ? 'selected' : '' }}>
+                    value="{{ $ticket->id }}" {{ $visits->building_id == $ticket->id ? 'selected' : '' }}>
                     {{ $ticket->ticketing }} - {{ $ticket->problem }}
                 </option>
             @endforeach
@@ -112,13 +112,13 @@
 
     <div class="mb-5 mt-5">
         
-        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+        <label for="jobdesk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jobdesk</label>
         
         <input 
         type="text"
-        value="{{ old('description', $visits->description ?? '') }}"
-        id="description" 
-        name="description" 
+        value="{{ old('jobdesk', $visits->jobdesk ?? '') }}"
+        id="jobdesk" 
+        name="jobdesk" 
         rows="4" 
         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
         

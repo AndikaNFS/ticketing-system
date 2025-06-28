@@ -24,12 +24,13 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('dashboard');
             } elseif ($user->hasRole('hrd')) {
                 return redirect()->route('schedules.index');
-            } elseif ($user->hasRole(['building','building-user'])) {
+            } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
                 return redirect()->route('building.tickets.index');
             } elseif ($user->hasRole(['user'])) {
                 return redirect()->route('welcome');
             } else {
-                abort(403, 'Unauthorized.');
+                return redirect()->route('welcome');
+
             }
         //     return match ($user->hasRole) {
         //     'superadmin|admin' => redirect()->route('dashboard'),
@@ -56,12 +57,14 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('dashboard');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');
-        } elseif ($user->hasRole(['building','building-user'])) {
+        } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
             return redirect()->route('building.tickets.index');
         } elseif ($user->hasRole('user')) {
             return redirect()->route('welcome');
         } else {
-        abort(403, 'Unauthorized role');
+        // abort(403, 'Unauthorized role');
+                return redirect()->route('welcome');
+
         }
 
         return redirect()->intended(route('welcome', absolute: false));

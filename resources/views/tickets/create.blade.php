@@ -41,14 +41,16 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                     <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                        <option selected >Pilih Lokasi</option>
+                        <option disabled selected >Pilih Lokasi</option>
+                        @if ($specialOutlet)
+                            <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                        @endif
+
                         @foreach ($outlets as $outlet)
-                            <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+                            @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+                            @endif
                         @endforeach
-                        {{-- <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option> --}}
                     </select>
                 </div>
                 <div class="grid md:grid-cols-2 md:gap-6">

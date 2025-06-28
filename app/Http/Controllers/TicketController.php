@@ -81,10 +81,11 @@ class TicketController extends Controller
      */
     public function create(Request $request)
     {
+        $specialOutlet = Outlet::find(22);
         $outlets = Outlet::all();
         $user = Auth::user(); // ambil dari user login
         // dd($request->all());
-        return view('tickets.create', compact('outlets', 'user'));
+        return view('tickets.create', compact('outlets','specialOutlet', 'user'));
     }
 
     /**

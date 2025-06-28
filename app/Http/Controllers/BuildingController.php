@@ -66,8 +66,9 @@ class BuildingController extends Controller
         $pics = Pic::all();
         $vendors = Vendor::all();
         $user = Auth::user();
+        $specialOutlet = Outlet::find(22);
 
-        return view('building.tickets.create', compact('outlets', 'pics', 'vendors', 'user'));
+        return view('building.tickets.create', compact('outlets', 'specialOutlet', 'pics', 'vendors', 'user'));
     }
 
     public function createVendor()
@@ -92,7 +93,7 @@ class BuildingController extends Controller
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
-            'vendor_id' => 'required|exists:vendors,id',
+            'vendor_id' => 'nullable|exists:vendors,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'pic_id' => 'required|exists:pics,id',
             'finish_date' => 'nullable|string|max:255',
@@ -204,13 +205,14 @@ class BuildingController extends Controller
         $outlets = Outlet::all();
         $pics = Pic::all();
         $vendors = Vendor::all();
+        $specialOutlet = Outlet::find(22);
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
             session(['edit_step_'.$id => 1]); // Set edit pertama
         }
 
-        return view('building.tickets.edit', compact('building', 'outlets', 'pics', 'vendors'));
+        return view('building.tickets.edit', compact('building', 'outlets', 'pics', 'vendors','specialOutlet'));
 
     }
     

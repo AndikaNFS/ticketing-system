@@ -52,10 +52,19 @@
             </select>
         </div>
         <div>
-            <label for="problem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
-            <input value="{{ $building->outlet->name }}" type="text" disabled name="" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
-            <input value="{{ $building->outlet->id }}" type="hidden" name="outlet_id" id="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required />
-            
+            <label for="outlet_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
+            <select id="outlet_id" name="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option disabled selected >Pilih Lokasi</option>
+                    @if ($specialOutlet)
+                        <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                    @endif
+
+                    @foreach ($outlets as $outlet)
+                        @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                            <option value="{{ $outlet->id }}" {{ $building->outlet_id == $outlet->id ? 'selected' : ''}}>{{ $outlet->name }}</option>
+                        @endif
+                    @endforeach
+                </select>
         </div>
         <div>
             <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
@@ -71,7 +80,7 @@
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC</label>
             <select id="pic_id" name="pic_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option selected >Pilih Lokasi</option>
+                <option selected >Pilih PIC</option>
                 @foreach ($pics as $pic)
                     <option value="{{ $pic->id}}"  {{ $building->pic_id == $pic->id ? 'selected' : ''}}>{{ $pic->name }}</option>
                 @endforeach

@@ -41,7 +41,8 @@ class VisitController extends Controller
     {
         $tickets = Ticket::all();
         $outlets = Outlet::all();
-        return view('visits.create', compact('tickets', 'outlets'));
+        $specialOutlet = Outlet::find(22);
+        return view('visits.create', compact('tickets', 'outlets', 'specialOutlet'));
     }
 
 
@@ -103,8 +104,10 @@ class VisitController extends Controller
         $visits = Visit::findOrFail($id);
         $outlets = Outlet::all();
         $tickets = Ticket::all();
+        $specialOutlet = Outlet::find(22);
 
-        return view('visits.edit', compact('visits', 'outlets', 'tickets'));
+
+        return view('visits.edit', compact('visits', 'outlets', 'tickets', 'specialOutlet'));
     }
 
     /**
