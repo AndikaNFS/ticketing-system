@@ -114,11 +114,13 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        @endif
+
+                        @if(auth()->user()->hasRole('superadmin|admin'))
                         <x-dropdown-link :href="route('reports.index')">
                             {{ __('Report') }}
                         </x-dropdown-link>
                         @endif
-
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
