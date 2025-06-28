@@ -110,7 +110,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        @if(auth()->user()->hasRole('superadmin|admin'))
+                        @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
