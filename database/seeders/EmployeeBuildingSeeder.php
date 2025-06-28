@@ -16,10 +16,10 @@ class EmployeeBuildingSeeder extends Seeder
         //
         DB::table('employeebuilds')->insert([
             ['name' => 'Bambang', 'position' => 'Leader Maintenance'],
-            ['name' => 'Irfan', 'position' => 'Maintenance'],
-            ['name' => 'Sandi', 'position' => 'Maintenance'],
-            ['name' => 'Handoko', 'position' => 'Maintenance'],
-            ['name' => 'Reza', 'position' => 'Maintenance'],
+            ['name' => 'Irfan', 'position' => 'Staff Maintenance'],
+            ['name' => 'Sandi', 'position' => 'Staff Maintenance'],
+            ['name' => 'Handoko', 'position' => 'Staff Maintenance'],
+            ['name' => 'Reza', 'position' => 'Staff Maintenance'],
         ]);
     }
 }
