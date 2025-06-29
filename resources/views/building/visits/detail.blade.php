@@ -85,6 +85,18 @@
         </p>
 
     </div>
+    <div class="mb-5">
+        
+        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        <p id="status" name="status" rows="4" class="block p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            @if (!@empty($detail->status))
+                        {{ $detail->status }}
+                    @else
+                        <span class="text-gray-400 italic">Belum ada deskripsi</span>
+                    @endif
+        </p>
+
+    </div>
     
     {{-- <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
 
