@@ -44,8 +44,8 @@
             </div>
         
             <div class="flex flex-col">
-                <label for="it_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->pic }}</p>
+                <label for="it_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC</label>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->employeebuild }}</p>
             </div>
         
             {{-- <div class="flex flex-col">
