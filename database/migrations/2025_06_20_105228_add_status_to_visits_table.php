@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('visits', function (Blueprint $table) {
             //
-            $table->enum('status', ['Cancelled','Finished', 'Reschedule', 'InProgress'])
-                ->default('InProgress')
+            $table->enum('status', ['Cancelled','Finished', 'Reschedule', 'InProgress','Open'])
+                ->default('Open')
                 ->after('tanggal_visit');
         });
     }

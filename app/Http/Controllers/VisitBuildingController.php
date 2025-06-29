@@ -57,7 +57,7 @@ class VisitBuildingController extends Controller
             'outlet_id' => 'required|string|max:255',
             'building_id' => 'nullable|string|max:255',
             'jobdesk' => 'nullable|string|max:255',
-            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
             // 'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -110,7 +110,7 @@ class VisitBuildingController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'building_id' => 'nullable|exists:buildings,id',
             'jobdesk' => 'nullable|string|max:255',
-            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
             // 'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);

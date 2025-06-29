@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('tanggal_visit');
             $table->foreignId('outlet_id')->constrained()->onDelete('cascade');
             $table->foreignId('building_id')->nullable()->constrained()->onDelete('cascade');
-            $table->enum('status', ['Cancelled','Finished', 'Reschedule', 'InProgress'])->default('InProgress');
+            $table->enum('status', ['Cancelled','Finished', 'Reschedule', 'InProgress','Open'])->default('Open');
             $table->string('jobdesk')->nullable();
             $table->timestamps();
         });

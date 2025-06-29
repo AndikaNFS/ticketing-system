@@ -39,7 +39,7 @@
                             <tr class="text-black dark:text-gray-200">
                                 {{-- <th class="px-4 py-3">#</th> --}}
                                 <th class="px-4 py-3 ">PIC</th>
-                                <th class="px-4 py-3">Tanggal Visit</th>
+                                <th class="px-4 py-3">Visit Date</th>
                                 <th class="px-4 py-3">Outlet</th>
                                 <th class="px-4 py-3">Ticket</th>
                                 <th class="px-4 py-3">Job Desk</th>
@@ -83,9 +83,10 @@
                                     <td class="px-4 py-6">
                                        <span class=" px-2 py-1 rounded text-white
                                      {{ 
-                                        $visit->status == 'InProgress' ? 'bg-blue-500' : 
+                                        $visit->status == 'Open' ? 'bg-blue-500' : 
                                         ($visit->status == 'Finished' ? 'bg-green-500' : 
-                                        ($visit->status == 'Reschedule' ? 'bg-yellow-500' : 'bg-red-500')) }}">
+                                        ($visit->status == 'Reschedule' ? 'bg-orange-500' : 
+                                        ($visit->status == 'InProgress' ? 'bg-yellow-500' : 'bg-red-500'))) }}">
                                      {{ $visit->status }}
                                 </span>
                                     </td>

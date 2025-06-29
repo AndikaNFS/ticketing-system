@@ -32,7 +32,10 @@
                         >
                  
                         @foreach (['Andika', 'Usman', 'Asep', 'Santo', 'Kodam'] as $pic)
-                           <option value="{{ $pic }}" {{ $visits->pic === $pic ? 'selected' : '' }}>{{ $pic }}</option>
+                           <option 
+                           class="text-gray-800"
+                           value="{{ $pic }}" {{ $visits->pic === $pic ? 'selected' : '' }} {{ $pic === 'Usman' ? 'disabled' : '' }}
+                           >{{ $pic }}</option>
                         @endforeach
                     </select>
             </div>
@@ -52,12 +55,12 @@
             <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                 <option disabled selected >Pilih Lokasi</option>
                 @if ($specialOutlet)
-                    <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                    <option class="text-gray-700" value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
                 @endif
 
                 @foreach ($outlets as $outlet)
                     @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
-                        <option value="{{ $outlet->id }}" {{ $visits->outlet_id == $outlet->id ? 'selected' : ''}}>{{ $outlet->name }}</option>
+                        <option class="text-gray-700" value="{{ $outlet->id }}" {{ $visits->outlet_id == $outlet->id ? 'selected' : ''}}>{{ $outlet->name }}</option>
                     @endif
                 @endforeach
             </select>
@@ -90,7 +93,7 @@
           <div class="relative z-0 w-full mb-5 group">
               <div class="relative z-0 w-full mb-5 group mt-10">
                   {{-- <input type="hidden" value=" " name="it_name" id="it_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> --}}
-                  <label for="tanggal_visit" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Tanggal Visit</label>
+                  <label for="tanggal_visit" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Visit Date</label>
                   <input type="datetime-local" name="tanggal_visit" id="tanggal_visit" value="{{ \Carbon\Carbon::parse($visits->tanggal_visit)->format('Y-m-d\TH:i')  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                   {{-- <label for="it_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label> --}}
               </div>
@@ -103,6 +106,7 @@
         <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onchange="this.form.submit()"
                     >
+                        <option value="Open" {{ old('status', $visits->status) == 'Open' ? 'selected' : '' }}>Open</option>
                         <option value="Finished" {{ old('status', $visits->status) == 'Finished' ? 'selected' : '' }}>Finished</option>
                         <option value="InProgress" {{ old('status', $visits->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
                         <option value="Reschedule" {{ old('status', $visits->status) == 'Reschedule' ? 'selected' : '' }}>Reschedule</option>
@@ -120,7 +124,7 @@
         id="description" 
         name="description" 
         rows="4" 
-        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
+        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
         
     </input>
 

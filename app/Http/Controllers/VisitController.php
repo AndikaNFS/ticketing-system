@@ -57,7 +57,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
-            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
             // 'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -121,7 +121,7 @@ class VisitController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
-            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress',
+            'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
             // 'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);
