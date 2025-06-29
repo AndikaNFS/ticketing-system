@@ -36,7 +36,13 @@
             </div>
             <div class="flex flex-col">
                 <label for="it_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vendor</label>
-                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">{{ $detail->vendor->name }}</p>
+                <p class="tracking-tight text-gray-500 md:text-lg dark:text-gray-400">
+                    @if (!empty($detail->vendor->name))
+                            {{ $detail->vendor->name }}
+                        @else
+                            <span class="text-gray-400 italic">Belum ada data</span>
+                        @endif
+                </p>
             </div>
         
             <div class="flex flex-col">
