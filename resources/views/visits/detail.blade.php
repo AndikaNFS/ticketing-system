@@ -85,11 +85,23 @@
         </p>
 
     </div>
-    
-    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+    <div class="mb-5">
+        
+        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        <p id="status" name="status" rows="4" class="block p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            @if (!@empty($detail->status))
+                        {{ $detail->status }}
+                    @else
+                        <span class="text-gray-400 italic">Belum ada deskripsi</span>
+                    @endif
+        </p>
 
-    <div x-data="{ open: false, media: '', isVideo: false }">
-        <div class="grid grid-cols-3 gap-4">
+    </div>
+    
+    {{-- <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+
+    <div x-data="{ open: false, media: '', isVideo: false }"> --}}
+        {{-- <div class="grid grid-cols-3 gap-4">
             @foreach ($detail->images as $media)
                 <div class="relative cursor-pointer mb-8"
                      @click="open = true;
@@ -106,10 +118,10 @@
                     @endif
                 </div>
             @endforeach
-        </div>
+        </div> --}}
     
         {{-- Modal --}}
-        <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+        {{-- <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
             <div class="relative">
                 <template x-if="isVideo">
                     <video controls autoplay class="max-h-[90vh] rounded shadow-lg">
@@ -125,8 +137,8 @@
                     Close
                 </button>
             </div>
-        </div>
-    </div>
+        </div> --}}
+    {{-- </div> --}}
 </div>
 
     
