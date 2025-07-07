@@ -45,17 +45,17 @@ class TicketController extends Controller
         ->paginate(10)
         ->withQueryString();
 
-        // $from = Carbon::createFromDate(null, null, 1)->startDay();
-        // $to = Carbon::createFromDate(null, null, 30)->endDay();
+        $from = Carbon::createFromDate(null, null, 1)->startDay();
+        $to = Carbon::createFromDate(null, null, 30)->endDay();
 
-        // $visits = Ticket::whereBetween('created_at', [$from, $to])->get();
+        $visits = Ticket::whereBetween('created_at', [$from, $to])->get();
         $query = Ticket::query();   
 
         if ($request->start_date && $request->end_date) {
             try{
 
-                $start = Carbon::parse($request->start_date)->startOfDay();
-                $end = Carbon::parse($request->end_date)->endOfDay();
+                $start = Carbon::parse('Y-m-d', request('start_date'))->startOfDay();
+                $end = Carbon::parse('Y-m-d', request('end_date'))->endOfDay();
                 
                 $query->whereBetween('created_at', [$start, $end]);
             } catch (\Exception $e) {

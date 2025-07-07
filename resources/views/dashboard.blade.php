@@ -69,23 +69,6 @@
                         </div>
                     </form>
 
-                    {{-- <form method="GET" action="{{ url()->current() }}" class="flex gap-4 mb-6">
-                        <div>
-                            <label for="start_date">Dari Tanggal:</label>
-                            <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
-                                class="border border-gray-300 rounded px-2 py-1">
-                        </div>
-
-                        <div>
-                            <label for="end_date">Sampai Tanggal:</label>
-                            <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
-                                class="border border-gray-300 rounded px-2 py-1">
-                        </div>
-
-                        <div class="flex items-end">
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded">Filter</button>
-                        </div>
-                    </form> --}}
 
 
                 </div>
