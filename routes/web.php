@@ -91,13 +91,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/building/schedules/{id}/store', [ScheduleBuildingController::class, 'store'])->name('building.schedules.store');
 
     });
+    Route::middleware(['role:admin|superadmin|direksi|maintenance|maintenance1'])->group(function () {
+        Route::get('/building/visits/index', [VisitBuildingController::class, 'index'])->name('building.visits.index');
+    });
+
     Route::middleware(['role:admin|superadmin|maintenance|maintenance1'])->group(function () {
         Route::get('/building/visits/create', [VisitBuildingController::class, 'create'])->name('building.visits.create');
         Route::post('/building/visits/store', [VisitBuildingController::class, 'store'])->name('building.visits.store');
         Route::get('/building/visits/{id}/edit', [VisitBuildingController::class, 'edit'])->name('building.visits.edit');
         Route::put('/building/visits/{id}', [VisitBuildingController::class, 'update'])->name('building.visits.update');
         Route::get('/building/visits/{id}/detail', [VisitBuildingController::class, 'show'])->name('building.visits.detail');
-        Route::get('/building/visits/index', [VisitBuildingController::class, 'index'])->name('building.visits.index');
     });
     Route::resource('schedulebuilds', ScheduleBuildingController::class);
     
@@ -126,7 +129,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/outlets/store', [OutletController::class, 'store'])->name('outlets.store');
     Route::put('/outlets/{id}/update', [OutletController::class, 'update'])->name('outlets.update');
     
-    Route::middleware(['role:admin|superadmin|building|maintenance|maintenance1'])->group(function () {
+    Route::middleware(['role:admin|superadmin|building|direksi|maintenance|maintenance1'])->group(function () {
         Route::get('/building/index', [BuildingController::class, 'index'])->name('building.tickets.index');
     });
     

@@ -31,7 +31,13 @@
                         {{ __('Schedule IT') }}
                     </x-nav-link>
                     @endif
-                    @if(auth()->user()->hasRole('superadmin|admin|building|maintenance|maintenance1'))
+                    @if(auth()->user()->hasRole('superadmin|hrd'))
+
+                    <x-nav-link :href="route('schedulebuilds.index')" :active="request()->routeIs('schedulebuilds.index')">
+                        {{ __('Schedule Maintenance') }}
+                    </x-nav-link>
+                    @endif
+                    @if(auth()->user()->hasRole('superadmin|admin|building|direksi|maintenance|maintenance1'))
 
                     
                     <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-gray-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center " type="button">Building <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -47,7 +53,7 @@
                         </li>
                         
                         </ul>
-                    @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
+                    @if(auth()->user()->hasRole('superadmin|admin|direksi|maintenance|maintenance1'))
                         <div class="py-2">
                             <ul>
                                 <li>
@@ -165,12 +171,13 @@
                 </x-responsive-nav-link>
             @endif
              @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
+             
 
                 <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
                     {{ __('Schedule IT') }}
                 </x-responsive-nav-link>
             @endif
-             @if(auth()->user()->hasRole('superadmin|admin|building|maintenance|maintenance1'))
+             @if(auth()->user()->hasRole('superadmin|admin|direksi|building|maintenance|maintenance1'))
 
                 <x-responsive-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                     {{ __('Building') }}

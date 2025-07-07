@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h2>Jadwal IT Support - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h2>
+    <h2>Jadwal Maintenance - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h2>
 
     @foreach ($schedules as $week)
         <h4>Minggu ke-{{ $loop->iteration }} ({{ $week['start'] }} - {{ $week['end'] }})</h4>
