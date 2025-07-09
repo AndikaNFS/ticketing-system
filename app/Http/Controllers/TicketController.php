@@ -24,57 +24,58 @@ class TicketController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $status = $request->query('status'); //Ambil filter status dari query string
-        $tickets = Ticket::filterStatus($status);
-        $search = $request->input('search');
-        // $outlets = Outlet::all();
+{
+    $status = $request->query('status');
+    $search = $request->input('search');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
 
-        // $tickets = Ticket::All();
-        $tickets = Ticket::when($status, function ($query) use ($status) {
-            return $query->where('status', $status);
-        })
-        ->when($search, function ($query) use ($search) {
-            return $query->where(function ($q) use ($search) {
-                $q->where('ticketing', 'like', "%{$search}%")
-                  ->orWhere('it_name', 'like', "%{$search}%")
-                  ->orWhere('problem', 'like', "%{$search}%");
-            });
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+    $tickets = Ticket::query();
 
-        $from = Carbon::createFromDate(null, null, 1)->startDay();
-        $to = Carbon::createFromDate(null, null, 30)->endDay();
-
-        $visits = Ticket::whereBetween('created_at', [$from, $to])->get();
-        $query = Ticket::query();   
-
-        if ($request->start_date && $request->end_date) {
-            try{
-
-                $start = Carbon::parse('Y-m-d', request('start_date'))->startOfDay();
-                $end = Carbon::parse('Y-m-d', request('end_date'))->endOfDay();
-                
-                $query->whereBetween('created_at', [$start, $end]);
-            } catch (\Exception $e) {
-            dd("Format tanggal tidak valid:", $e->getMessage());
-            }
-        }
-
-        // $tickets = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        // $tickets = Ticket::where('ticketing', 'like', "%{$search}%")
-        //     ->orWhere('problem', 'like', "%{$search}%")
-        //     ->orWhereHas('outlet', function ($query) use ($search) {
-        //         $query->where('it_name', 'like', "%{$search}%");
-        //     })
-        //     ->orderBy('created_at', 'desc')
-        //     ->paginate(10);
-        // dd($request->start_date, $request->end_date);
-        return view('dashboard', compact('tickets', 'status','search' ));
+    // Filter status
+    if ($status) {
+        $tickets->where('status', $status);
     }
+
+    // Filter pencarian
+    if ($search) {
+        $tickets->where(function ($q) use ($search) {
+            $q->where('ticketing', 'like', "%{$search}%")
+              ->orWhere('it_name', 'like', "%{$search}%")
+              ->orWhere('problem', 'like', "%{$search}%");
+        });
+    }
+
+    // Filter tanggal
+    // if ($startDate && $endDate) {
+    //     try {
+    //         $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+    //         $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+
+    //         $tickets->whereBetween('created_at', [$start, $end]);
+    //     } catch (\Exception $e) {
+    //         return back()->with('error', 'Format tanggal tidak valid');
+    //     }
+    // }
+    if ($startDate && $endDate) {
+        try {
+            $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+            $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+            // $start = Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
+            // $end = Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+
+
+            $tickets->whereBetween('created_at', [$start, $end]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Format tanggal tidak valid');
+        }
+    }
+
+    $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+
+    return view('dashboard', compact('tickets', 'status', 'search', 'startDate', 'endDate'));
+}
+
 
     /**
      * Show the form for creating a new resource.

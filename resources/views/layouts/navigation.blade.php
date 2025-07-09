@@ -178,6 +178,8 @@
                 </x-responsive-nav-link>
             @endif
              @if(auth()->user()->hasRole('superadmin|admin|direksi|building|maintenance|maintenance1'))
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+
 
                 <x-responsive-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
                     {{ __('Building') }}
@@ -196,6 +198,7 @@
                     {{ __('Visit') }}
                 </x-responsive-nav-link>
             @endif
+            </div>
             @if(auth()->user()->hasRole('superadmin'))
             <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
 
