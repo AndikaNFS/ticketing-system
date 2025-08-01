@@ -28,6 +28,9 @@ Route::get('/register', function () {
 Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome');
+Route::get('/svg', function () {
+    return view('components.svg');
+})->name('components.svg');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -159,6 +162,7 @@ Route::middleware('auth')->group(function () {
 
     });
     
+    Route::get('/reports/{id}/edit', [DailyReportController::class, 'edit'])->name('reports.edit');
     Route::resource('reports', DailyReportController::class);
     Route::get('/reports/export/exportexcel', [DailyReportController::class, 'exportExcel'])->name('reports.export.export_excel');
 });
@@ -172,6 +176,7 @@ Route::prefix('admin')->middleware('role:superadmin')->group(function () {
 Route::prefix('building')->middleware('role:superadmin')->group(function () {
     // Route::resource('tickets', BuildingController::class);
 });
+
 
 // // Hanya user dengan role 'admin'
 // Route::middleware(['role:admin'])->group(function () {

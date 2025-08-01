@@ -12,7 +12,7 @@
     @endhasanyrole --}}
 
 
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- <div class="flex justify-between place-items-center bg-gray-700 border border-gray-600 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <div class="flex pr-2">
@@ -94,7 +94,7 @@
                 </form>
 
                 {{-- Filter Date --}}
-                <form method="GET" action="{{ url()->current() }}" class="w-full sm:w-auto bg-gray-500 p-3 rounded flex flex-col sm:flex-row gap-2 sm:items-end" autocomplete="off">
+                {{-- <form method="GET" action="{{ url()->current() }}" class="w-full sm:w-auto bg-gray-500 p-3 rounded flex flex-col sm:flex-row gap-2 sm:items-end" autocomplete="off">
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <input 
                             id="start_date" 
@@ -113,7 +113,7 @@
                         >
                     </div>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto">Filter</button>
-                </form>
+                </form> --}}
 
                 {{-- Search --}}
                 <form class="w-full sm:w-auto flex items-center gap-2" method="GET" action="{{ route('dashboard') }}">
@@ -143,7 +143,8 @@
                     @if (auth()->user()->hasRole('admin|superadmin'))
                 <div class="relative z-20">
                     
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Export <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Export 
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                     </button>

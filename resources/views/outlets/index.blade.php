@@ -1,7 +1,8 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
+            <h1 class="text-gray-800 dark:text-gray-100 text-3xl m-5 max-w-md mx-auto text-center">Area Outlet</h1>
             <div class="flex place-content-end">
                     @if (auth()->user()->hasRole('admin|superadmin'))
                     
@@ -13,10 +14,12 @@
                     @endif
     
                 </div>
+
+
             <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
                 
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase sticky top-0 z-10 dark:text-gray-400">
                             <tr class="bg-gray-100 dark:bg-gray-800">
                                 <th scope="col" class="px-6 py-3 ">
                                     No
@@ -32,6 +35,9 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     PIC
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    
                                 </th>
                             </tr>
                         </thead>

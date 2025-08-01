@@ -1,4 +1,6 @@
 <x-app-layout>
+    {{-- <pre>{{ dd($dailyReport) }}</pre> --}}
+
  
 <div class="max-w-3xl mx-auto mt-10">
     <h1 class="text-2xl font-bold mb-6">Edit Laporan Pekerjaan Harian</h1>
@@ -13,7 +15,13 @@
         </div>
     @endif
 
-    <form action="{{ route('reports.update', $dailyReport->id) }}" method="POST" class="space-y-4">
+
+    {{-- DEBUG --}}
+{{-- <div>ID: {{ $dailyReport->id }}</div> --}}
+
+    {{-- <form action="{{ route('reports.update', $dailyReport) }}" method="POST" class="space-y-4"> --}}
+    <form action="{{ route('reports.update', ['report' => $dailyReport->id]) }}" method="POST">
+
         @csrf
         @method('PUT')
 

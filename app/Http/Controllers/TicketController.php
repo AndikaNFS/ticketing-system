@@ -61,8 +61,10 @@ class TicketController extends Controller
         try {
             $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
             $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
-            // $start = Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
-            // $end = Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+            // $start = Carbon::createFromFormat('mm/dd/yyyy', $request->start_date)->startOfDay()->format('Y-m-d');
+            // $end = Carbon::createFromFormat('mm/dd/yyyy', $request->end_date)->endOfDay()->format('Y-m-d');
+
+            // dd($request->start_date);
 
 
             $tickets->whereBetween('created_at', [$start, $end]);

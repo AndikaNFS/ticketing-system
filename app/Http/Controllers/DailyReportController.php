@@ -94,10 +94,11 @@ class DailyReportController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DailyReport $dailyReport)
+    public function edit($id)
     {
-        dd(auth()->id(), $dailyReport->user_id, auth()->user());
-        $this->authorize('update', $dailyReport);
+        // dd(auth()->id(), $dailyReport->user_id, auth()->user());
+        // $this->authorize('update', $dailyReport);
+        $dailyReport = DailyReport::findOrFail($id);
 
         return view('reports.edit', compact('dailyReport'));
     }

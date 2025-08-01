@@ -19,7 +19,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-300 dark:bg-gray-900">
-            @include('layouts.navigation')
+            @include('components.navbar')
+            @include('components.sidebar')
+            
+            {{-- @include('layouts.navigation') --}}
 
             <!-- Page Heading -->
             @isset($header)
@@ -32,8 +35,13 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="p-4 sm:ml-64">
+                    <div class="p-4 dark:border-gray-700 mt-14">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
+            {{-- @include('components.footer') --}}
         </div>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     </body>

@@ -21,6 +21,10 @@ class DailyReport extends Model
 
     protected $dates = ['date'];
 
+    protected $casts = [
+        'date' => 'date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

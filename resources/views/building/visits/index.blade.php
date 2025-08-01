@@ -8,7 +8,7 @@
     </x-slot> --}}
     
 
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 @if (auth()->user()->hasRole('admin|superadmin|building|maintenance|maintenance1'))
 
