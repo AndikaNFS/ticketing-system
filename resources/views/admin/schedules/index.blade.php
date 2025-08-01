@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="bg-white rounded-xl">
-<div class="container mx-auto px-4 pt-8">
+<div class="container mx-auto px-4 pt-8 py-2">
     <h1 class="text-2xl font-bold mb-4">Jadwal IT Support - Bulan {{ \Carbon\Carbon::parse($bulan)->translatedFormat('F Y') }}</h1>
     <div class="grip col-span-2 gap-4">
         <form method="GET" class="mb-6 flex items-center gap-4">
