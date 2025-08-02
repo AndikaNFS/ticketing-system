@@ -142,7 +142,7 @@
             </button>
 
             <ul id="dropdown-mt" class="py-2 space-y-2 {{ $isMaintenanceActive ? '' : 'hidden' }}">
-                  @if(auth()->user()->hasRole('superadmin|admin|building|direksi|maintenance|maintenance1'))
+                     @if(auth()->user()->hasRole('superadmin|admin|building|direksi|maintenance|maintenance1'))
 
                      <li>
                         <a href="{{ route('building.tickets.index') }}"
@@ -151,6 +151,9 @@
                            Ticketing
                         </a>
                      </li>
+                     @endif
+
+                     @if(auth()->user()->hasRole('superadmin|admin|direksi|maintenance|maintenance1'))
                      <li>
                         <a href="{{ route('building.visits.index') }}"
                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
@@ -158,9 +161,9 @@
                            Visit Schedule
                         </a>
                      </li>
-               @endif
+                     @endif
 
-               @if(auth()->user()->hasRole('superadmin|admin|building|hrd|direksi|maintenance|maintenance1'))
+                     @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi|maintenance|maintenance1'))
                      <li>
                         <a href="{{ route('schedulebuilds.index') }}"
                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
@@ -168,7 +171,7 @@
                            Schedule
                         </a>
                      </li>
-               @endif
+                     @endif
             </ul>
          </li>
 
