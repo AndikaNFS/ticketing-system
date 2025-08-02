@@ -35,8 +35,8 @@
 
             <!-- Page Content -->
             <main>
-                <div class="p-4 sm:ml-64">
-                    <div class="p-4 dark:border-gray-700 mt-14">
+                <div class="pt-6 sm:ml-64">
+                    <div class="pt-2 max-w-7xl mx-auto sm:px-6 lg:px-8 mt-14">
                         {{ $slot }}
                     </div>
                 </div>

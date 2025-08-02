@@ -36,9 +36,12 @@
                                 <th scope="col" class="px-6 py-3">
                                     PIC
                                 </th>
+                                @if (auth()->user()->hasRole('admin|superadmin'))
+
                                 <th scope="col" class="px-6 py-3">
                                     
                                 </th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -75,10 +78,13 @@
                                     {{-- @endforeach --}}
                                     
                                 </td>
+                                @if (auth()->user()->hasRole('admin|superadmin'))
+
                                 <td>
                                             <a href="{{ route('outlets.edit', $outlet->id) }}" class="hover:text-blue-400">Edit</a>
 
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
 
