@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="container mx-auto px-4 py-6 mt-10">
+    <div class="container mx-auto px-4 py-6">
         <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">User List</h1>
         <div class="grid justify-end mb-10">
             <a href="{{ url('/register') }}">
@@ -8,46 +8,49 @@
 
         </div>
         {{-- <a href="{{ route('roles.create') }}">Add Role</a>     --}}
-        <div class="overflow-auto flex justify-center">
-            <table class="min-w-auto bg-white border border-gray-200 rounded-lg overflow-hidden">
-                <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold text-gray-600">
-                        <tr class="text-black dark:text-gray-200 text-center">
-                            <th class="px-4 py-3 ">Name</th>
-                            <th class="px-4 py-3 w-28 ">Email</th>
-                            <th class="px-4 py-3 w-28 ">Role</th>
-                            
-                            <th class="px-4 py-3">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        @foreach($users as $user)
-                            <tr class="bg-white border-b dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            
-                                <td scope="" class="px-4 py-2 ">{{ $user->name }}</td>
-                                <td scope="" class="px-4 py-2 ">{{ $user->email }}</td>
-                                <td scope="" class="px-4 py-2 ">
-                                    @if($user->roles->isEmpty())
-                                        <em>Tidak ada role</em>
-                                    @else
-                                        {{ $user->roles->pluck('name')->join(', ') }}
-                                    @endif
-                                </td>
-                                <td scope="" class="px-4 py-2 ">
-                                    {{-- <a href="{{ route('users.edit', $user->id) }}" class="hover:text-blue-500">Edit</a> --}}
-                                    
-                                    <a href="{{ route('users.roles', $user->id) }}" class="hover:text-blue-500">Set Roles</a>
-                                    
-                                    {{-- <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Hapus user ini?')" class="hover:text-blue-500">Hapus</button>
-                                    </form> --}}
-
-                                </td>
-
+        <div class="flex justify-center">
+            <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10 bg-red-500 max-w-min" style="max-height:30em;">
+                <table class="min-w-auto bg-white border border-gray-200 rounded-lg overflow">
+                    <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold uppercase sticky top-0 z-10 text-gray-600">
+                            <tr class="text-black dark:text-gray-200 text-center">
+                                <th class="px-4 py-3 ">Name</th>
+                                <th class="px-4 py-3 w-28 ">Email</th>
+                                <th class="px-4 py-3 w-28 ">Role</th>
+                                
+                                <th class="px-4 py-3">Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="text-sm text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            @foreach($users as $user)
+                                <tr class="bg-white border-b dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                
+                                    <td scope="" class="px-4 py-2 ">{{ $user->name }}</td>
+                                    <td scope="" class="px-4 py-2 ">{{ $user->email }}</td>
+                                    <td scope="" class="px-4 py-2 ">
+                                        @if($user->roles->isEmpty())
+                                            <em>Tidak ada role</em>
+                                        @else
+                                            {{ $user->roles->pluck('name')->join(', ') }}
+                                        @endif
+                                    </td>
+                                    <td scope="" class="px-4 py-2 ">
+                                        {{-- <a href="{{ route('users.edit', $user->id) }}" class="hover:text-blue-500">Edit</a> --}}
+                                        
+                                        <a href="{{ route('users.roles', $user->id) }}" class="hover:text-blue-500">Set Roles</a>
+                                        
+                                        {{-- <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Hapus user ini?')" class="hover:text-blue-500">Hapus</button>
+                                        </form> --}}
+    
+                                    </td>
+    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+            </div>
+
         </div>
     </div>
     {{-- <ul>

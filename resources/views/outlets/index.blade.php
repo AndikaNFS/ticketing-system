@@ -24,24 +24,27 @@
                                 <th scope="col" class="px-6 py-3 ">
                                     No
                                 </th>
+                                @if (auth()->user()->hasRole('admin|superadmin'))
                                 <th scope="col" class="px-6 py-3">
                                     IT Name
                                 </th>
+                                @endif
                                 <th scope="col" class="px-6 py-3 ">
                                     Outlet
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Area
                                 </th>
+
+                                @if (auth()->user()->hasRole('admin|superadmin'))
                                 <th scope="col" class="px-6 py-3">
                                     PIC
                                 </th>
-                                @if (auth()->user()->hasRole('admin|superadmin'))
-
                                 <th scope="col" class="px-6 py-3">
                                     
                                 </th>
                                 @endif
+
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +54,8 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                     {{ $outlet->id }}
                                 </th>
+
+                                @if (auth()->user()->hasRole('admin|superadmin'))
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     @if (isset($outlet->employee->name))
                                         {{ $outlet->employee->name }}
@@ -58,6 +63,8 @@
                                         <p class="text-gray-400">Belum Ada</p>
                                     @endif
                                 </td>
+                                @endif
+
                                 <td class="px-6 py-4 text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-white">
                                     {{-- @foreach ($outlets as $outlet) --}}
                                     {{ $outlet->name }}
@@ -71,6 +78,8 @@
                                     {{-- @endforeach --}}
                                     
                                 </td>
+
+                                @if (auth()->user()->hasRole('admin|superadmin'))
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{-- @foreach ( $areas as area ) --}}
                                     {{ $outlet->pic }}
@@ -78,10 +87,8 @@
                                     {{-- @endforeach --}}
                                     
                                 </td>
-                                @if (auth()->user()->hasRole('admin|superadmin'))
-
                                 <td>
-                                            <a href="{{ route('outlets.edit', $outlet->id) }}" class="hover:text-blue-400">Edit</a>
+                                    <a href="{{ route('outlets.edit', $outlet->id) }}" class="hover:text-blue-400">Edit</a>
 
                                 </td>
                                 @endif
