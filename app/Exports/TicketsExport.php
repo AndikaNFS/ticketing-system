@@ -21,15 +21,15 @@ class TicketsExport implements FromCollection, WithHeadings, WithMapping
     // {
     //     return ['Ticketing', 'Problem', 'Outlet', 'Status', 'IT Name', 'Date Start', 'Date Finish', 'Work Duration', 'Description' ,'Tanggal'];
     // }
-    protected $data;
-    public function __construct($data) { $this->data = $data; }
+    protected $tickets;
+    public function __construct($tickets) { $this->tickets = $tickets; }
 
     public function collection()
     {
         // return Building::all();
         // return Building::select('ticketing', 'problem', 'outlet_id','vendor_id','pic_id', 'status', 'start_date', 'date_finish','work_duration', 'description', 'created_at')->get();
         // return Ticket::with(['outlet'])->get();
-        { return $this->data; }
+        { return $this->tickets; }
         
 
     }

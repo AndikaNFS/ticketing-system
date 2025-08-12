@@ -423,17 +423,48 @@ public function index(Request $request)
 
     public function exportExcel(Request $request)
     {
-        $data = $this->queryWithFilter($request);
-        return Excel::download(new TicketsExport, 'Ticketing-IT.xlsx');
+        $tickets = Ticket::query();
+
+        if ($request->filled('status')) {
+            $tickets->where('status', $request->status);
+        }
+        if ($request->filled('outlet_id')) {
+            $tickets->where('outlet_id', $request->outlet_id);
+        }
+        if ($request->filled('start') && $request->filled('end')) {
+            $tickets->whereBetween('created_at', [$request->start, $request->end]);
+        }
+
+        $data = $tickets->get();
+
+        return Excel::download(new TicketsExport($data), 'Ticketing-IT.xlsx');
+        // $data = $this->queryWithFilter($request);
+        // return Excel::download(new TicketsExport, 'Ticketing-IT.xlsx');
     }
 
     public function exportPDF(Request $request)
     {
+        $tickets = Ticket::query();
+
+        if ($request->filled('status')) {
+            $tickets->where('status', $request->status);
+        }
+        if ($request->filled('outlet_id')) {
+            $tickets->where('outlet_id', $request->outlet_id);
+        }
+        if ($request->filled('start') && $request->filled('end')) {
+            $tickets->whereBetween('created_at', [$request->start, $request->end]);
+        }
+
+        $data = $tickets->get();
+
+        $pdf = FacadePdf::loadView('tickets.export-pdf', compact('data'));
+        return $pdf->download('RR-tickets.pdf');
         // $tickets = Ticket::all();
-        $data = $this->queryWithFilter($request);
-        $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
+        // $data = $this->queryWithFilter($request);
+        // $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
         
-        return $pdf->download('RR-Ticketing.pdf');
+        // return $pdf->download('RR-Ticketing.pdf');
     }
 
     

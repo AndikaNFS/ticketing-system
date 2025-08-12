@@ -28,19 +28,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($tickets as $ticket)
+            @foreach($data as $data)
                 <tr>
-                    <td>{{ $ticket->id }}</td>
-                    <td>{{ $ticket->ticketing }}</td>
-                    <td>{{ $ticket->problem }}</td>
-                    <td>{{ $ticket->outlet->name ?? '-' }}</td>
-                    <td>{{ $ticket->status }}</td>
-                    <td>{{ $ticket->it_name }}</td>
-                    <td>{{ $ticket->start_date }}</td>
-                    <td>{{ $ticket->finish_date }}</td>
-                    <td>{{ $ticket->lama_pengerjaan }}</td>
-                    <td>{{ $ticket->description }}</td>
-                    <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                    <td>{{ $data->id }}</td>
+                    <td>{{ $data->ticketing }}</td>
+                    <td>{{ $data->problem }}</td>
+                    <td>{{ $data->outlet->name ?? '-' }}</td>
+                    <td>{{ $data->status }}</td>
+                    <td>{{ $data->it_name }}</td>
+                    <td>{{ $data->start_date }}</td>
+                    <td>{{ $data->finish_date }}</td>
+                    <td>{{ $data->lama_pengerjaan }}</td>
+                    <td>{{ $data->description }}</td>
+                    <td>{{ $data->created_at->format('Y-m-d') }}</td>
                 </tr>
             @endforeach
         </tbody>
