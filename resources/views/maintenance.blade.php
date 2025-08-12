@@ -1,13 +1,22 @@
-<!-- resources/views/maintenance.blade.php -->
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Maintenance Mode</title>
+    <meta charset="UTF-8">
+    <title>Website Sedang Maintenance</title>
+    <style>
+        body {
+            background: #f8fafc;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+    </style>
 </head>
 <body>
-    <div style="text-align:center; margin-top:50px;">
-        <h1>Situs Sedang Dalam Pemeliharaan</h1>
-        <p>Kami akan kembali secepatnya. Terima kasih atas pengertiannya.</p>
-    </div>
+    <h1>Mohon Maaf 🙏</h1>
+    <p>Website sedang dalam perbaikan. Silakan coba lagi nanti.</p>
 </body>
 </html>

@@ -23,12 +23,105 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+//     public function index(Request $request)
+// {
+//     $status = $request->query('status');
+//     $search = $request->input('search');
+//     $startDate = $request->input('start_date');
+//     $endDate = $request->input('end_date');
+
+//     $tickets = Ticket::query();
+
+//     // filter saat tampilan di halaman index (optional)
+//     // if($request->start_date && $request->end_date){
+//     //     $tickets->whereBetween('created_at', [$request->start_date, $request->end_date]);
+//     // }
+//     // if($request->it_name){
+//     //     $tickets->where('it_name', $request->it_name);
+//     // }
+//     // if($request->outlet_id){
+//     //     $tickets->where('outlet_id', $request->outlet_id);
+//     // }
+//     // if($request->status){
+//     //     $tickets->where('status', $request->status);
+//     // }
+
+//     // Filter by status
+//     if ($request->filled('status')) {
+//         $tickets->where('status', $request->status);
+//     }
+
+//     // Filter by outlet
+//     if ($request->filled('outlet_id')) {
+//         $tickets->where('outlet_id', $request->outlet_id);
+//     }
+
+//     // Filter by date range
+//     if ($request->filled('start') && $request->filled('end')) {
+//         $tickets->whereBetween('created_at', [
+//             $request->start,
+//             $request->end
+//         ]);
+//     }
+    
+
+    
+//     // Filter status
+//     if ($status) {
+//         $tickets->where('status', $status);
+//     }
+
+//     // Filter pencarian
+//     if ($search) {
+//         $tickets->where(function ($q) use ($search) {
+//             $q->where('ticketing', 'like', "%{$search}%")
+//               ->orWhere('it_name', 'like', "%{$search}%")
+//               ->orWhere('problem', 'like', "%{$search}%");
+//         });
+//     }
+
+//     // Filter tanggal
+//     // if ($startDate && $endDate) {
+//     //     try {
+//     //         $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+//     //         $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+
+//     //         $tickets->whereBetween('created_at', [$start, $end]);
+//     //     } catch (\Exception $e) {
+//     //         return back()->with('error', 'Format tanggal tidak valid');
+//     //     }
+//     // }
+//     if ($startDate && $endDate) {
+//         try {
+//             $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+//             $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+//             // $start = Carbon::createFromFormat('mm/dd/yyyy', $request->start_date)->startOfDay()->format('Y-m-d');
+//             // $end = Carbon::createFromFormat('mm/dd/yyyy', $request->end_date)->endOfDay()->format('Y-m-d');
+
+//             // dd($request->start_date);
+
+
+//             $tickets->whereBetween('created_at', [$start, $end]);
+//         } catch (\Exception $e) {
+//             return back()->with('error', 'Format tanggal tidak valid');
+//         }
+//     }
+
+//     $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+
+//     $outlets   = Outlet::all();
+
+//     return view('dashboard', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate'));
+// }
+
+public function index(Request $request)
 {
-    $status = $request->query('status');
-    $search = $request->input('search');
-    $startDate = $request->input('start_date');
-    $endDate = $request->input('end_date');
+    $status     = $request->query('status');
+    $search     = $request->input('search');
+    $startDate  = $request->input('start_date');
+    $endDate    = $request->input('end_date');
+    $outlet_id  = $request->input('outlet_id');
+    $it_name    = $request->input('it_name');
 
     $tickets = Ticket::query();
 
@@ -37,13 +130,31 @@ class TicketController extends Controller
         $tickets->where('status', $status);
     }
 
-    // Filter pencarian
+    // Filter outlet
+    if ($outlet_id) {
+        $tickets->where('outlet_id', $outlet_id);
+    }
+
+    // Filter IT Name
+    if ($it_name) {
+        $tickets->where('it_name', $it_name);
+    }
+
+    // Filter pencarian bebas
     if ($search) {
         $tickets->where(function ($q) use ($search) {
             $q->where('ticketing', 'like', "%{$search}%")
               ->orWhere('it_name', 'like', "%{$search}%")
               ->orWhere('problem', 'like', "%{$search}%");
         });
+    }
+
+        // Filter by date range
+    if ($request->filled('start') && $request->filled('end')) {
+        $tickets->whereBetween('created_at', [
+            $request->start,
+            $request->end
+        ]);
     }
 
     // Filter tanggal
@@ -57,26 +168,16 @@ class TicketController extends Controller
     //         return back()->with('error', 'Format tanggal tidak valid');
     //     }
     // }
-    if ($startDate && $endDate) {
-        try {
-            $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
-            $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
-            // $start = Carbon::createFromFormat('mm/dd/yyyy', $request->start_date)->startOfDay()->format('Y-m-d');
-            // $end = Carbon::createFromFormat('mm/dd/yyyy', $request->end_date)->endOfDay()->format('Y-m-d');
 
-            // dd($request->start_date);
-
-
-            $tickets->whereBetween('created_at', [$start, $end]);
-        } catch (\Exception $e) {
-            return back()->with('error', 'Format tanggal tidak valid');
-        }
-    }
-
+    // Ambil data terakhir setelah semua filter
     $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
-    return view('dashboard', compact('tickets', 'status', 'search', 'startDate', 'endDate'));
+    // Data tambahan untuk filter dropdown
+    $outlets   = Outlet::all();
+
+    return view('dashboard', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id'));
 }
+
 
 
     /**
@@ -298,14 +399,38 @@ class TicketController extends Controller
         return back()->with('success', 'Gambar berhasil di hapus');
     }
 
-    public function exportExcel()
-    {
-        return Excel::download(new TicketsExport, 'tickets.xlsx');
+    private function queryWithFilter(Request $request)
+{
+    $tickets = Ticket::query();
+
+    if($request->start_date && $request->end_date){
+        $tickets->whereBetween('created_at', [
+            $request->start_date, $request->end_date
+        ]);
+    }
+    if($request->it_name){
+        $tickets->where('it_name', $request->it_name);
+    }
+    if($request->outlet_id){
+        $tickets->where('outlet_id', $request->outlet_id);
+    }
+    if($request->status){
+        $tickets->where('status', $request->status);
     }
 
-    public function exportPDF()
+    return $tickets->get();
+}
+
+    public function exportExcel(Request $request)
     {
-        $tickets = Ticket::all();
+        $data = $this->queryWithFilter($request);
+        return Excel::download(new TicketsExport, 'Ticketing-IT.xlsx');
+    }
+
+    public function exportPDF(Request $request)
+    {
+        // $tickets = Ticket::all();
+        $data = $this->queryWithFilter($request);
         $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
         
         return $pdf->download('RR-Ticketing.pdf');

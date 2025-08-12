@@ -13,14 +13,13 @@ class MaintenanceMode
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        if (config('app.maintenance_mode')) {
-            if(auth()->check() && auth()->user()->hasRole('superadmin')) {
-                return $next($request);
-            }
+        // Jika mode maintenance aktif dan bukan route maintenance
+        if (env('APP_MAINTENANCE', false) && !$request->is('maintenance')) {
             return response()->view('maintenance');
         }
+        
         return $next($request);
     }
 }
