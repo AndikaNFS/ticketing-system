@@ -6,16 +6,28 @@
             </div>
         @endif
 
-        <div class=" mt-5">
-            <a href="{{ route('dashboard') }}" class="text-white bg-gray-500 py-1 px-5 text-lg m-10 rounded dark:bg-gray-400 dark:text-gray-700">Back</a>
+        <div class=" grid grid-cols-3 items-center">
+        <div class="relative p-3 ">
+            <a href="{{ route('dashboard') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
+                <svg class="w-6 h-6 text-gray-800 absolute inset-y-0 left-2 top-3 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
     
-            </div>
+            </a>
+
+        </div>
+
+        <h1 class="text-gray-800  dark:text-gray-100 text-xl md:text-3xl m-5 max-w-md mx-auto text-center">Edit Ticketing</h1>
+        <div class=" pe-1 px-5">
+            {{-- <span>aaa</span> --}}
+        </div>
+    </div>
 
 
 
         
 {{-- <form action="{{ route('tickets.update', $ticket->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
-<form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
+<form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-2">
     
     @csrf
     @method('PUT')
@@ -148,7 +160,7 @@
         <div class="grid grid-cols-3 gap-4 mt-4" id="imagePreview"></div>
     </div>
 
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 mb-10 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
 {{-- <form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
     {{-- @csrf --}}

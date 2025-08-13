@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Employeebuild;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -15,7 +17,10 @@ class UserController extends Controller
     {
         $users = User::with('roles')->get();
 
-        return view('admin.users.index', compact('users'));
+        $employeeit = Employee::all();
+        $employeebuild = Employeebuild::all();
+
+        return view('admin.users.index', compact('users', 'employeeit', 'employeebuild'));
     }
 
     /**

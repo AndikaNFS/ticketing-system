@@ -20,30 +20,8 @@ class ScheduleController extends Controller
     public function index(Request $request, Employee $employee)
     {
         
-
-        // Ambil input tanggal dari request
-        // $startDate = $request->input('start_date');
-
-        // if(!$startDate) {
-        //     $startDate = Carbon::now()->startOfWeek(Carbon::MONDAY)->toDateString();
-        // }
-
-        // $start = Carbon::parse($startDate)->startOfWeek(Carbon::MONDAY);
-        // $end = $start->copy()->addDays(6); // Sampai minggu
-
-        // $endDate = $request->input('end_date');
-
-
-        // $dates = collect();
-        // for ($date = $start->copy(); $date <= $end; $date->addDay()) {
-        //     $dates->push($date->copy());
-        // }
-        // dd($employee->id);
-        
         $bulan = $request->input('bulan', now()->format('Y-m'));
         
-        // $year = Carbon::parse($bulan)->year;
-        // $liburNasional = HolidayService::getIndonesianHolidays($year);
 
         $startOfMonth = Carbon::parse($bulan)->startOfMonth()->startOfWeek(Carbon::SATURDAY);
         $endOfMonth = Carbon::parse($bulan)->endOfMonth()->endOfWeek(Carbon::FRIDAY);
@@ -77,11 +55,6 @@ class ScheduleController extends Controller
             $dates = collect();
             for ($date = $week['start']->copy(); $date <= $week['end']; $date->addDay()) {
                 $dates->push($date->copy());
-                // $isLibur = in_array($date->format('Y-m-d'), $liburNasional);
-
-                // Menyisipkan informasi apakah tanggal tersebut libur nasional
-                // $date->is_libur_nasional = $isLibur;
-                // $dates->push($date->copy());
             }
             $week['dates'] = $dates;
         }

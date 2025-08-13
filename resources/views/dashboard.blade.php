@@ -117,7 +117,7 @@
                 
 
                 <!-- Modal toggle -->
-                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white w-full sm:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                 Filter Ticketing
                 </button>
 
@@ -242,8 +242,8 @@
                                         
                                     </div> --}}
                                     <span class=" border-b rounded-t dark:border-gray-600 border-gray-200"></span>
-                                    <div class="flex items-center p-4 md:p-5 mt-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                        <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                    <div class="flex items-center pt-5 mt-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                        <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                         {{-- <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button> --}}
                                     </div>
     
@@ -262,115 +262,7 @@
                 </div>
 
 
-                {{-- <h4 class="text-lg font-semibold mb-2">Filter Data Tiket</h4> --}}
-                {{-- <form method="GET" action="{{ route('dashboard') }}" class="flex flex-wrap justify-center gap-5 items-end mb-6">
-                    
-                        <select name="status" class="border p-1 rounded-lg pr-10">
-                            <option value=""> Semua Status </option>
-                            <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="InProgress" {{ request('status') == 'InProgress' ? 'selected' : '' }}>InProgress</option>
-                            <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
-                            <option value="Cancel" {{ request('status') == 'Cancel' ? 'selected' : '' }}>Cancel</option>
-                        </select>
-    
-                        <select name="outlet_id" class="border p-1  rounded-lg">
-                            <option value=""> Semua Outlet </option>
-                            @foreach($outlets as $outlet)
-                                <option value="{{ $outlet->id }}" {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
-                                    {{ $outlet->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-
-                    <div class="">
-                        <label>
-                            Tanggal Mulai:
-                            <input type="date" name="start" value="{{ request('start') }}" class="border p-1  rounded-lg">
-                        </label>
-    
-                        <label>
-                            Tanggal Selesai:
-                            <input type="date" name="end" value="{{ request('end') }}" class="border p-1  rounded-lg">
-                        </label>
-
-                    </div>
-
-                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Terapkan Filter</button>
-                </form> --}}
-                {{-- <div class="flex justify-center"> --}}
-                                {{-- <form method="GET" action="{{ route('dashboard') }}" class="flex flex-wrap gap-5 justify-center items-end mb-6 ">
-                                    <div class="flex justify-between bg-blue-400">
-                                        <div class="grid grid-cols-2 gap-6 mb-6 md:grid-cols-2">
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Status
-                                                </label>
-                                                <select name="status" class="border p-1 rounded-lg pr-10 mr-20">
-                                                    <option value=""> Semua Status </option>
-                                                    <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                                                    <option value="InProgress" {{ request('status') == 'InProgress' ? 'selected' : '' }}>InProgress</option>
-                                                    <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
-                                                    <option value="Cancel" {{ request('status') == 'Cancel' ? 'selected' : '' }}>Cancel</option>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="">
-
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Outlet
-                                                </label>
-                                                <select name="outlet_id" class="border p-1  rounded-lg">
-                                                    <option value=""> Semua Outlet </option>
-                                                    @foreach($outlets as $outlet)
-                                                        <option value="{{ $outlet->id }}" {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
-                                                            {{ $outlet->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                        
-
-                                        </div>
-    
-                                    </div>
-                                    
-                                    <div class="flex justify-between bg-red-400">
-                                        <div class="grid grid-cols-2 gap-6 mb-6 md:grid-cols-2">
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Tanggal Mulai:
-                                                </label>
-                                                <input type="date" name="start" value="{{ request('start') }}" class="border p-1  rounded-lg">
-                                                
-    
-                                            </div>
-    
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Tanggal Selesai:
-                                                </label>
-                                                <input type="date" name="end" value="{{ request('end') }}" class="border p-1  rounded-lg">
-    
-                                            </div>
-                                            <div class="flex items-center p-4 md:p-5 mt-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                                <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-     --}}
-    
-                                    {{-- <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Terapkan Filter</button> --}}
-                                    <!-- Modal footer -->
-                                    {{-- <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                        <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                                        <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
-                                    </div> --}}
-                                {{-- </form> --}}
-
-                            {{-- </div> --}}
+               
 
 
                 {{-- Search --}}
@@ -397,50 +289,8 @@
                 </form>
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex justify-between p-1">
                     @if (auth()->user()->hasRole('admin|superadmin'))
-
-                {{-- <form method="GET" action="{{ url()->current() }}" class="flex gap-3 flex-wrap mb-4">
-
-    <input type="date" name="start_date" value="{{ request('start_date') }}" class="border p-1">
-    <input type="date" name="end_date" value="{{ request('end_date') }}" class="border p-1"> --}}
-
-    {{-- <select name="it_name" class="border p-1">
-        <option value="">-- Semua PIC --</option>
-        @foreach($employees as $emp)
-            <option value="{{ $emp->name }}" {{ request('it_name') == $emp->name ? 'selected' : '' }}>{{ $emp->name }}</option>
-        @endforeach
-    </select> --}}
-
-    {{-- <select name="outlet_id" class="border p-1">
-        <option value="">-- Semua Outlet --</option>
-        @foreach($outlets as $out)
-            <option value="{{ $out->id }}" {{ request('outlet_id') == $out->id ? 'selected' : '' }}>{{ $out->name }}</option>
-        @endforeach
-    </select>
-
-    <select name="status" class="border p-1">
-        <option value="">-- Semua Status --</option>
-        <option value="open"   {{ request('status') == 'open' ? 'selected' : '' }}>Open</option>
-        <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
-    </select>
-
-    <button class="bg-blue-600 text-white px-3 py-1 rounded">Filter</button> --}}
-
-    {{-- Tombol export --}}
-    {{-- <div class="relative">
-        <button type="button" class="bg-green-600 text-white px-3 py-1 rounded" onclick="toggleExport()">Export ▼</button>
-        <div id="exportMenu" class="hidden absolute bg-white shadow rounded mt-1 z-10">
-            <a href="{{ route('ticket.export.excel', request()->query()) }}"
-               class="block px-4 py-2 hover:bg-gray-200">Export Excel</a>
-            <a href="{{ route('ticket.export.pdf', request()->query()) }}"
-               class="block px-4 py-2 hover:bg-gray-200">Export PDF</a>
-        </div>
-    </div>
-</form> --}}
-
-
-
 
                 <div class="relative z-20">
                     
@@ -454,7 +304,8 @@
                     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                         <li>
-                            <a href="{{ route('ticket.export.excel', request()->query()) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
+                            <a href="{{ route('ticket.export.excel', request()->query()) }}" 
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
                         </li>
                         <li>
                             <a href="{{ route('ticket.export.pdf', request()->query()) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">PDF</a>

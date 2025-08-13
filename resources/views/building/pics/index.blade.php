@@ -1,25 +1,44 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            <div class=" flex justify-between">
+                <div class="relative p-3 ">
+                    <a href="{{ route('building.tickets.index') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
+                        <svg class="w-6 h-6 text-gray-800 absolute inset-y-0 left-2 top-3 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                        </svg>
             
-            <div class="flex place-content-end">
+                    </a>
+                    
+
+                </div>
                     @if (auth()->user()->hasRole('admin|superadmin|building'))
+
+                        <a href="{{ route('building.pics.create') }}" class="p-3">
+                            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add PIC</button>   
+                        </a>
+                    @endif
+            </div>
+            
+            {{-- <div class="flex place-content-end">
                     
                         
-                    <a href="{{ route('building.pics.create') }}">
+                    <a href="{{ route('building.pics.create') }}" class="p-3">
                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add PIC</button>   
                     </a>
 
                     @endif
     
-                </div>
+            </div> --}}
+        
 
-        <div class="grid w-full mt-10">
-            <h2 class="flex justify-center font-semibold text-3xl items-center text-gray-800 dark:text-white leading-tight">
-                List PIC
-            </h2>
+            <div class="grid w-full ">
+                <h2 class="flex justify-center font-semibold text-3xl items-center text-gray-800 dark:text-white leading-tight">
+                    List PIC
+                </h2>
 
-        </div>
+            </div>
             <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
                 
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -68,7 +87,6 @@
             </div>
         </div>
         
-
 
     </div>
 </x-app-layout>
