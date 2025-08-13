@@ -5,7 +5,25 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class=" mt-5">
+
+    <div class=" grid grid-cols-3 items-center">
+        <div class="relative p-3 ">
+            <a href="{{ route('building.visits.index') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
+                <svg class="w-6 h-6 text-gray-800 absolute inset-y-0 left-2 top-3 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+    
+            </a>
+
+        </div>
+
+        <h1 class="text-gray-800  dark:text-gray-100 text-xl md:text-3xl m-5 max-w-md mx-auto text-center">Visit Form</h1>
+        <div class=" pe-1 px-5">
+            {{-- <span>aaa</span> --}}
+        </div>
+    </div>
+
+    {{-- <div class=" mt-5">
     <a href="{{ route('building.visits.index') }}" class="text-black py-1 px-5 text-lg m-10 rounded bg-gray-400">Back</a>
 
     </div>
@@ -13,10 +31,10 @@
     <div class="grid w-full mt-10">
         <h2 class="flex justify-center font-semibold text-3xl items-center text-gray-800 dark:text-white leading-tight">
             Visit Form
-            {{-- {{ $outlet->name }} --}}
+            {{ $outlet->name }}
         </h2>
 
-    </div>
+    </div> --}}
 
     <form action="{{ route('building.visits.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10">
         @csrf
