@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TicketsExport;
+use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+// use PDF;
+// use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use Carbon\Carbon;
 
@@ -17,44 +24,69 @@ class TicketController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $status = $request->query('status'); //Ambil filter status dari query string
-        $tickets = Ticket::filterStatus($status);
-        $search = $request->input('search');
+{
+    $status = $request->query('status');
+    $search = $request->input('search');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
 
-        // $tickets = Ticket::All();
-        $tickets = Ticket::when($status, function ($query) use ($status) {
-            return $query->where('status', $status);
-        })
-        ->when($search, function ($query) use ($search) {
-            return $query->where(function ($q) use ($search) {
-                $q->where('ticketing', 'like', "%{$search}%")
-                  ->orWhere('problem', 'like', "%{$search}%");
-            });
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+    $tickets = Ticket::query();
 
-        // $tickets = Ticket::where('ticketing', 'like', "%{$search}%")
-        //     ->orWhere('problem', 'like', "%{$search}%")
-        //     // ->orWhereHas('outlet', function ($query) use ($search) {
-        //     //     $query->where('it_name', 'like', "%{$search}%");
-        //     // })
-        //     ->orderBy('created_at', 'desc')
-        //     ->paginate(10);
-
-        return view('dashboard', compact('tickets', 'status'));
+    // Filter status
+    if ($status) {
+        $tickets->where('status', $status);
     }
+
+    // Filter pencarian
+    if ($search) {
+        $tickets->where(function ($q) use ($search) {
+            $q->where('ticketing', 'like', "%{$search}%")
+              ->orWhere('it_name', 'like', "%{$search}%")
+              ->orWhere('problem', 'like', "%{$search}%");
+        });
+    }
+
+    // Filter tanggal
+    // if ($startDate && $endDate) {
+    //     try {
+    //         $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+    //         $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+
+    //         $tickets->whereBetween('created_at', [$start, $end]);
+    //     } catch (\Exception $e) {
+    //         return back()->with('error', 'Format tanggal tidak valid');
+    //     }
+    // }
+    if ($startDate && $endDate) {
+        try {
+            $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+            $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+            // $start = Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
+            // $end = Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+
+
+            $tickets->whereBetween('created_at', [$start, $end]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Format tanggal tidak valid');
+        }
+    }
+
+    $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+
+    return view('dashboard', compact('tickets', 'status', 'search', 'startDate', 'endDate'));
+}
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
+        $specialOutlet = Outlet::find(22);
         $outlets = Outlet::all();
         $user = Auth::user(); // ambil dari user login
         // dd($request->all());
-        return view('tickets.create', compact('outlets', 'user'));
+        return view('tickets.create', compact('outlets','specialOutlet', 'user'));
     }
 
     /**
@@ -65,7 +97,8 @@ class TicketController extends Controller
         $request->validate([
             // 'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet' => 'required|string|max:255',
+            // 'outlet' => 'nullable|string|max:255',
+            'outlet_id' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
             'it_name' => 'nullable|string|max:255',
             'date_finish' => 'nullable|string|max:255',
@@ -73,6 +106,7 @@ class TicketController extends Controller
             'user' => 'required|string|max:50',
             'lama_pengerjaan' => 'nullable|string|max:225',
             'description' => 'nullable|string|max:225',
+            'images.*' => 'file|mimes:jpg,jpeg,png,mp4|max:20480',
         ]);
 
          // Generate nomor tiket: "TICK-YYYYMMDD-XXX"
@@ -85,7 +119,8 @@ class TicketController extends Controller
         $ticket = Ticket::create([
             'ticketing' => $ticketNumber,
             'problem' => $request->problem,
-            'outlet' => $request->outlet,
+            // 'outlet' => $request->outlet,
+            'outlet_id' => $request->outlet_id,
             'status' => $request->status,
             'user' => $request->user,
             'it_name' => null,
@@ -93,6 +128,7 @@ class TicketController extends Controller
             'start_date' => null,
             'lama_pengerjaan' => null,
             'description' => null,
+            'images.*' => null,
             // 'it_name' => $request->it_name,
             // 'date_finish' => $request->date_finish,
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
@@ -102,6 +138,19 @@ class TicketController extends Controller
             $end = $ticket->date_finish;
             $ticket->lama_pengerjaan = $start->diffInDays($end);
             $ticket->save();
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path =$file->store('ticket_images', 'public');
+                // Image::create([
+                //     'ticket_id' => $ticket->id,
+                //     'path' => $path,
+                // ]);
+                $ticket->images()->create([
+                    'path' => $path,
+                ]);
+            }
         }
 
         return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
@@ -125,6 +174,7 @@ class TicketController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
+        $outlets = Outlet::all();
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
@@ -138,7 +188,7 @@ class TicketController extends Controller
         //     'Pending' => 'bg-blue-500'
         // ];
 
-        return view('tickets.edit', compact('ticket'));
+        return view('tickets.edit', compact('ticket', 'outlets'));
     }
 
     /**
@@ -150,13 +200,15 @@ class TicketController extends Controller
         $request->validate([
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
-            'outlet' => 'required|string|max:255',
+            // 'outlet' => 'required|string|max:255',
+            'outlet_id' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
             'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
-            'desction' => 'nullable|string|max:255',
+            'desription' => 'nullable|string|max:255',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:20480', // max 20MB
         ]);
         // dd($request->all());
 
@@ -195,7 +247,8 @@ class TicketController extends Controller
         $ticket->update([
             'ticketing' => $request->ticketing,
             'problem' => $request->problem,
-            'outlet' => $request->outlet,
+            'outlet_id' => $request->outlet_id,
+            // 'outlet' => $request->outlet,
             'status' => $request->status,
             'it_name' => $request->it_name,
             'date_finish' => $dateFinish,
@@ -204,6 +257,13 @@ class TicketController extends Controller
             'description' => $request->description,
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('images/ticketing', 'public');
+                $ticket->images()->create(['path' => $path]);
+            }
+        }
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
          
@@ -217,10 +277,36 @@ class TicketController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
+    */
     public function destroy(Ticket $ticket)
     {
         //
+    }
+
+    public function destroyImage($id)
+    {
+        $image = Image::findOrFail($id);
+
+        // Hapus file fisik
+        Storage::delete('public/' . $image->path);
+
+        // hapus dari database
+        $image->delete();
+
+        return back()->with('success', 'Gambar berhasil di hapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new TicketsExport, 'tickets.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $tickets = Ticket::all();
+        $pdf = FacadePdf::loadView('tickets.export-pdf', compact('tickets'));
+        
+        return $pdf->download('RR-Ticketing.pdf');
     }
 
     

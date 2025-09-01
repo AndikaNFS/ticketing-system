@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
+use App\Models\Areait;
+use App\Models\Employee;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
 
@@ -12,15 +15,27 @@ class OutletController extends Controller
      */
     public function index()
     {
-        //
+        $outlets = Outlet::all();
+        // $search = $request->input
+        // $outlets = Outlet::with(['employee']);
+        $employees = Employee::all();
+
+        return view('outlets.index', compact('outlets','employees'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // $outlets = Outlet::all();
+        $employees = Employee::all();
+        $specialEmployee = Employee::find(5);
+
+        // $areas = Area::all();
+
+
+        return view('outlets.create', compact( 'employees', 'specialEmployee'));
     }
 
     /**
@@ -28,7 +43,28 @@ class OutletController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'area'=>'required|string|max:255',
+            // 'it_name'=>'nullable|string|max:50',
+            'pic'=>'required|string|max:50',
+            // 'outlet_id'=>'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'employee_id' => 'nullable|string|max:50',
+            
+        ]);
+
+        Outlet::create([
+            'area' => $request->area,
+            'name' => $request->name,
+            'pic' => $request->pic,
+            'area' => $request->area,
+            'location' => $request->location,
+            'employee_id' => $request->employee_id,
+            // 'outlet_id' => $request->outlet_id,
+        ]);
+
+        return redirect()->route('outlets.index')->with('success', 'Data berhasil di simpan');
     }
 
     /**
@@ -42,17 +78,45 @@ class OutletController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Outlet $outlet)
+    public function edit($id)
     {
-        //
+        // $areaits = Areait::findOrFail($id);
+        $outlets = Outlet::findOrFail($id);
+        // $areas = Area::all();
+        $employees = Employee::all();
+        $specialEmployee = Employee::find(5);
+
+        return view('outlets.edit', compact( 'outlets', 'employees','specialEmployee'));
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Outlet $outlet)
+    public function update(Request $request, Outlet $outlet, $id)
     {
-        //
+        $request->validate([
+            'name'=>'required|string|max:255',
+            // 'it_name'=>'nullable|string|max:50',
+            'pic'=>'required|string|max:50',
+            'area' => 'required|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'employee_id'=>'nullable|string|max:50',
+            
+        ]);
+
+        $outlet = Outlet::findOrFail($id);
+        $outlet->update([
+            'name' => $request->name,
+            // 'it_name' => $request->it_name,
+            'pic' => $request->pic,
+            'area' => $request->area,
+            'location' => $request->location,
+            'employee_id' => $request->employee_id,
+
+        ]);
+
+        return redirect()->route('outlets.index')->with('success', 'Data berhasil di simpan!');
     }
 
     /**

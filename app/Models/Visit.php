@@ -11,6 +11,8 @@ class Visit extends Model
         'tanggal_visit',
         'ticket_id',
         'outlet_id',
+        'status',
+        'description',
     ];
 
     public function outlet() {
@@ -18,5 +20,9 @@ class Visit extends Model
     }
     public function ticket() {
         return $this->belongsTo(Ticket::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 }

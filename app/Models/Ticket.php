@@ -9,7 +9,8 @@ class Ticket extends Model
     protected $fillable = [
         'ticketing', 
         'problem', 
-        'outlet', 
+        'outlet',
+        'outlet_id',
         'status', 
         'it_name', 
         'date_finish',
@@ -18,6 +19,20 @@ class Ticket extends Model
         'user',
         'description'
     ];
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+    public function outlet()
+    {
+        return $this->belongsTo(Outlet::class);
+    }
 
     public function scopeFilterStatus($query, $status)
     {
