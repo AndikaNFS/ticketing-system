@@ -120,6 +120,15 @@
                         </a>
                      </li>
                @endif
+               {{-- @if(auth()->user()->hasRole('superadmin|admin'))
+                     <li>
+                        <a href="{{ route('schedules.index') }}"
+                           class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
+                           {{ request()->routeIs('schedules.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           Timeline Meeting
+                        </a>
+                     </li>
+               @endif --}}
             </ul>
          </li>
 

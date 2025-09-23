@@ -123,6 +123,9 @@ Route::middleware('auth')->group(function () {
         // Route::put('/users/{user}/roles', [UserController::class, 'update'])->name('users.roles.update');
     
 
+    Route::get('/visits/export-excel', [VisitController::class, 'exportExcel'])->name('visit.export.excel');
+    Route::get('/visits/export-pdf', [VisitController::class, 'exportPDF'])->name('visit.export.pdf');
+
     Route::get('/ticket/export-excel', [TicketController::class, 'exportExcel'])->name('ticket.export.excel');
     Route::get('/ticket/export-pdf', [TicketController::class, 'exportPDF'])->name('ticket.export.pdf');
 

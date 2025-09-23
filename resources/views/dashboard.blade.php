@@ -183,77 +183,11 @@
                                         </div>
                                     </div>
 
-
-                                    {{-- <div class="flex justify-between ">
-                                        <div class="grid grid-cols-2 gap-6 mb-6 md:grid-cols-2">
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Status
-                                                </label>
-                                                <select name="status" class="border p-1 rounded-lg pr-10 mr-20">
-                                                    <option value=""> Semua Status </option>
-                                                    <option value="Open" {{ request('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                                                    <option value="InProgress" {{ request('status') == 'InProgress' ? 'selected' : '' }}>InProgress</option>
-                                                    <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
-                                                    <option value="Cancel" {{ request('status') == 'Cancel' ? 'selected' : '' }}>Cancel</option>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="">
-
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Outlet
-                                                </label>
-                                                <select name="outlet_id" class="border p-1  rounded-lg">
-                                                    <option value=""> Semua Outlet </option>
-                                                    @foreach($outlets as $outlet)
-                                                        <option value="{{ $outlet->id }}" {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
-                                                            {{ $outlet->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                        
-
-                                        </div>
-    
-                                    </div>
-                                    
-                                    <div class="flex justify-between">
-                                        <div class="grid gap-6 mb-6 md:grid-cols-2 justify-between">
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Tanggal Mulai:
-                                                </label>
-                                                <input type="date" name="start" value="{{ request('start') }}" class="border p-1  rounded-lg">
-                                                
-    
-                                            </div>
-    
-                                            <div class="">
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                    Tanggal Selesai:
-                                                </label>
-                                                <input type="date" name="end" value="{{ request('end') }}" class="border p-1  rounded-lg">
-    
-                                            </div>
-                                        </div>
-                                        
-                                    </div> --}}
                                     <span class=" border-b rounded-t dark:border-gray-600 border-gray-200"></span>
                                     <div class="flex items-center pt-5 mt-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                                         <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                         {{-- <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button> --}}
                                     </div>
-    
-    
-                                    {{-- <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Terapkan Filter</button> --}}
-                                    <!-- Modal footer -->
-                                    {{-- <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                        <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                                        <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
-                                    </div> --}}
                                 </form>
 
                             </div>
