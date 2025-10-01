@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail');
         Route::put('/ticket/{id}', [TicketController::class, 'update'])->name('tickets.update');
         Route::post('/ticket/store', [TicketController::class, 'store'])->name('tickets.store');
-        Route::delete('/images/{id}', [TicketController::class, 'destroyImage'])->name('images.destroy');
+        Route::delete('/ticket/images/{id}', [TicketController::class, 'destroyImage'])->name('ticket.images.destroy');
 
         
         Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');

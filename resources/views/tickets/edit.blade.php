@@ -77,10 +77,6 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
                  
-                        {{-- <option value="Andika" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Andika') ? 'selected' : '' }}>Andika</option>
-                        <option value="Usman" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Usman') ? 'selected' : '' }}>Usman</option>
-                        <option value="Asep" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Asep') ? 'selected' : '' }}>Asep</option>
-                        <option value="Santo" {{ (session('edit_step_'.$ticket->id) > 1 && $ticket->it_name == 'Santo') ? 'selected' : '' }}>Santo</option> --}}
                         <option value="Andika" {{  old('it_name', $ticket->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
                         <option value="Usman" {{  old('it_name', $ticket->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
                         <option value="Asep" {{  old('it_name', $ticket->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
@@ -124,20 +120,6 @@
     <div class="mb-5">
         
         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-        {{-- <input 
-            type="text"
-            value="{{ old('description', $ticket->description ?? '') }}"
-            id="description" 
-            name="description" 
-            rows="4" 
-            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
-            
-        </input> --}}
-        {{-- <textarea name="description" id="description"
-            class="w-full text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."
-            rows="3">
-        {{ old('description', $ticket->description ?? '' ) }}
-        </textarea> --}}
         <textarea 
         name="description" id="description"
         cols="30" rows="5" 
@@ -162,31 +144,9 @@
 
     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 mb-10 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
-{{-- <form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
-    {{-- @csrf --}}
-    {{-- @if(isset($ticket))
-        @method('PUT')
-    @endif --}}
-    
+
     @if (isset($ticket) && $ticket->images->count())
 
-    {{-- <div class="grid grid-cols-3 gap-4">
-        @foreach ($ticket->images as $media)
-            <div class="relative cursor-pointer mb-8"
-                 @click="open = true;
-                         media = '{{ asset('storage/' . $media->path) }}';
-                         isVideo = '{{ pathinfo($media->path, PATHINFO_EXTENSION) }}' === 'mp4'">
-                 
-                @if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp4')
-                    <video class="w-full h-32 object-cover rounded" muted loop>
-                        <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
-                    </video>
-                @else
-                    <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover rounded" />
-                @endif
-            </div>
-        @endforeach
-    </div> --}}
         <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
             @foreach ($ticket->images as $media)
                 <div class="relative">
@@ -204,7 +164,7 @@
                         <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
                     @endif
                     
-                    <form action="{{ route('images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
+                    <form action="{{ route('ticket.images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
                         @csrf
                         @method('DELETE')
                         <button type="submit" 
