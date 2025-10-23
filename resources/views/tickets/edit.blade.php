@@ -37,6 +37,23 @@
         <p class="text-l ">Created At : </p>
         <span class="font-sans">{{ $ticket->user }}</span>
     </div>
+    <div class="flex justify-between">
+        {{-- @if ($ticket->editor) --}}
+            <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+                <p class="text-l text-gray-500">Edit By : 
+                    <span class="font-sans">{{ $ticket->editor ? $ticket->editor->name : '-' }}</span>
+
+                </p>
+            </div>
+            <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+                <p class="text-l text-gray-500">Last edited : 
+                    <span class="font-sans">{{ $ticket->updated_at->format('d M Y H:i') }}</span>
+
+                </p>
+            </div>
+        {{-- @endif --}}
+        
+    </div>
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticketing ID</label>
         <input value="{{ $ticket->ticketing }}" type="text" name="ticketing" id="ticketing" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " disabled />

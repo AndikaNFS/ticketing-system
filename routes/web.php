@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard')->middleware('role:admin|superadmin|direksi');
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|direksi');
-    Route::middleware(['role:admin|superadmin'])->group(function () {
+    Route::middleware(['role:admin|superadmin', 'auth'])->group(function () {
         Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
         Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail');
@@ -98,7 +98,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/building/visits/index', [VisitBuildingController::class, 'index'])->name('building.visits.index');
     });
 
-    Route::middleware(['role:admin|superadmin|maintenance|maintenance1'])->group(function () {
+    Route::middleware(['role:admin|superadmin|maintenance|maintenance1', 'auth'])->group(function () {
         Route::get('/building/visits/create', [VisitBuildingController::class, 'create'])->name('building.visits.create');
         Route::post('/building/visits/store', [VisitBuildingController::class, 'store'])->name('building.visits.store');
         Route::get('/building/visits/{id}/edit', [VisitBuildingController::class, 'edit'])->name('building.visits.edit');

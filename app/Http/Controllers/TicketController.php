@@ -177,8 +177,11 @@ public function index(Request $request)
     {
         // $ticket = Ticket::findOrFail($id);
         $ticket = Ticket::where('id', $id)->get();
+        // $ticket = Ticket::where('id', $id)->first();
+        // $ticket = Ticket::findOrFail($id);
+        $edit = Ticket::with('editor')->findOrFail($id);
 
-        return view('tickets.detail', compact('ticket'));
+        return view('tickets.detail', compact('ticket', 'edit'));
     }
 
     /**
@@ -210,7 +213,7 @@ public function index(Request $request)
     public function update(Request $request, Ticket $ticket, $id)
     {
     
-        $request->validate([
+        $validated = $request->validate([
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             // 'outlet' => 'required|string|max:255',
@@ -220,7 +223,7 @@ public function index(Request $request)
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
-            'desription' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:20480', // max 20MB
         ]);
         // dd($request->all());
@@ -241,34 +244,20 @@ public function index(Request $request)
             $lamaPengerjaan = null;
         }
 
-        // Jika status "Done", otomatis set date_finish ke sekarang
-        // if ($request->status == "Done") {
-        //     $dateFinish = Carbon::now();
-        // } else {
-        //     $dateFinish = $request->date_finish ? Carbon::parse($request->date_finish) : null;
-        // }
-        // if ($request->status == "Done") {
-        //     $dateFinish = Carbon::now();
-        //     $lamaPengerjaan = $ticket->created_at->diff($dateFinish)->format('%h jam %i menit'); 
-        // }
-        // $dateFinish = Carbon::parse($request->date_finish);
-
-        // Hitung selisih waktu jika date_finish tersedia
         $lamaPengerjaan = $dateFinish ? $startDate->diff($dateFinish)->format('%d hari %h jam %i menit') : null; 
 
 
-        $ticket->update([
+        $ticket->update($validated + [
             'ticketing' => $request->ticketing,
             'problem' => $request->problem,
             'outlet_id' => $request->outlet_id,
-            // 'outlet' => $request->outlet,
             'status' => $request->status,
             'it_name' => $request->it_name,
             'date_finish' => $dateFinish,
             'start_date' => $request->start_date,
             'lama_pengerjaan' => $lamaPengerjaan,
             'description' => $request->description,
-            // 'lama_pengerjaan' => $request->lama_pengerjaan,
+            'edited_by' => auth()->id(),
         ]);
 
         if ($request->hasFile('images')) {

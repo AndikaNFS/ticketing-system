@@ -19,6 +19,28 @@
     
 @foreach ($ticket as $detail)
 <div class="max-w-xl mx-auto  p-3 ">
+    <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+        <p class="text-l ">Created At : </p>
+        <span class="font-sans">{{ $detail->user }}</span>
+    </div>
+    <div class="flex justify-between">
+        {{-- @if ($ticket->editor) --}}
+            <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+                <p class="text-l text-gray-500">Edit By : 
+                    <span class="font-sans">{{ $edit->editor ? $edit->editor->name : '-' }}</span>
+
+                </p>
+            </div>
+            <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
+                <p class="text-l text-gray-500">Last edited : 
+                    <span class="font-sans">{{ $edit->updated_at->format('d M Y H:i') }}</span>
+
+                </p>
+            </div>
+        {{-- @endif --}}
+        
+    </div>
+
 
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticketing ID</label>

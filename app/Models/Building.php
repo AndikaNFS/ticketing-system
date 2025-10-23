@@ -18,6 +18,7 @@ class Building extends Model
         'finish_date',
         'work_duration',
         'status',
+        'edited_by',
     ];
 
     public function vendor()
@@ -38,6 +39,11 @@ class Building extends Model
     public function image_buildings()
     {
         return $this->hasMany(ImageBuilding::class);
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'edited_by');
     }
 
     public function scopeFilterStatus($query, $status)

@@ -17,7 +17,8 @@ class Ticket extends Model
         'start_date',
         'lama_pengerjaan',
         'user',
-        'description'
+        'description',
+        'edited_by',
     ];
 
     public function visits()
@@ -32,6 +33,11 @@ class Ticket extends Model
     public function outlet()
     {
         return $this->belongsTo(Outlet::class);
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'edited_by');
     }
 
     public function scopeFilterStatus($query, $status)

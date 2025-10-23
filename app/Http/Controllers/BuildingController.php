@@ -192,8 +192,9 @@ class BuildingController extends Controller
     {
         $ticket = Building::where('id', $id)->get();
         // $detail = Building::with('image_building')->find($id);
+        $edit = Building::with('editor')->findOrFail($id);
 
-        return view('building.tickets.detail', compact('ticket'));
+        return view('building.tickets.detail', compact('ticket', 'edit'));
     }
 
     /**
@@ -236,7 +237,7 @@ class BuildingController extends Controller
      */
     public function update(Request $request, Building $building, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'ticketing' => 'required|string|max:255',
             'problem' => 'required|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
@@ -269,7 +270,7 @@ class BuildingController extends Controller
         $workDuration = $dateFinish ? $startDate->diff($dateFinish)->format('%d hari %h jam %i menit') : null; 
 
 
-        $building->update([
+        $building->update($validated + [
             'ticketing' => $request->ticketing,
             'problem' => $request->problem,
             'outlet_id' => $request->outlet_id,
@@ -280,6 +281,7 @@ class BuildingController extends Controller
             'start_date' => $request->start_date,
             'work_duration' => $workDuration,
             'description' => $request->description,
+            'edited_by' => auth()->id(),
         ]);
 
         if ($request->hasFile('image_buildings')) {
