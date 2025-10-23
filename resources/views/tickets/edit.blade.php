@@ -40,14 +40,14 @@
     <div class="flex justify-between">
         {{-- @if ($ticket->editor) --}}
             <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
-                <p class="text-l text-gray-500">Edit By : 
+                <p class="text-l text-gray-500">Edited By : 
                     <span class="font-sans">{{ $ticket->editor ? $ticket->editor->name : '-' }}</span>
 
                 </p>
             </div>
             <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
                 <p class="text-l text-gray-500">Last edited : 
-                    <span class="font-sans">{{ $ticket->updated_at->format('d M Y H:i') }}</span>
+                    <span class="font-sans">{{ $ticket->updated_at->translatedFormat('d M Y H:i') }}</span>
 
                 </p>
             </div>

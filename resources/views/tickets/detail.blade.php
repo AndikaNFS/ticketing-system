@@ -26,7 +26,7 @@
     <div class="flex justify-between">
         {{-- @if ($ticket->editor) --}}
             <div class="flex space-x-5 mb-5 text-gray-900 dark:text-white">
-                <p class="text-l text-gray-500">Edit By : 
+                <p class="text-l text-gray-500">Edited By : 
                     <span class="font-sans">{{ $edit->editor ? $edit->editor->name : '-' }}</span>
 
                 </p>
