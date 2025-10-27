@@ -48,7 +48,7 @@
                         <td class="border px-2 py-1">{{ $date->translatedFormat('l') }}</td>
                         <td class="border px-2 py-1">
                             <select name="schedule[{{ $date->toDateString() }}][status]" class="w-full border px-1 py-1 rounded">
-                                @foreach(['Work', 'Off', 'Libur Nasional'] as $option)
+                                @foreach(['Work', 'Off', 'Izin', 'Cuti', 'Libur Nasional'] as $option)
                                     <option value="{{ $option }}" {{ $schedule && $schedule->status === $option ? 'selected' : '' }}>
                                         {{ $option }}
                                     </option>

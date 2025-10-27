@@ -68,9 +68,11 @@
                                     if ($status === 'Off') $offDays++;
                                     if ($schedule && $schedule->remarks) $remarks[] = $schedule->remarks;
                                 @endphp
-                                <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-100 text-red-700' : 
+                                <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-200 text-red-700' : 
                                                              ( $status === 'Work' ? 'bg-green-100 text-green-700' : 
-                                                             ( $status === 'Libur Nasional' ? 'bg-yellow-300 text-yellow-700' : 'bg-green-100 text-green-700' )) }}">
+                                                             ( $status === 'Izin' ? 'bg-blue-200 text-blue-700' : 
+                                                             ( $status === 'Cuti' ? 'bg-orange-200 text-orange-700' : 
+                                                             ( $status === 'Libur Nasional' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-100 text-green-700' )))) }}">
                                     {{ $status }}
                                 </td>
                             @endforeach
