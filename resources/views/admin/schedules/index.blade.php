@@ -71,8 +71,9 @@
                                 <td class="border px-2 py-1 {{ $status === 'Off' ? 'bg-red-200 text-red-700' : 
                                                              ( $status === 'Work' ? 'bg-green-100 text-green-700' : 
                                                              ( $status === 'Izin' ? 'bg-blue-200 text-blue-700' : 
+                                                             ( $status === 'Sakit' ? 'bg-purple-200 text-purple-700' : 
                                                              ( $status === 'Cuti' ? 'bg-orange-200 text-orange-700' : 
-                                                             ( $status === 'Libur Nasional' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-100 text-green-700' )))) }}">
+                                                             ( $status === 'Libur Nasional' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-100 text-green-700' ))))) }}">
                                     {{ $status }}
                                 </td>
                             @endforeach
