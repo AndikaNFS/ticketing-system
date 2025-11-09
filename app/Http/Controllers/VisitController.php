@@ -166,7 +166,7 @@ class VisitController extends Controller
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
             'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
-            'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:20480',
 
         ]);
     
