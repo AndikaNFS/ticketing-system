@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\VisitExport;
 use App\Models\Image;
+use App\Models\ImageVisit;
 use App\Models\Outlet;
 use App\Models\Ticket;
 use App\Models\Visit;
@@ -165,7 +166,7 @@ class VisitController extends Controller
             'ticket_id' => 'nullable|exists:tickets,id',
             'description' => 'nullable|string|max:255',
             'status' => 'required|in:Cancelled,Finished,Reschedule,InProgress,Open',
-            // 'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'images.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
         ]);
     
@@ -179,12 +180,12 @@ class VisitController extends Controller
             'status' => $request->status,
         ]);
 
-        // if ($request->hasFile('images')) {
-        //     foreach ($request->file('images') as $file) {
-        //         $path = $file->store('images/visit', 'public');
-        //         $visit->images()->create(['path' => $path]);
-        //     }
-        // }
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('images/visit', 'public');
+                $visit->images()->create(['path' => $path]);
+            }
+        }
 
         return redirect()->route('visits.index')->with('success', 'Data berhasil di simpan');
     
@@ -200,7 +201,7 @@ class VisitController extends Controller
 
     public function destroyImage($id)
     {
-        $image = Image::findOrFail($id);
+        $image = ImageVisit::findOrFail($id);
 
         // Hapus file fisik
         Storage::delete('public/' . $image->path);

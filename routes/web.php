@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', function () {
     return view('auth.login');
 });
+Route::get('/form-login', function () {
+    return view('auth.form-login');
+});
 Route::get('/register', function () {
     return view('auth.register');
 });
@@ -68,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
     Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
     Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail');
+    Route::delete('/visits/images/{id}', [VisitController::class, 'destroyImage'])->name('visits.images.destroy');
     // Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
     });
 
