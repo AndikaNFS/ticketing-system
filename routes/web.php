@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -57,6 +58,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard')->middleware('role:admin|superadmin|direksi');
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|direksi');
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index')->middleware('role:admin|superadmin|direksi');
     Route::middleware(['role:admin|superadmin', 'auth'])->group(function () {
         Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
@@ -65,14 +67,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/ticket/store', [TicketController::class, 'store'])->name('tickets.store');
         Route::delete('/ticket/images/{id}', [TicketController::class, 'destroyImage'])->name('ticket.images.destroy');
 
-        
         Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
         Route::post('/visits/store', [VisitController::class, 'store'])->name('visits.store');
-    Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
-    Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
-    Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail');
-    Route::delete('/visits/images/{id}', [VisitController::class, 'destroyImage'])->name('visits.images.destroy');
-    // Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
+        Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
+        Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
+        Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail');
+        Route::delete('/visits/images/{id}', [VisitController::class, 'destroyImage'])->name('visits.images.destroy');
+        
+        Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+        Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+        Route::get('/inventory/{id}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+        Route::put('/inventory/{id}', [InventoryController::class, 'update'])->name('inventory.update');
+        Route::get('/inventory/{id}/detail', [InventoryController::class, 'show'])->name('inventory.detail');
+        Route::delete('/inventory/images/{id}', [InventoryController::class, 'destroyImage'])->name('inventory.images.destroy');
+        
     });
 
     Route::get('/admin/index', [AdminController::class, 'index'])->name('users.index')

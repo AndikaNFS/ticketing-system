@@ -27,6 +27,10 @@ class VisitController extends Controller
         $endDate    = $request->input('end_date');
         $outlet_id  = $request->input('outlet_id');
         $it_name    = $request->input('it_name');
+        $specialOutlet = Outlet::find(22);
+        $tickets = Ticket::orderBy('created_at', 'desc')->get();
+
+
 
         $visits = Visit::query();
 
@@ -75,7 +79,7 @@ class VisitController extends Controller
     $outlets   = Outlet::all();
 
 
-        return view('visits.index', compact('visits', 'search', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id'));
+        return view('visits.index', compact('visits', 'search', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id', 'specialOutlet', 'tickets'));
     }
 
     /**

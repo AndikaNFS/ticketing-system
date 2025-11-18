@@ -32,6 +32,9 @@ public function index(Request $request)
     $endDate    = $request->input('end_date');
     $outlet_id  = $request->input('outlet_id');
     $it_name    = $request->input('it_name');
+    $specialOutlet = Outlet::find(22);
+    $user = Auth::user(); // ambil dari user login
+
 
     $tickets = Ticket::query();
 
@@ -85,7 +88,7 @@ public function index(Request $request)
     // Data tambahan untuk filter dropdown
     $outlets   = Outlet::all();
 
-    return view('dashboard', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id'));
+    return view('dashboard', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id', 'specialOutlet', 'user'));
 }
 
 
