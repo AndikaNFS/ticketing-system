@@ -49,8 +49,8 @@
 
                         <div class="grid gap-6 md:grid-cols-2">
                             <div class="text-white">
-                                <label for="problem" class="block mb-2.5 text-sm font-medium text-heading">Problem</label>
-                                <input type="text" id="problem" name="problem" class=" bg-transparent border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder=" " required />
+                                <label for="problem" class="block mb-2.5 text-gray-900 dark:text-white text-sm font-medium text-heading">Problem</label>
+                                <input type="text" id="problem" name="problem" class=" bg-transparent text-gray-900 dark:text-white border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder=" " required />
                             </div>
                             <div>
                                 <label for="outlet_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
