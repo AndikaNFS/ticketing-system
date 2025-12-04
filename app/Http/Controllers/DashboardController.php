@@ -38,6 +38,14 @@ class DashboardController extends Controller
         //                     ->groupBy('bulan')
         //                     ->orderBy('bulan')
         //                     ->get();
+
+        // $monthlyTickets->map(function ($item) {
+        //     return [
+        //         'bulan' => \Carbon\Carbon::parse($item['bulan'])->isoFormat('MMM YYYY'),
+        //         'total' => $item['total']
+        //     ];
+        // });
+        
         $driver = DB::getDriverName();
 
         if ($driver === 'pgsql') {
@@ -53,12 +61,7 @@ class DashboardController extends Controller
             ->get();
 
 
-        $monthlyTickets->map(function ($item) {
-            return [
-                'bulan' => \Carbon\Carbon::parse($item['bulan'])->isoFormat('MMM YYYY'),
-                'total' => $item['total']
-            ];
-        });
+        
         // $monthlyTickets = Ticket::selectRaw("MONTH(created_at) as bulan, COUNT(*) as total")
         //                     ->groupBy('bulan')
         //                     ->get();
