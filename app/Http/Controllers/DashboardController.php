@@ -34,10 +34,25 @@ class DashboardController extends Controller
                             ->groupBy('outlet_id')
                             ->get();
 
-        $monthlyTickets = Ticket::selectRaw("DATE_TRUNC('month', created_at) AS bulan, COUNT(*) AS total")
-                            ->groupBy('bulan')
-                            ->orderBy('bulan')
-                            ->get();
+        // $monthlyTickets = Ticket::selectRaw("DATE_TRUNC('month', created_at) AS bulan, COUNT(*) AS total")
+        //                     ->groupBy('bulan')
+        //                     ->orderBy('bulan')
+        //                     ->get();
+        $driver = DB::getDriverName();
+
+        if ($driver === 'pgsql') {
+            $dateColumn = "DATE_TRUNC('month', created_at)";
+        } else {
+            $dateColumn = "DATE_FORMAT(created_at, '%Y-%m-01')";
+        }
+
+        $tickets = DB::table('tickets')
+            ->select(DB::raw("$dateColumn AS bulan"), DB::raw('COUNT(*) AS total'))
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
+
+
         $monthlyTickets->map(function ($item) {
             return [
                 'bulan' => \Carbon\Carbon::parse($item['bulan'])->isoFormat('MMM YYYY'),
