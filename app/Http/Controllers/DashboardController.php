@@ -45,7 +45,7 @@ class DashboardController extends Controller
         //         'total' => $item['total']
         //     ];
         // });
-        
+
         $driver = DB::getDriverName();
 
         if ($driver === 'pgsql') {
@@ -66,10 +66,23 @@ class DashboardController extends Controller
         //                     ->groupBy('bulan')
         //                     ->get();
         
-        $completionTime = Ticket::selectRaw("(date_finish::date - start_date::date) AS lama")
-                                ->with('outlet:id,name')
-                                ->whereNotNull('date_finish')
-                                ->get();
+        // $completionTime = Ticket::selectRaw("(date_finish::date - start_date::date) AS lama")
+        //                         ->with('outlet:id,name')
+        //                         ->whereNotNull('date_finish')
+        //                         ->get();
+        $driver = DB::getDriverName();
+
+        if ($driver === 'pgsql') {
+            $diffColumn = "(date_finish::date - start_date::date)";
+        } else {
+            // MySQL / MariaDB
+            $diffColumn = "DATEDIFF(date_finish, start_date)";
+        }
+
+        $lama = DB::table('tickets')
+            ->select(DB::raw("$diffColumn AS lama"))
+            ->whereNotNull('date_finish')
+            ->get();
         
 
         // dd([
