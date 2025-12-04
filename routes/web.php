@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
@@ -32,6 +33,7 @@ Route::get('/register', function () {
 Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome');
+
 Route::get('/svg', function () {
     return view('components.svg');
 })->name('components.svg');
@@ -42,6 +44,8 @@ Route::get('/svg', function () {
 Route::get('/ticket', [TicketController::class, 'userCreate'])->name('tickets.users.create');
 Route::post('/store', [TicketController::class, 'storeUser'])->name('tickets.users.storeUser');
 
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('guest.index');
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/', [AuthenticatedSessionController::class, 'store']);
@@ -51,18 +55,29 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
    
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('guest.index');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // API untuk chart (AJAX)
+    Route::get('/dashboard/chart/status', [DashboardController::class, 'chartStatus']);
+    Route::get('/dashboard/chart/pic', [DashboardController::class, 'chartPIC']);
+    Route::get('/dashboard/chart/outlet', [DashboardController::class, 'chartOutlet']);
+    Route::get('/dashboard/chart/monthly', [DashboardController::class, 'chartMonthly']);
+    Route::get('/dashboard/chart/sla', [DashboardController::class, 'chartSLA']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::get('/dashboard', [TicketController::class, 'index'])->name('dashboard')->middleware('role:admin|superadmin|direksi');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index')->middleware('role:admin|superadmin|direksi');
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|direksi');
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index')->middleware('role:admin|superadmin|direksi');
+    Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail')->middleware('role:admin|superadmin|direksi');
+    Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail')->middleware('role:admin|superadmin|direksi');
+
     Route::middleware(['role:admin|superadmin', 'auth'])->group(function () {
         Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
-        Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail');
         Route::put('/ticket/{id}', [TicketController::class, 'update'])->name('tickets.update');
         Route::post('/ticket/store', [TicketController::class, 'store'])->name('tickets.store');
         Route::delete('/ticket/images/{id}', [TicketController::class, 'destroyImage'])->name('ticket.images.destroy');
@@ -71,7 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/visits/store', [VisitController::class, 'store'])->name('visits.store');
         Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
         Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
-        Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail');
         Route::delete('/visits/images/{id}', [VisitController::class, 'destroyImage'])->name('visits.images.destroy');
         
         Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventory.create');

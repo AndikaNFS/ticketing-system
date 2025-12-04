@@ -4,7 +4,7 @@
       <ul class="space-y-2 font-medium">
 
          @php
-            $isITSupportActive = request()->routeIs('dashboard') || 
+            $isITSupportActive = request()->routeIs('tickets.*') || 
                                  request()->routeIs('visits.*') || 
                                  request()->routeIs('schedules.*') ||
                                  request()->routeIs('inventory.*');
@@ -19,6 +19,12 @@
          @endphp
 
          {{-- IT Support --}}
+         <li>
+            <a href="{{ route('dashboard') }}"
+               class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group">
+               Dashboard
+            </a>
+         </li>
          @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
          <li>
             <button type="button"
@@ -43,9 +49,9 @@
             <ul id="dropdown-it" class="py-2 space-y-2 {{ $isITSupportActive ? '' : 'hidden' }}">
                @if(auth()->user()->hasRole('superadmin|admin|direksi'))
                      <li>
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('tickets.index') }}"
                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
-                           {{ request()->routeIs('dashboard') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           {{ request()->routeIs('tickets.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                            Ticketing
                         </a>
                      </li>

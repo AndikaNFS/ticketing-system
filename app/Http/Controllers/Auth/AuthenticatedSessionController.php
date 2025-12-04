@@ -17,11 +17,11 @@ class AuthenticatedSessionController extends Controller
     public function create(): View|RedirectResponse
     {
         if (Auth::check()) {
-            // return redirect()->route('dashboard');
+            // return redirect()->route('tickets.index');
             $user = Auth::user();
 
             if ($user->hasRole(['superadmin','admin','direksi'])) {
-                return redirect()->route('dashboard');
+                return redirect()->route('tickets.index');
             } elseif ($user->hasRole('hrd')) {
                 return redirect()->route('schedules.index');
             } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
             }
         //     return match ($user->hasRole) {
-        //     'superadmin|admin' => redirect()->route('dashboard'),
+        //     'superadmin|admin' => redirect()->route('tickets.index'),
         //     'hrd' => redirect()->route('schedules'),
         //     'building' => redirect()->route('building.tickets.index'),
         //     default => abort(403, 'Unauthorized hasRole'),
@@ -54,7 +54,7 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         if ($user->hasRole(['superadmin','admin','direksi'])) {
-            return redirect()->route('dashboard');
+            return redirect()->route('tickets.index');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');
         } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {

@@ -8,7 +8,7 @@
 
         <div class=" grid grid-cols-3 items-center">
         <div class="relative p-3 ">
-            <a href="{{ route('dashboard') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
+            <a href="{{ route('tickets.index') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
                 <svg class="w-6 h-6 text-gray-800 absolute inset-y-0 left-2 top-3 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
@@ -90,16 +90,21 @@
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
             {{-- <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required /> --}}
-            <select id="it_name" name="it_name" 
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        >
-                 
-                        <option value="Andika" {{  old('it_name', $ticket->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
-                        <option value="Usman" {{  old('it_name', $ticket->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
-                        <option value="Asep" {{  old('it_name', $ticket->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
-                        <option value="Santo" {{  old('it_name', $ticket->it_name) == 'Santo' ? 'selected' : '' }}>Santo</option>
-                        <option value="Kodam" {{  old('it_name', $ticket->it_name) == 'Kodam' ? 'selected' : '' }}>Kodam</option>
-                    </select>
+            <select id="employee_id" name="employee_id" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                @foreach ($employees as $emp )
+                    <option value="{{ $emp->id }}"
+                        {{ old('employee_id', $ticket->employee_id) == $emp->id ? 'selected' : '' }}>
+                        {{ $emp->name }}
+                    </option>
+                @endforeach
+                {{-- <option value="Andika" {{  old('it_name', $ticket->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
+                <option value="Usman" {{  old('it_name', $ticket->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
+                <option value="Asep" {{  old('it_name', $ticket->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
+                <option value="Santo" {{  old('it_name', $ticket->it_name) == 'Santo' ? 'selected' : '' }}>Santo</option>
+                <option value="Kodam" {{  old('it_name', $ticket->it_name) == 'Kodam' ? 'selected' : '' }}>Kodam</option> --}}
+            </select>
         </div>
         <div>
             

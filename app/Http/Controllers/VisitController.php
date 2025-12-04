@@ -154,6 +154,11 @@ class VisitController extends Controller
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $specialOutlet = Outlet::find(22);
 
+         // Cek apakah ini edit pertama kali
+        if (!session()->has('edit_step_'.$id)) {
+            session(['edit_step_'.$id => 1]); // Set edit pertama
+        }
+
 
         return view('visits.edit', compact('visits', 'outlets', 'tickets', 'specialOutlet'));
     }

@@ -97,16 +97,19 @@
     <div class="mb-5 mt-5">
         
         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-        
-        <input 
-        type="text"
-        value="{{ old('description', $visits->description ?? '') }}"
-        id="description" 
-        name="description" 
-        rows="4" 
-        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
-        
-    </input>
+        <textarea 
+        name="description" id="description"
+        cols="30" rows="5" 
+            class="w-full text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."
+           
+        > {{ old('description', $visits->description ) }}</textarea>
+        {{-- <textarea
+        id="description" name="description"
+        cols="30"
+        rows="5" 
+        class="w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
+        {{ old('description', $visits->description) }}
+    </textarea> --}}
 
     <div class="mb-4 mt-5">
         <label class="block text-sm text-gray-700 font-medium dark:text-gray-50">Upload Gambar</label>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TicketsExport;
+use App\Models\Employee;
 use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
@@ -31,7 +32,7 @@ public function index(Request $request)
     $startDate  = $request->input('start_date');
     $endDate    = $request->input('end_date');
     $outlet_id  = $request->input('outlet_id');
-    $it_name    = $request->input('it_name');
+    $employee_id    = $request->input('employee_id');
     $specialOutlet = Outlet::find(22);
     $user = Auth::user(); // ambil dari user login
 
@@ -49,15 +50,15 @@ public function index(Request $request)
     }
 
     // Filter IT Name
-    if ($it_name) {
-        $tickets->where('it_name', $it_name);
+    if ($employee_id) {
+        $tickets->where('employee_id', $employee_id);
     }
 
     // Filter pencarian bebas
     if ($search) {
         $tickets->where(function ($q) use ($search) {
             $q->where('ticketing', 'like', "%{$search}%")
-              ->orWhere('it_name', 'like', "%{$search}%")
+              ->orWhere('employee_id', 'like', "%{$search}%")
               ->orWhere('problem', 'like', "%{$search}%");
         });
     }
@@ -88,7 +89,7 @@ public function index(Request $request)
     // Data tambahan untuk filter dropdown
     $outlets   = Outlet::all();
 
-    return view('dashboard', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id', 'specialOutlet', 'user'));
+    return view('tickets.index', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'employee_id', 'outlet_id', 'specialOutlet', 'user'));
 }
 
 
@@ -116,7 +117,7 @@ public function index(Request $request)
             // 'outlet' => 'nullable|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
-            'it_name' => 'nullable|string|max:255',
+            'employee_id' => 'nullable|exists:employees,id',
             'date_finish' => 'nullable|string|max:255',
             'start_date' => 'nullable|string|max:255',
             'user' => 'required|string|max:50',
@@ -139,7 +140,7 @@ public function index(Request $request)
             'outlet_id' => $request->outlet_id,
             'status' => $request->status,
             'user' => $request->user,
-            'it_name' => null,
+            'employee_id' => null,
             'date_finish' => null,
             'start_date' => null,
             'lama_pengerjaan' => null,
@@ -169,7 +170,7 @@ public function index(Request $request)
             }
         }
 
-        return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('tickets.index')->with('success', 'Data berhasil disimpan!');
     
     }
 
@@ -182,9 +183,10 @@ public function index(Request $request)
         $ticket = Ticket::where('id', $id)->get();
         // $ticket = Ticket::where('id', $id)->first();
         // $ticket = Ticket::findOrFail($id);
+        $employees= Employee::where('id', $id)->get();
         $edit = Ticket::with('editor')->findOrFail($id);
 
-        return view('tickets.detail', compact('ticket', 'edit'));
+        return view('tickets.detail', compact('ticket', 'edit', 'employees'));
     }
 
     /**
@@ -194,6 +196,7 @@ public function index(Request $request)
     {
         $ticket = Ticket::findOrFail($id);
         $outlets = Outlet::all();
+        $employees = Employee::all();
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
@@ -207,7 +210,7 @@ public function index(Request $request)
         //     'Pending' => 'bg-blue-500'
         // ];
 
-        return view('tickets.edit', compact('ticket', 'outlets'));
+        return view('tickets.edit', compact('ticket', 'outlets', 'employees'));
     }
 
     /**
@@ -221,8 +224,9 @@ public function index(Request $request)
             'problem' => 'required|string|max:255',
             // 'outlet' => 'required|string|max:255',
             'outlet_id' => 'required|exists:outlets,id',
+            'employee_id' => 'required|exists:employees,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
-            'it_name' => $request->it_name == 'Done' ? 'required|string|max:255' : 'required|string|max:255',
+            // 'employee_id' => $request->employee_id == 'Done' ? 'required|exists:employees,id' : 'required|exists:employees,id',
             'date_finish' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'lama_pengerjaan' => $request->lama_pengerjaan == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
@@ -255,7 +259,7 @@ public function index(Request $request)
             'problem' => $request->problem,
             'outlet_id' => $request->outlet_id,
             'status' => $request->status,
-            'it_name' => $request->it_name,
+            'employee_id' => $request->employee_id,
             'date_finish' => $dateFinish,
             'start_date' => $request->start_date,
             'lama_pengerjaan' => $lamaPengerjaan,
@@ -277,7 +281,7 @@ public function index(Request $request)
         //     return redirect()->back()->with('success', 'Status updated to OnProgress');
         // }
 
-        return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('tickets.index')->with('success', 'Data berhasil disimpan!');
     }
 
     /**
