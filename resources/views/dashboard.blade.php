@@ -45,18 +45,25 @@
 
 
         {{-- === ROW 1: STATUS CHART === --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="p-4 bg-white rounded shadow mb-6">
             {{-- STATUS TICKET --}}
             <div class="bg-white p-4 rounded shadow">
-                <h2 class="text-lg font-semibold mb-3">Status Tiket</h2>
-                <canvas id="statusChart"></canvas>
+                <h2 class="text-xl font-semibold mb-3">Tiket per Outlet</h2>
+                <div class="overflow-x-auto min-h-max">
+                    {{-- <div class="" style="width: 1500px;"> --}}
+                        <canvas id="outletChart" ></canvas>
+
+                    {{-- </div> --}}
+
+                </div>
             </div>
+            
 
             {{-- SLA AVERAGE --}}
-            <div class="bg-white p-4 rounded shadow">
+            {{-- <div class="bg-white p-4 rounded shadow">
                 <h2 class="text-lg font-semibold mb-3">Rata-rata SLA (Hari)</h2>
                 <canvas id="slaChart"></canvas>
-            </div>
+            </div> --}}
         </div>
 
         {{-- === ROW 2: PIC & OUTLET === --}}
@@ -72,15 +79,11 @@
             </div>
 
             {{-- OUTLET TICKET --}}
+            
+
             <div class="bg-white p-4 rounded shadow">
-                <h2 class="text-xl font-semibold mb-3">Tiket per Outlet</h2>
-                <div class="overflow-x-auto">
-                    {{-- <div class="" style="width: 1500px;"> --}}
-                        <canvas id="outletChart" height="200"></canvas>
-
-                    {{-- </div> --}}
-
-                </div>
+                <h2 class="text-lg font-semibold mb-3">Status Tiket</h2>
+                <canvas id="statusChart"></canvas>
             </div>
 
         </div>
