@@ -3,7 +3,8 @@
 <div class="min-h-full">
   @include('components.guest.navbar')
 
-  <header class="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
+  <header class="relative w-full mt-8 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/20">
+    
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <h1 class="text-3xl font-bold tracking-tight text-white">Dashboard Ticketing</h1>
     </div>
@@ -17,24 +18,24 @@
         {{-- Judul Dashboard --}}
         {{-- <h1 class="text-2xl font-semibold mb-6">Dashboard Ticketing</h1> --}}
 
-        <form method="GET" action="{{ route('dashboard') }}" class="mb-6">
-            <div class="flex gap-4">
+        <form method="GET" action="{{ route('dashboard') }}" class="mb-6 ">
+            <div class="flex gap-4 text-white dark:text-gray-800 ">
 
                 {{-- FILTER TYPE (WEEK / MONTH) --}}
-                <select name="filter" class="border rounded px-3 py-2" onchange="this.form.submit()">
+                <select name="filter" class="inline-flex items-center justify-center bg-brand box-border border border-transparent rounded-lg hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-10 py-2.5 focus:outline-none" onchange="this.form.submit()">
                     <option value="">Semua</option>
-                    <option value="week" {{ request('filter') == 'week' ? 'selected' : '' }}>Per Minggu</option>
-                    <option value="month" {{ request('filter') == 'month' ? 'selected' : '' }}>Per Bulan</option>
+                    <option value="week" {{ request('filter') == 'week' ? 'selected' : '' }}>Minggu</option>
+                    <option value="month" {{ request('filter') == 'month' ? 'selected' : '' }}>Bulan</option>
                 </select>
 
                 {{-- Jika filter = month → tampilkan bulan --}}
                 @if(request('filter') == 'month')
-                    <input type="month" name="month" value="{{ request('month') }}" class="border rounded px-3 py-2">
+                    <input type="month" name="month" value="{{ request('month') }}" class="inline-flex items-center justify-center text-white dark:text-gray-800 rounded-lg bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                 @endif
 
                 {{-- Jika filter = week → tampilkan minggu --}}
                 @if(request('filter') == 'week')
-                    <input type="week" name="week" value="{{ request('week') }}" class="border rounded px-3 py-2">
+                    <input type="week" name="week" value="{{ request('week') }}" class="inline-flex items-center justify-center text-white dark:text-gray-800 rounded-lg bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                 @endif
 
                 <button class="bg-blue-600 text-white px-4 py-2 rounded">
@@ -73,7 +74,7 @@
             <div class="bg-white p-4 rounded shadow">
                 <h2 class="text-lg font-semibold mb-3">Tiket per PIC</h2>
                 <div class="overflow-x-auto">
-                  <canvas id="picChart"></canvas>
+                  <canvas id="picChart" class="" height="300"></canvas>
 
                 </div>
             </div>

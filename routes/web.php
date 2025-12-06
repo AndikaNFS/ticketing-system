@@ -38,11 +38,25 @@ Route::get('/svg', function () {
     return view('components.svg');
 })->name('components.svg');
 
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
+
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/ticket', [TicketController::class, 'userCreate'])->name('tickets.users.create');
 Route::post('/store', [TicketController::class, 'storeUser'])->name('tickets.users.storeUser');
+
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // API untuk chart (AJAX)
+    Route::get('/dashboard/chart/status', [DashboardController::class, 'chartStatus']);
+    Route::get('/dashboard/chart/pic', [DashboardController::class, 'chartPIC']);
+    Route::get('/dashboard/chart/outlet', [DashboardController::class, 'chartOutlet']);
+    Route::get('/dashboard/chart/monthly', [DashboardController::class, 'chartMonthly']);
+    Route::get('/dashboard/chart/sla', [DashboardController::class, 'chartSLA']);
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('guest.index');
 
@@ -53,17 +67,10 @@ Route::middleware('guest')->group(function () {
 });
 
 
+
 Route::middleware('auth')->group(function () {
    
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('guest.index');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // API untuk chart (AJAX)
-    Route::get('/dashboard/chart/status', [DashboardController::class, 'chartStatus']);
-    Route::get('/dashboard/chart/pic', [DashboardController::class, 'chartPIC']);
-    Route::get('/dashboard/chart/outlet', [DashboardController::class, 'chartOutlet']);
-    Route::get('/dashboard/chart/monthly', [DashboardController::class, 'chartMonthly']);
-    Route::get('/dashboard/chart/sla', [DashboardController::class, 'chartSLA']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
