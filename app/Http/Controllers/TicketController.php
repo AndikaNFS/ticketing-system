@@ -51,7 +51,7 @@ public function index(Request $request)
 
     // Filter IT Name
     if ($employee_id) {
-        $tickets->where('employee_id', $employee_id);
+        $tickets->where('employee_id', $employee_id->name);
     }
 
     // Filter pencarian bebas
