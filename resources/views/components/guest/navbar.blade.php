@@ -1,4 +1,4 @@
-<nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 z-30">
+<nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-default">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
 
@@ -29,7 +29,7 @@
 
                 @auth
                     <!-- USER DROPDOWN -->
-                    <div class="relative top-2">
+                    <div class="relative top-2 pb-4">
                         {{-- <button id="userMenuBtn" --}}
                         <button
                             class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">

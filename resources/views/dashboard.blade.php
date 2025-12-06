@@ -5,7 +5,7 @@
 
   <header class="relative w-full  after:border-white/20">
     
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 mt-8 sm:px-6 lg:px-8">
       <h1 class="text-3xl font-bold tracking-tight text-white">Dashboard Ticketing</h1>
     </div>
   </header>
@@ -68,7 +68,7 @@
         </div>
 
         {{-- === ROW 2: PIC & OUTLET === --}}
-        <div class="grid grid-cols-2 sm:after:grid-cols-1 gap-6 mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-2 gap-6 mb-6">
 
             {{-- PIC TICKET --}}
             <div class="bg-white p-4 rounded shadow">
