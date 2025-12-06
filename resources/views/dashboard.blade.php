@@ -3,7 +3,7 @@
 <div class="min-h-full">
   @include('components.guest.navbar')
 
-  <header class="relative w-full mt-8 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/20">
+  <header class="relative w-full  after:border-white/20">
     
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <h1 class="text-3xl font-bold tracking-tight text-white">Dashboard Ticketing</h1>
@@ -68,7 +68,7 @@
         </div>
 
         {{-- === ROW 2: PIC & OUTLET === --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-2 sm:after:grid-cols-1 gap-6 mb-6">
 
             {{-- PIC TICKET --}}
             <div class="bg-white p-4 rounded shadow">

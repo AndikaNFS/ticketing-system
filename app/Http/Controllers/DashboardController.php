@@ -93,25 +93,64 @@ class DashboardController extends Controller
             // 'sla' => $completionTime->toArray(),
         // ]);
 
-        $filter = $request->filter;
+       
 
+
+        // $filter = $request->filter;
+
+        // $tickets = Ticket::query();
+
+        // // Filter By Month
+        // if ($filter == 'month' && $request->filled('month')) {
+        //     $month = $request->month;
+        //     $tickets->whereRaw("to_char(created_at, 'YYYY-MM') = ?", [$month]);
+        // }
+
+        // // Filter by Week
+        // if ($filter == 'week' && $request->filled('week')) {
+        //     $week = $request->week;
+        //     $year = substr($week, 0, 4);
+        //     $weekNumber = substr($week, 6);
+
+        //     $tickets->whereRaw("EXTRACT(YEAR FROM created_at) = ?", [$year])
+        //             ->whereRaw("EXTRACT(YEAR FROM created_at) = ?", [$weekNumber]);
+        // }
+
+        $filter = $request->filter;
         $tickets = Ticket::query();
 
-        // Filter By Month
+        $driver = DB::getDriverName(); // mysql atau pgsql
+
+        // FILTER BY MONTH
         if ($filter == 'month' && $request->filled('month')) {
             $month = $request->month;
-            $tickets->whereRaw("to_char(created_at, 'YYYY-MM') = ?", [$month]);
+
+            if ($driver === 'mysql') {
+                // MySQL
+                $tickets->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$month]);
+            } elseif ($driver === 'pgsql') {
+                // PostgreSQL
+                $tickets->whereRaw("to_char(created_at, 'YYYY-MM') = ?", [$month]);
+            }
         }
 
-        // Filter by Week
+        // FILTER BY WEEK
         if ($filter == 'week' && $request->filled('week')) {
-            $week = $request->week;
-            $year = substr($week, 0, 4);
-            $weekNumber = substr($week, 6);
+            $week = $request->week;       // contoh: 2025-W32
+            $year = substr($week, 0, 4);  // 2025
+            $weekNumber = substr($week, 6); // 32
 
-            $tickets->whereRaw("EXTRACT(YEAR FROM created_at) = ?", [$year])
-                    ->whereRaw("EXTRACT(YEAR FROM created_at) = ?", [$weekNumber]);
+            if ($driver === 'mysql') {
+                // MySQL (YEARWEEK)
+                $tickets->whereRaw("YEAR(created_at) = ?", [$year])
+                        ->whereRaw("WEEK(created_at, 1) = ?", [$weekNumber]);
+            } elseif ($driver === 'pgsql') {
+                // PostgreSQL (EXTRACT)
+                $tickets->whereRaw("EXTRACT(YEAR FROM created_at) = ?", [$year])
+                        ->whereRaw("EXTRACT(WEEK FROM created_at) = ?", [$weekNumber]);
+            }
         }
+
 
         $ticketData = $tickets->get();
 
