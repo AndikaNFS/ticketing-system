@@ -47,7 +47,7 @@
 
         {{-- @vite(['resources/js/guest/charts.js']) --}}
         {{-- <script src=""> --}}
-            @vite(['resources/js/dashboard/charts.js'])
+            {{-- @vite(['resources/js/dashboard/charts.js']) --}}
         {{-- </script> --}}
     </body>
     {{-- @yield('script') --}}
