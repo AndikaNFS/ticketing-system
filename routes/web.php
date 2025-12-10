@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ScheduleBuildingController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPermissionController;
@@ -41,6 +42,8 @@ Route::get('/svg', function () {
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
+
+Route::get('/struktur', [StrukturController::class, 'index'])->name('struktur.index');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
