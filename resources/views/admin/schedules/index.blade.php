@@ -41,9 +41,9 @@
                         <th class="border px-2 py-1">Total WD</th>
                         <th class="border px-2 py-1">Total OFF</th>
                         <th class="border px-2 py-1">Remarks</th>
-                        @if(auth()->user()->hasRole('superadmin|admin'))
+                        {{-- @if(auth()->user()->hasRole('superadmin|admin')) --}}
                             <th class="border px-2 py-1">Aksi</th>
-                        @endif
+                        {{-- @endif --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -80,11 +80,13 @@
                             <td class="border px-2 py-1">{{ $workDays }}</td>
                             <td class="border px-2 py-1">{{ $offDays }}</td>
                             <td class="border px-2 py-1 text-left">{{ implode(', ', array_unique($remarks)) }}</td>
-                            @if(auth()->user()->hasRole('superadmin|admin'))
+                            
                             <td class="border px-2 py-1">
+                                <a href="{{ route('schedules.show.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 pr-2 hover:underline">Detail</a>
+                                @if(auth()->user()->hasRole('superadmin|admin'))
                                     <a href="{{ route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">Edit</a>
-                                </td>
                                 @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

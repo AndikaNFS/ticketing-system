@@ -122,7 +122,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/schedules/{id}/edit/{start_date?}', [ScheduleController::class, 'edit'])->name('schedules.edit.weekly');
         Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
     });
-
+    Route::get('/schedules/{id}/show/{start_date?}', [ScheduleController::class, 'show'])->name('schedules.show.weekly');
+    
     Route::get('/building/schedules/exports/pdf', [ScheduleBuildingController::class, 'exportPdf'])->name('building.schedules.exports.pdf');
     Route::get('/building/schedules/exports/excel', [ScheduleBuildingController::class, 'exportExcel'])->name('building.schedules.exports.excel');
     Route::middleware(['role:admin|superadmin|maintenance'])->group(function () {

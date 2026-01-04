@@ -124,9 +124,28 @@ class ScheduleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, $start_date)
     {
-        //
+        $employee = Employee::findOrFail($id);
+
+        $start = $start_date
+            ? Carbon::parse($start_date)->startOfWeek(Carbon::SATURDAY)
+            : Carbon::now()->startOfWeek(Carbon::SATURDAY);
+
+        $end = $start->copy()->addDays(6);
+
+        $dates = collect();
+        for ($date = $start->copy(); $date <= $end; $date->addDay()) {
+            $dates->push($date->copy());
+        }
+
+        $existing = $employee->schedules()
+            ->whereBetween('date', [$start, $end])
+            ->get()
+            ->keyBy('date');
+
+        return view('admin.schedules.detail', compact('employee', 'dates', 'existing', 'start', 'end'));
+
     }
 
 
@@ -135,14 +154,8 @@ class ScheduleController extends Controller
      */
     public function edit($id, $start_date = null)
     {
-        
-        // $employeeModel = \App\Models\Employee::find($employee);
-    // dd($employee, $employeeModel);
-    // dd($employee);
 
         $employee = Employee::findOrFail($id);
-        // $start = Carbon::now()->startOfWeek(Carbon::SATURDAY);
-        // $end = $start->copy()->addDays(6); // Senin - Minggu
         $start = $start_date
             ? Carbon::parse($start_date)->startOfWeek(Carbon::SATURDAY)
             : Carbon::now()->startOfWeek(Carbon::SATURDAY);
@@ -156,7 +169,6 @@ class ScheduleController extends Controller
 
         $existing = $employee->schedules()->whereBetween('date', [$start, $end])->get()->keyBy('date');
         return view('admin.schedules.edit', compact('employee', 'dates', 'existing'));
-        // return view('admin.schedules.edit', compact('employee'));
     }
 
     /**

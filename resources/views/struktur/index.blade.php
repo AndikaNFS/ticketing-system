@@ -73,7 +73,7 @@
                     <tr>
     
                         {{-- Kolom NO --}}
-                        <td class="border border-gray-500 text-center align-top px-2 py-2"
+                        <td class="border border-gray-500 text-center align-top px-2 py-2 content-center"
                             rowspan="{{ count($leader['outlets']) }}">
                             {{ $leader['no'] }}
                         </td>
