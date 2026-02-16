@@ -46,6 +46,7 @@ class ScheduleController extends Controller
         $employees = Employee::with(['schedules' => function ($query) use ($startOfMonth, $endOfMonth) {
             $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
         }])
+        ->active()
         ->where('name', '!=', 'All')
         ->get();
 

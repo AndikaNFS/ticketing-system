@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Employee;
+use App\Models\Visit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +13,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('visits', function (Blueprint $table) {
-            //
-            $table->enum('status', ['Cancelled','Finished', 'Reschedule', 'InProgress','Open'])
-                ->default('Open')
-                ->after('tanggal_visit');
-        });
+        // Schema::table('visits', function (Blueprint $table) {
+        //     //
+        // });
+        $visits = Visit::all();
+
+        foreach ($visits as $visit) {
+            $emp = Employee::where('name', $visit->pic)->first();
+
+            if ($emp) {
+                $visit->employee_id = $emp->id;
+                $visit->save();
+            }
+        }
+
     }
 
     /**
@@ -26,7 +36,6 @@ return new class extends Migration
     {
         Schema::table('visits', function (Blueprint $table) {
             //
-            $table->dropColumn('status');
         });
     }
 };

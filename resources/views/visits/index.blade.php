@@ -169,21 +169,6 @@
 
                 </div>
                 @endif
-                {{-- <div class="flex place-content-end">
-                    <!-- Modal toggle -->
-                    <button data-modal-target="add-modal" data-modal-toggle="add-modal" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    Add Visit
-                    </button>
-                    <!-- Main Modal -->
-                    <div class="">
-                        @include('visits.create')
-
-                    </div>
-
-                </div> --}}
-                    {{-- <a href="{{ route('visits.create') }}">
-                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Schedule</button>   
-                    </a> --}}
                 </div>
                 <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-2" style="max-height:30em;">
                     
@@ -208,7 +193,7 @@
                                 <tr class="bg-white border-b  h-14 dark:bg-gray-100 dark:hover:text-gray-50 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
                                     {{-- <td class="px-4 py-2">{{ $loop->iteration }}</td> --}}
-                                    <td scope="" class="px-4 py-2 ">{{ $visit->pic }}</td>
+                                    <td scope="" class="px-4 py-2 ">{{ $visit->employee->name }}</td>
                                     <td class="px-4 py-2">{{ \Carbon\Carbon::parse($visit->tanggal_visit)->format('d M Y H:i') }}</td>
                                     <td class="px-4 py-2">{{ $visit->outlet->name }}</td>
                                     <td class="px-4 py-2">
@@ -246,16 +231,16 @@
                                      {{-- @if (auth()->user()->hasRole('admin|superadmin')) --}}
 
                                     <td class="px-4 py-2 text-right">
-                                        {{-- @can('edit visit') --}}
                                         <div class="flex space-x-2">
-                                            @if (auth()->user()->hasRole('admin|superadmin'))
+                                            @can('edit visit')
+                                            {{-- @if (auth()->user()->hasRole('admin|superadmin')) --}}
                                             <a href="{{ route('visits.edit', $visit->id) }}" class="hover:text-blue-400">Edit</a>
-                                            @endif
+                                            {{-- @endif --}}
+                                            @endcan
                                             
                                             <a href="{{ route('visits.detail', $visit->id) }}" class="hover:text-blue-400">Detail</a>
 
                                         </div>
-                                        {{-- @endcan --}}
                                     </td>
                                     {{-- @endif --}}
                                 </tr>

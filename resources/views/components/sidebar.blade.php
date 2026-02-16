@@ -15,6 +15,7 @@
 
             $isAdminActive = request()->routeIs('admin.users.*') || 
                                  request()->routeIs('roles.*') || 
+                                 request()->routeIs('employees.*')||
                                  request()->routeIs('permissions.*');
          @endphp
 
@@ -192,6 +193,13 @@
                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
                            {{ request()->routeIs('permissions.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                            Permissions
+                        </a>
+                     </li>
+                     <li>
+                        <a href="{{ route('employees.index') }}"
+                           class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
+                           {{ request()->routeIs('employees.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           Employees
                         </a>
                      </li>
             </ul>

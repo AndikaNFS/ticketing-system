@@ -8,6 +8,7 @@ class Visit extends Model
 {
     protected $fillable = [
         'pic',
+        'employee_id',
         'tanggal_visit',
         'ticket_id',
         'outlet_id',
@@ -24,5 +25,9 @@ class Visit extends Model
     public function images()
     {
         return $this->hasMany(ImageVisit::class);
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 }

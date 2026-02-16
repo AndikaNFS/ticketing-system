@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
@@ -156,7 +157,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{user}/roles', [UserRoleController::class, 'edit'])->name('users.roles');
         Route::put('/users/{user}/roles', [UserRoleController::class, 'update'])->name('users.roles.update');
         Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
+
+        Route::post('/employees/it/store', [EmployeeController::class, 'storeIT'])->name('employees.it');
+        Route::post('/employees/build/store', [EmployeeController::class, 'storeBuild'])->name('employees.build');
+        Route::put('/employees/{id}/it/update', [EmployeeController::class, 'updateIT'])->name('employees.it.update');
+        Route::put('/employees/{id}/build/update', [EmployeeController::class, 'updateBuild'])->name('employees.build.update');
+        Route::get('/employees/{id}/edit_it', [EmployeeController::class, 'editIT'])->name('employees.it.edit');
+        Route::get('/employees/{id}/edit_build', [EmployeeController::class, 'editBuild'])->name('employees.build.edit');
+        Route::patch('/employees/it/{employee}/toggle', [EmployeeController::class, 'toggleIT'])->name('employees.it.toggle');
+        Route::patch('/employees/build/{employeebuild}/toggle', [EmployeeController::class, 'toggleBuild'])->name('employees.build.toggle');
+
+        // Route::get('/employee/index', [EmployeeController::class, 'index'])->name('admin.employees.index');
+        // Route::get('/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
+        // Route::post('/employee/edit', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
     });
+
+    Route::get('/test-wa', [VisitController::class, 'testWA']);
         // Route::put('/users/{user}/roles', [UserController::class, 'update'])->name('users.roles.update');
     
 
@@ -210,6 +226,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->middleware('role:superadmin')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('employees', EmployeeController::class);
     
 });
 

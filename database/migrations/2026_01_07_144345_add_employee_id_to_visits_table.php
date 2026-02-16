@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->unsignedBigInteger('edited_by')->nullable()->after('updated_at');
+        Schema::table('visits', function (Blueprint $table) {
+            $table->unsignedBigInteger('employee_id')->nullable()->after('pic');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->dropColumn('edited_by');
+        Schema::table('visits', function (Blueprint $table) {
+            //
         });
     }
 };

@@ -11,7 +11,19 @@ class Employee extends Model
     protected $fillable = [
         'name',
         'position',
+        'is_active',
+        'phone_number',
+        'email',
     ];
+
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 
     public function schedules()
     {
@@ -25,5 +37,9 @@ class Employee extends Model
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
     }
 }

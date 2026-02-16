@@ -33,7 +33,7 @@
                                 <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC</label>
                                 {{-- <input value="{{ $ticket->problem }}" type="text" name="problem" id="problem" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required /> --}}
                                 {{-- <select name="pic" class="border p-1 rounded-lg pr-10 mr-20"> --}}
-                                <select name="pic" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{-- <select name="pic" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 
                                     <option class="text-black" value="Pilih PIC">Pilih PIC</option>
                                     <option class="text-black" value="Andika">Andika</option>
@@ -41,6 +41,15 @@
                                     <option class="text-black" value="Asep" >Asep</option>
                                     <option class="text-black" value="Santo" >Santo</option>
                                     <option class="text-black" value="Kodam" >Kodam</option>
+                                </select> --}}
+
+                                <select id="employee_id" name="employee_id" 
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                    <option disabled selected >Pilih PIC</option>
+                                    @foreach ($employees as $employee )
+                                        <option value="{{ $employee->id }}" class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500">{{ $employee->name }}</option>
+                                    @endforeach
                                 </select>
 
                             </div>
@@ -83,6 +92,7 @@
                             </div>
                             <div class="">
                                 <input type="hidden" value="Open" name="status" id="status" class="" required />
+                                <input type="hidden" value="" name="pic" id="pic" class="" />
                             </div>
 
                         </div>

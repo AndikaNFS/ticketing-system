@@ -196,7 +196,7 @@ public function index(Request $request)
     {
         $ticket = Ticket::findOrFail($id);
         $outlets = Outlet::all();
-        $employees = Employee::all();
+        $employees = Employee::all()->where('name', '!=', 'All');
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {

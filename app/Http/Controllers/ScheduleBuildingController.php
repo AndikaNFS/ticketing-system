@@ -33,7 +33,7 @@ class ScheduleBuildingController extends Controller
                 'start' => $weekStart->copy(),
                 'end' => $weekEnd->copy(),
                 'dates' => collect(),
-            ];
+            ];                  
 
             $weekStart = $weekStart->copy()->addWeek();
         }
@@ -41,7 +41,9 @@ class ScheduleBuildingController extends Controller
         // Ambil pegawai dengan jadwal antara awal hingga akhir bulan
         $employees = Employeebuild::with(['schedulebuildings' => function ($query) use ($startOfMonth, $endOfMonth) {
             $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
-        }])->get();
+        }])
+        ->active()
+        ->get();
 
 
         // Isi tanggal per minggu

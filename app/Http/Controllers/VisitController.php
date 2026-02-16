@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Exports\VisitExport;
+use App\Models\Employee;
 use App\Models\Image;
 use App\Models\ImageVisit;
 use App\Models\Outlet;
 use App\Models\Ticket;
 use App\Models\Visit;
+use App\Services\WhatsappService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -26,11 +30,12 @@ class VisitController extends Controller
         $startDate  = $request->input('start_date');
         $endDate    = $request->input('end_date');
         $outlet_id  = $request->input('outlet_id');
-        $it_name    = $request->input('it_name');
+        $employee_id    = $request->input('employee_id');
         $specialOutlet = Outlet::find(22);
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
 
 
+        
 
         $visits = Visit::query();
 
@@ -46,15 +51,15 @@ class VisitController extends Controller
         }
 
         // Filter IT Name
-        if ($it_name) {
-            $visits->where('it_name', $it_name);
+        if ($employee_id) {
+            $visits->where('employee_id', $employee_id);
         }
         
         // $search = $request->input('search');
         if ($search) {
             $visits = Visit::with(['outlet', 'ticket'])
                 ->when($search, function ($query) use ($search) {
-                    $query->where('pic', 'like', '%' . $search . '%')
+                    $query->where('employee_id', 'like', '%' . $search . '%')
                             ->orWhereHas('ticket', function ($q) use ($search) {
                                 $q->where('ticketing', 'like', '%' . $search . '%')
                                     ->orWhere('it_name', 'like', '%' . $search . '%')
@@ -77,9 +82,16 @@ class VisitController extends Controller
 
     // Data tambahan untuk filter dropdown
     $outlets   = Outlet::all();
+    // $employees = Employee::all();
+    $employees = Employee::active()
+                ->where('name', '!=', 'All')
+                ->orderBy('name')
+                ->get();
+    // $employees = Employee::where('is_active', true)->get();
 
 
-        return view('visits.index', compact('visits', 'search', 'outlets', 'search', 'startDate', 'endDate', 'it_name', 'outlet_id', 'specialOutlet', 'tickets'));
+
+        return view('visits.index', compact('visits', 'search', 'outlets', 'employees', 'search', 'startDate', 'endDate', 'outlet_id', 'specialOutlet', 'tickets'));
     }
 
     /**
@@ -89,8 +101,13 @@ class VisitController extends Controller
     {
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $outlets = Outlet::all();
+        $employees = Employee::where('name', '!=', 'All')->get();
         $specialOutlet = Outlet::find(22);
-        return view('visits.create', compact('tickets', 'outlets', 'specialOutlet'));
+        $employees = Employee::active()
+                ->where('name', '!=', 'All')
+                ->orderBy('name')
+                ->get();
+        return view('visits.create', compact('tickets', 'outlets', 'specialOutlet', 'employees'));
     }
 
 
@@ -100,7 +117,8 @@ class VisitController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pic' => 'required|string|max:255',
+            'pic' => 'nullable|string|max:255',
+            'employee_id' => 'required|string|max:255',
             'tanggal_visit' => 'required|string|max:255',
             'outlet_id' => 'required|string|max:255',
             'ticket_id' => 'nullable|string|max:255',
@@ -109,14 +127,37 @@ class VisitController extends Controller
             // 'images.*' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Visit::create([
+        $visit = Visit::create([
             'pic' => $request->pic,
+            'employee_id' => $request->employee_id,
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
-            'ticket_id' => null,
+            'ticket_id' => $request->ticket_id,
             'description' => $request->description,
             'status' => $request->status,
         ]);
+
+        $employee = Employee::find($visit->employee_id);
+        // $outlet = Outlet::find($visit->outlet_id);
+        $tanggal = Carbon::parse($visit->tanggal_visit)->format('d-m-y');
+        $jam = Carbon::parse($visit->tanggal_visit)->format('H:i');
+
+        $ticketNumber = $visit->ticket?->ticketing ?? 'Tidak Ada';
+
+        $message = "
+        📅 *JADWAL VISIT*
+        *======================*
+        Tanggal : {$tanggal}
+        Jam : {$jam}
+        Outlet  : {$visit->outlet->name}
+        Ticket  : {$ticketNumber}
+        Status  : {$visit->status}
+        Description : {$visit->description}
+        ";
+
+        WhatsappService::send($employee->phone_number, $message);
+
+        
 
         // if ($request->hasFile('images')) {
         //     foreach ($request->file('images') as $file) {
@@ -151,6 +192,7 @@ class VisitController extends Controller
     {
         $visits = Visit::findOrFail($id);
         $outlets = Outlet::all();
+        $employees = Employee::all()->where('name', '!=', 'All');
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $specialOutlet = Outlet::find(22);
 
@@ -160,7 +202,7 @@ class VisitController extends Controller
         }
 
 
-        return view('visits.edit', compact('visits', 'outlets', 'tickets', 'specialOutlet'));
+        return view('visits.edit', compact('visits', 'outlets', 'tickets', 'specialOutlet', 'employees'));
     }
 
     /**
@@ -169,7 +211,8 @@ class VisitController extends Controller
     public function update(Request $request, Visit $visit, $id)
     {
         $request->validate([
-            'pic' => 'required|string|max:255',
+            'pic' => 'nullable|string|max:255',
+            'employee_id' => 'required|exists:employees,id',
             'tanggal_visit' => 'required|date',
             'outlet_id' => 'required|exists:outlets,id',
             'ticket_id' => 'nullable|exists:tickets,id',
@@ -182,6 +225,7 @@ class VisitController extends Controller
         $visit = Visit::findOrFail($id);
         $visit->update([
             'pic' => $request->pic,
+            'employee_id' => $request->employee_id,
             'tanggal_visit' => $request->tanggal_visit,
             'outlet_id' => $request->outlet_id,
             'ticket_id' => $request->ticket_id,
@@ -266,5 +310,31 @@ class VisitController extends Controller
         
         // return $pdf->download('RR-Ticketing.pdf');
     }
+
+    public function testWA()
+    {
+        $response = Http::withoutVerifying()
+            ->withHeaders([
+                'Authorization' => env('WA_TOKEN')
+            ])
+            ->post('https://api.fonnte.com/send', [
+                'target' => '6281285643784',
+                'message' => 'Test Laravel WA'
+            ]);
+        // $response = WhatsappService::send(
+        //     '6281285643784',
+        //     'Test WA dari RRQonnect',
+        // );
+
+        dd($response->json());
+
+        // if ($response->successful()) {
+        //     return "WA Berhasil dikirim";
+        // }
+
+        return "WA Gagal";
+    }
+
+    
 
 }
