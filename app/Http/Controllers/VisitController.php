@@ -152,7 +152,7 @@ class VisitController extends Controller
         Outlet  : {$visit->outlet->name}
         Ticket  : {$ticketNumber}
         Status  : {$visit->status}
-        Description : {$visit->description}
+        Job Desk : {$visit->description}
         ";
 
         WhatsappService::send($employee->phone_number, $message);
@@ -192,7 +192,7 @@ class VisitController extends Controller
     {
         $visits = Visit::findOrFail($id);
         $outlets = Outlet::all();
-        $employees = Employee::all()->where('name', '!=', 'All');
+        $employees = Employee::active()->where('name', '!=', 'All');
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $specialOutlet = Outlet::find(22);
 

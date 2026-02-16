@@ -31,8 +31,8 @@ class EmployeeController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'position'=>'required|string|max:255',
-            'phone_number'=>'required|string|max:15',
-            'email' => 'required|string|max:200',
+            'phone_number'=>'nullable|string|max:15',
+            'email' => 'nullable|string|max:200',
             'is_active' => 'nullable|string|max:10',
             
             ]);
@@ -52,8 +52,8 @@ class EmployeeController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'position'=>'required|string|max:255',
-            'phone_number'=>'required|string|max:15',
-            'email' => 'required|string|max:200',
+            'phone_number'=>'nullable|string|max:15',
+            'email' => 'nullable|string|max:200',
             'is_active' => 'nullable|string|max:10',
             
             ]);
@@ -91,8 +91,8 @@ class EmployeeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'phone_number'=>'required|string|max:15',
-            'email' => 'required|string|max:200',
+            'phone_number'=>'nullable|string|max:15',
+            'email' => 'nullable|string|max:200',
             'is_active' => 'nullable|string|max:10',
         ]);
 
@@ -113,8 +113,8 @@ class EmployeeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'phone_number'=>'required|string|max:15',
-            'email' => 'required|string|max:200',
+            'phone_number'=>'nullable|string|max:15',
+            'email' => 'nullable|string|max:200',
             'is_active' => 'nullable|string|max:10',
         ]);
 

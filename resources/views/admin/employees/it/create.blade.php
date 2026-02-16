@@ -22,18 +22,21 @@
                            
                             <div>
                                 <label for="name" class="peer-focus:font-medium text-sm text-gray-500 dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">    
+                                <input type="text" name="name" id="name" value="" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">    
                             </div>
                             <div>
                                 <label for="position" class="peer-focus:font-medium text-sm text-gray-500 dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Position</label>
-                                <input type="text" name="position" id="position" value="{{ old('position') }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">    
+                                <input type="text" name="position" id="position" value="" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">    
                             </div>
                             {{-- <div class="col-span-2 dark:text-gray-300">
                                 <label for="description" class="block text-sm font-medium text-heading">Job Description</label>
                                 <textarea id="description" name="description" rows="4" class="block bg-transparent border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand w-full p-3.5 shadow-xs placeholder:text-body dark:placeholder:text-gray-300" placeholder="Write job description here"></textarea>                    
                             </div> --}}
                             <div class="">
-                                <input type="hidden" value="Open" name="status" id="status" class="" required />
+                                <input type="hidden" value="Open" name="status" id="status" class="" />
+                                <input type="hidden" value="" name="email" id="email" class="" />
+                                <input type="hidden" value="" name="phone_number" id="phone_number" class="" />
+                                <input type="hidden" value="true" name="is_active" id="is_active" class="" />
                             </div>
 
                         </div>

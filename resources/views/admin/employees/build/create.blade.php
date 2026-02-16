@@ -34,6 +34,9 @@
                             </div> --}}
                             <div class="">
                                 <input type="hidden" value="Open" name="status" id="status" class="" required />
+                                <input type="hidden" value="" name="email" id="email" class="" />
+                                <input type="hidden" value="" name="phone_number" id="phone_number" class="" />
+                                <input type="hidden" value="true" name="is_active" id="is_active" class="" />
                             </div>
 
                         </div>

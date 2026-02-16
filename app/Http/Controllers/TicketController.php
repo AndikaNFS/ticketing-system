@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Image;
 use App\Models\Outlet;
 use App\Models\Ticket;
+use App\Services\WhatsappService;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 // use PDF;
 // use Barryvdh\DomPDF\PDF;
@@ -103,6 +104,7 @@ public function index(Request $request)
         $outlets = Outlet::all();
         $user = Auth::user(); // ambil dari user login
         // dd($request->all());
+        
         return view('tickets.create', compact('outlets','specialOutlet', 'user'));
     }
 
@@ -150,6 +152,9 @@ public function index(Request $request)
             // 'date_finish' => $request->date_finish,
             // 'lama_pengerjaan' => $request->lama_pengerjaan,
         ]);
+
+        
+
         if ($ticket->date_finish) {
             $start = $ticket->created_at;
             $end = $ticket->date_finish;
@@ -196,7 +201,8 @@ public function index(Request $request)
     {
         $ticket = Ticket::findOrFail($id);
         $outlets = Outlet::all();
-        $employees = Employee::all()->where('name', '!=', 'All');
+        $employees = Employee::active()->get();
+        // $employees = Employee::all()->where('name', '!=', 'All');
 
         // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
@@ -273,6 +279,22 @@ public function index(Request $request)
                 $ticket->images()->create(['path' => $path]);
             }
         }
+
+        $employee = Employee::find($ticket->employee_id);
+        $tanggal = Carbon::parse($ticket->start_date)->format('d-m-y') ?? 'No date start available';
+        // $tanggal = Carbon::parse($ticket->start_date?->format('d-m-y') ?? 'No date start available');
+        
+        $message = "
+        📅 *TICKETING*
+        *======================*
+        Tanggal : {$tanggal}
+        Outlet  : {$ticket->outlet->name}
+        Ticket  : {$ticket->ticketing}
+        Status  : {$ticket->status}
+        Description : {$ticket->description}
+        ";
+
+        WhatsappService::send($employee->phone_number, $message);
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
          
