@@ -192,7 +192,8 @@ class VisitController extends Controller
     {
         $visits = Visit::findOrFail($id);
         $outlets = Outlet::all();
-        $employees = Employee::active()->where('name', '!=', 'All');
+        $employees = Employee::active()->get();
+        // $employees = Employee::all()->where('name', '!=', 'All');
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
         $specialOutlet = Outlet::find(22);
 

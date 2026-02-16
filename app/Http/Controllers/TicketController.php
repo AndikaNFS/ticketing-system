@@ -289,6 +289,7 @@ public function index(Request $request)
         *======================*
         Tanggal : {$tanggal}
         Outlet  : {$ticket->outlet->name}
+        Problem : {$ticket->problem}
         Ticket  : {$ticket->ticketing}
         Status  : {$ticket->status}
         Description : {$ticket->description}
