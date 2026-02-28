@@ -89,7 +89,6 @@
         </div>  
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
-            {{-- <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required /> --}}
             <select id="employee_id" name="employee_id" 
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
@@ -100,11 +99,6 @@
                         {{ $emp->name }}
                     </option>
                 @endforeach
-                {{-- <option value="Andika" {{  old('it_name', $ticket->it_name == 'Andika' ? 'selected' : '') }}>Andika</option>
-                <option value="Usman" {{  old('it_name', $ticket->it_name) == 'Usman' ? 'selected' : '' }} disabled>Usman</option>
-                <option value="Asep" {{  old('it_name', $ticket->it_name) == 'Asep' ? 'selected' : '' }}>Asep</option>
-                <option value="Santo" {{  old('it_name', $ticket->it_name) == 'Santo' ? 'selected' : '' }}>Santo</option>
-                <option value="Kodam" {{  old('it_name', $ticket->it_name) == 'Kodam' ? 'selected' : '' }}>Kodam</option> --}}
             </select>
         </div>
         <div>

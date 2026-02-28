@@ -285,7 +285,7 @@ public function index(Request $request)
         // $tanggal = Carbon::parse($ticket->start_date?->format('d-m-y') ?? 'No date start available');
         
         $message = "
-        📅 *TICKETING*
+        🎟️ *TICKETING*
         *======================*
         Tanggal : {$tanggal}
         Outlet  : {$ticket->outlet->name}
