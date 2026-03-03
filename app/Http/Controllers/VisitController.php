@@ -137,6 +137,26 @@ class VisitController extends Controller
             'status' => $request->status,
         ]);
 
+        $employee = Employee::find($visit->employee_id);
+        // $outlet = Outlet::find($visit->outlet_id);
+        $tanggal = Carbon::parse($visit->tanggal_visit)->format('d-m-y');
+        $jam = Carbon::parse($visit->tanggal_visit)->format('H:i');
+
+        $ticketNumber = $visit->ticket?->ticketing ?? 'Tidak Ada';
+
+        $message = "
+        📅 *JADWAL VISIT*
+        *======================*
+        Tanggal : {$tanggal}
+        Jam : {$jam}
+        Outlet  : {$visit->outlet->name}
+        Ticket  : {$ticketNumber}
+        Status  : {$visit->status}
+        Job Desk : {$visit->description}
+        ";
+
+        WhatsappService::send($employee->phone_number, $message);
+
         
 
         // if ($request->hasFile('images')) {
