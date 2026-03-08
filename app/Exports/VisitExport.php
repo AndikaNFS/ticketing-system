@@ -27,7 +27,7 @@ class VisitExport implements FromCollection, WithHeadings, WithMapping
     public function map($visit): array
     {
         return [
-            $visit->pic,
+            $visit->employee->name ?? '-',
             $visit->tanggal_visit,
             $visit->outlet->name ?? 'N/A',
             $visit->ticket->ticketing ?? 'N/A',

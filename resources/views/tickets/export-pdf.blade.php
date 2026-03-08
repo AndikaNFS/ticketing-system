@@ -35,7 +35,7 @@
                     <td>{{ $data->problem }}</td>
                     <td>{{ $data->outlet->name ?? '-' }}</td>
                     <td>{{ $data->status }}</td>
-                    <td>{{ $data->it_name }}</td>
+                    <td>{{ $data->employee->name ?? '-' }}</td>
                     <td>{{ $data->start_date }}</td>
                     <td>{{ $data->finish_date }}</td>
                     <td>{{ $data->lama_pengerjaan }}</td>

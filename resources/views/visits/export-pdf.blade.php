@@ -28,7 +28,7 @@
             @foreach($data as $data)
                 <tr>
                     <td>{{ $data->id }}</td>
-                    <td>{{ $data->pic }}</td>
+                    <td>{{ $data->employee->name ?? '-' }}</td>
                     <td>{{ $data->tanggal_visit }}</td>
                     <td>{{ $data->outlet->name ?? '-' }}</td>
                     <td>{{ $data->ticket->ticketing ?? '-' }}</td>

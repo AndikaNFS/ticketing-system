@@ -41,7 +41,7 @@ class TicketsExport implements FromCollection, WithHeadings, WithMapping
             $ticket->problem,
             $ticket->outlet->name ?? 'N/A',
             $ticket->status,
-            $ticket->it_name,
+            $ticket->employee->name ?? 'N/A',
             $ticket->start_date,
             $ticket->finish_date,
             $ticket->lama_pengerjaan,
