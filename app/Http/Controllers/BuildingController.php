@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Exports\BuildingExport;
 use App\Models\Building;
 use App\Http\Controllers\Controller;
+use App\Models\Employeebuild;
 use App\Models\ImageBuilding;
 use App\Models\Outlet;
 use App\Models\Pic;
 use App\Models\Vendor;
+use App\Services\WhatsappService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Matrix\Builder;
 
 class BuildingController extends Controller
 {
@@ -23,30 +26,64 @@ class BuildingController extends Controller
      */
     public function index(Request $request)
     {
-        $status = $request->query('status');
-        // $buildings = Building::filterStatus($status);
-        $search = $request->input('search');
+    $status     = $request->query('status');
+    $search     = $request->input('search');
+    $startDate  = $request->input('start_date');
+    $endDate    = $request->input('end_date');
+    $outlet_id  = $request->input('outlet_id');
+    $employeebuild_id    = $request->input('employeebuild_id');
+    $specialOutlet = Outlet::find(22);
+    $user = Auth::user(); // ambil dari user login
 
-        $buildings = Building::when($status, function ($query) use ($status) {
-            return $query->where('status', $status);
-        })
-        ->when($search, function ($query) use ($search) {
-            return $query->where(function ($q) use ($search) {
-                $q->where('ticketing', 'like', "%{$search}%")
-                  ->orWhere('pic', 'like', "%{$search}%")
-                  ->orWhere('problem', 'like', "%{$search}%");
-            });
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
 
-        return view('building.tickets.index', compact('buildings', 'status', 'search'));
+    $buildings = Building::query();
+
+    // Filter status
+    if ($status) {
+        $buildings->where('status', $status);
+    }
+
+    // Filter outlet
+    if ($outlet_id) {
+        $buildings->where('outlet_id', $outlet_id);
+    }
+
+    // Filter IT Name
+    if ($employeebuild_id) {
+        $buildings->where('employeebuild_id', $employeebuild_id->name);
+    }
+
+    // Filter pencarian bebas
+    if ($search) {
+        $buildings->where(function ($q) use ($search) {
+            $q->where('ticketing', 'like', "%{$search}%")
+              ->orWhere('employee_id', 'like', "%{$search}%")
+              ->orWhere('problem', 'like', "%{$search}%");
+        });
+    }
+
+        // Filter by date range
+    if ($request->filled('start') && $request->filled('end')) {
+        $buildings->whereBetween('created_at', [
+            $request->start,
+            $request->end
+        ]);
+    }
+
+    // Ambil data terakhir setelah semua filter
+    $buildings = $buildings->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+
+    // Data tambahan untuk filter dropdown
+    $outlets   = Outlet::all();
+
+       
+
+        return view('building.tickets.index', compact('buildings', 'status', 'search', 'outlets', 'outlet_id', 'employeebuild_id', 'specialOutlet', 'user'));
     }
 
     public function indexPic()
     {
-        $pics = Pic::all();
+        $pics = Employeebuild::active()->get();
 
         return view('building.pics.index', compact('pics'));
     }
@@ -95,7 +132,7 @@ class BuildingController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'vendor_id' => 'nullable|exists:vendors,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
-            'pic_id' => 'required|exists:pics,id',
+            'pic_id' => 'nullable|exists:pics,id',
             'finish_date' => 'nullable|string|max:255',
             'start_date' => 'nullable|string|max:255',
             'user' => 'required|string|max:50',
@@ -204,7 +241,7 @@ class BuildingController extends Controller
     {
         $building = Building::findOrFail($id);
         $outlets = Outlet::all();
-        $pics = Pic::all();
+        $pics = Employeebuild::active()->get();
         $vendors = Vendor::all();
         $specialOutlet = Outlet::find(22);
 
@@ -243,7 +280,8 @@ class BuildingController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'vendor_id' => 'nullable|exists:vendors,id',
             'status' => 'required|in:Open,InProgress,Done,Cancel',
-            'pic_id' => $request->pic_id == 'Done' ? 'required|exists:pics,id' : 'required|exists:pics,id',
+            'employeebuild_id' => 'required|exists:employeebuilds,id',
+            // 'pic_id' => $request->pic_id == 'Done' ? 'required|exists:pics,id' : 'required|exists:pics,id',
             'finish_date' => $request->status == 'Done' ? 'required|date' : 'nullable|date',
             'work_duration' => $request->work_duration == 'Done' ? 'required|string|max:255' : 'nullable|string|max:225',
             'start_date' => 'nullable|date',
@@ -276,7 +314,8 @@ class BuildingController extends Controller
             'outlet_id' => $request->outlet_id,
             'vendor_id' => $request->vendor_id,
             'status' => $request->status,
-            'pic_id' => $request->pic_id,
+            // 'pic_id' => $request->pic_id,
+            'employeebuild_id' => $request->employeebuild_id,
             'finish_date' => $dateFinish,
             'start_date' => $request->start_date,
             'work_duration' => $workDuration,
@@ -290,6 +329,23 @@ class BuildingController extends Controller
                 $building->image_buildings()->create(['path' => $path]);
             }
         }
+
+        $employee = Employeebuild::find($building->employeebuild_id);
+        $tanggal = Carbon::parse($building->start_date)->format('d-m-y') ?? 'No date start available';
+        // $tanggal = Carbon::parse($building->start_date?->format('d-m-y') ?? 'No date start available');
+        
+        $message = "
+        🎟️ *TICKETING*
+        *======================*
+        Tanggal : {$tanggal}
+        Outlet  : {$building->outlet->name}
+        Problem : {$building->problem}
+        Ticket  : {$building->ticketing}
+        Status  : {$building->status}
+        Description : {$building->description}
+        ";
+
+        WhatsappService::send($employee->phone_number, $message);
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
          

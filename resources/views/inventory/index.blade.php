@@ -1,8 +1,5 @@
 <x-app-layout>
     
-
-
-
 <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-xl border border-default ">
     <div class="p-4 flex items-center justify-between text-gray-300">
         <label for="input-group-1" class="sr-only">Search</label>
