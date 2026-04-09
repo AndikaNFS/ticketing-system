@@ -16,6 +16,10 @@ class Visit extends Model
         'description',
     ];
 
+    protected $casts = [
+        'tanggal_visit' => 'datetime',
+    ];
+
     public function outlet() {
         return $this->belongsTo(Outlet::class);
     }

@@ -194,7 +194,8 @@
                                 
                                     {{-- <td class="px-4 py-2">{{ $loop->iteration }}</td> --}}
                                     <td scope="" class="px-4 py-2 ">{{ $visit->employee?->name ?? '-' }}</td>
-                                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($visit->tanggal_visit)->format('d M Y H:i') }}</td>
+                                    {{-- <td class="px-4 py-2">{{ \Carbon\Carbon::parse($visit->tanggal_visit)->format('d M Y H:i') }}</td> --}}
+                                    <td class="px-4 py-2">{{ $visit->tanggal_visit?->format('d M Y H:i') ?? '-' }}</td>
                                     <td class="px-4 py-2">{{ $visit->outlet?->name ?? '-' }}</td>
                                     <td class="px-4 py-2">
                                         @if (isset($visit->ticket->ticketing))

@@ -69,7 +69,7 @@ class VisitController extends Controller
         //         });
         // }
 
-        if ($search) {
+        // if ($search) {
             $visits = Visit::with(['outlet', 'ticket', 'employee'])
                 ->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
@@ -89,7 +89,7 @@ class VisitController extends Controller
                 ->paginate(10)
                 ->withQueryString();
                 // ->get();
-        }
+        // }
 
         // ->orderBy('tanggal_visit', 'desc')
         // ->paginate(10);
