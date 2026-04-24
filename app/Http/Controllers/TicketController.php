@@ -59,9 +59,12 @@ public function index(Request $request)
     if ($search) {
         $tickets->where(function ($q) use ($search) {
             $q->where('ticketing', 'like', "%{$search}%")
-              ->orWhere('employee_id', 'like', "%{$search}%")
+            //   ->orWhere('employee_id', 'like', "%{$search}%")
               ->orWhere('problem', 'like', "%{$search}%")
               ->orWhereHas('outlet', function ($q) use ($search) {
+                  $q->where('name', 'like', "%{$search}%");
+              })
+              ->orWhereHas('employee', function ($q) use ($search) {
                   $q->where('name', 'like', "%{$search}%");
               });
         });
