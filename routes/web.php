@@ -21,6 +21,7 @@ use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VisitBuildingController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -233,6 +234,8 @@ Route::prefix('admin')->middleware('role:superadmin')->group(function () {
 Route::prefix('building')->middleware('role:superadmin')->group(function () {
     // Route::resource('tickets', BuildingController::class);
 });
+
+// Route::post('/whatsapp/webhook', [WhatsappController::class, 'webhook'])->name('whatsapp.webhook');
 
 
 // // Hanya user dengan role 'admin'

@@ -8,6 +8,7 @@ class WhatsappSession extends Model
 {
     protected $fillable = [
         'phone',
-        'count'
+        'count',
+        'state',
     ];
 }
