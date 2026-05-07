@@ -298,6 +298,10 @@ public function index(Request $request)
         Problem : {$ticket->problem}
         Ticket  : {$ticket->ticketing}
         Status  : {$ticket->status}
+        Start Date : {$ticket->start_date}
+        Finish Date : {$ticket->date_finish}
+        Lama Pengerjaan : {$ticket->lama_pengerjaan}
+        
         Description : {$ticket->description}
         ";
 
