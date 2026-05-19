@@ -37,7 +37,7 @@ class VisitController extends Controller
 
         
 
-        $visits = Visit::query();
+        $visits = Visit::with(['outlet', 'ticket', 'employee']);
 
 
         // Filter status
@@ -69,26 +69,47 @@ class VisitController extends Controller
         //         });
         // }
 
+
+        // Search
+    if ($search) {
+        $visits->where(function ($q) use ($search) {
+
+            $q->whereHas('employee', function ($q2) use ($search) {
+                $q2->where('name', 'like', '%' . $search . '%');
+            })
+
+            ->orWhereHas('outlet', function ($q2) use ($search) {
+                $q2->where('name', 'like', '%' . $search . '%');
+            })
+
+            ->orWhereHas('ticket', function ($q2) use ($search) {
+                $q2->where('ticketing', 'like', '%' . $search . '%')
+                   ->orWhere('problem', 'like', '%' . $search . '%');
+            });
+
+        });
+    }
+
         // if ($search) {
-            $visits = Visit::with(['outlet', 'ticket', 'employee'])
-                ->when($search, function ($query) use ($search) {
-                    $query->where(function ($q) use ($search) {
-                        $q->whereHas('employee', function ($q2) use ($search) {
-                            $q2->where('name', 'like', '%' . $search . '%');
-                        })
-                        ->orWhereHas('outlet', function ($q2) use ($search) {
-                            $q2->where('name', 'like', '%' . $search . '%');
-                        })
-                        ->orWhereHas('ticket', function ($q2) use ($search) {
-                            $q2->where('ticketing', 'like', '%' . $search . '%')
-                            ->orWhere('problem', 'like', '%' . $search . '%');
-                        });
-                    });
-                })
-                ->orderBy('tanggal_visit', 'desc')
-                ->paginate(10)
-                ->withQueryString();
-                // ->get();
+        //     $visits = Visit::with(['outlet', 'ticket', 'employee'])
+        //         ->when($search, function ($query) use ($search) {
+        //             $query->where(function ($q) use ($search) {
+        //                 $q->whereHas('employee', function ($q2) use ($search) {
+        //                     $q2->where('name', 'like', '%' . $search . '%');
+        //                 })
+        //                 ->orWhereHas('outlet', function ($q2) use ($search) {
+        //                     $q2->where('name', 'like', '%' . $search . '%');
+        //                 })
+        //                 ->orWhereHas('ticket', function ($q2) use ($search) {
+        //                     $q2->where('ticketing', 'like', '%' . $search . '%')
+        //                     ->orWhere('problem', 'like', '%' . $search . '%');
+        //                 });
+        //             });
+        //         })
+        //         ->orderBy('tanggal_visit', 'desc')
+        //         ->paginate(10)
+        //         ->withQueryString();
+        //         // ->get();
         // }
 
         // ->orderBy('tanggal_visit', 'desc')
@@ -102,7 +123,7 @@ class VisitController extends Controller
         ]);
     }
     // Ambil data terakhir setelah semua filter
-    // $visits = $visits->orderBy('tanggal_visit', 'desc')->paginate(10)->withQueryString();
+    $visits = $visits->orderBy('tanggal_visit', 'desc')->paginate(10)->withQueryString();
     // $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
 

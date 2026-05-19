@@ -13,7 +13,7 @@ class AreaSeeder extends Seeder
      */
     public function run(): void
     {
-         DB::table('areas')->insert([     
+         DB::table('outlets')->insert([     
             [
                 'name' => 'Jakpus',
                 'location' => 'Jakarta Pusat',
