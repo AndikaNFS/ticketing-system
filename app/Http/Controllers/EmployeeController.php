@@ -64,7 +64,7 @@ class EmployeeController extends Controller
             'position' => $request->position,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'is_active' => $request->is_active
+            'is_active' => $request->is_active ? 1 : 0,
         ]);
 
         return redirect()->route('employees.index')->with('success', 'Data berhasil di simpan!');
