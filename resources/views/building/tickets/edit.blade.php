@@ -113,10 +113,10 @@
         </div>  
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC</label>
-            <select id="pic_id" name="pic_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="employeebuild_id" name="employeebuild_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected >Pilih PIC</option>
-                @foreach ($pics as $pic)
-                    <option value="{{ $pic->id}}"  {{ $building->pic_id == $pic->id ? 'selected' : ''}}>{{ $pic->name }}</option>
+                @foreach ($employeebuilds as $employeebuild)
+                    <option value="{{ $employeebuild->id}}"  {{ $building->employeebuild_id == $employeebuild->id ? 'selected' : ''}}>{{ $employeebuild->name }}</option>
                 @endforeach
             </select>
         </div>

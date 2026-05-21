@@ -100,12 +100,12 @@ class BuildingController extends Controller
     public function create()
     {
         $outlets = Outlet::all();
-        $pics = Pic::all();
+        $employeebuilds = Employeebuild::all();
         $vendors = Vendor::all();
         $user = Auth::user();
         $specialOutlet = Outlet::find(22);
 
-        return view('building.tickets.create', compact('outlets', 'specialOutlet', 'pics', 'vendors', 'user'));
+        return view('building.tickets.create', compact('outlets', 'specialOutlet', 'employeebuilds', 'vendors', 'user'));
     }
 
     public function createVendor()
@@ -132,7 +132,7 @@ class BuildingController extends Controller
             'outlet_id' => 'required|exists:outlets,id',
             'vendor_id' => 'nullable|exists:vendors,id',
             'status' => 'required|in:Open,OnProgress,Done,Cancel',
-            'pic_id' => 'nullable|exists:pics,id',
+            'employeebuild_id' => 'nullable|exists:employeebuilds,id',
             'finish_date' => 'nullable|string|max:255',
             'start_date' => 'nullable|string|max:255',
             'user' => 'required|string|max:50',
@@ -154,7 +154,7 @@ class BuildingController extends Controller
             'status' => $request->status,
             'user' => $request->user,
             'vendor_id' => $request->vendor_id,
-            'pic_id' => $request->pic_id,
+            'employeebuild_id' => $request->employeebuild_id,
             'finish_date' => null,
             'start_date' => null,
             'work_duration' => null,
@@ -241,7 +241,7 @@ class BuildingController extends Controller
     {
         $building = Building::findOrFail($id);
         $outlets = Outlet::all();
-        $pics = Employeebuild::active()->get();
+        $employeebuilds = Employeebuild::active()->get();
         $vendors = Vendor::all();
         $specialOutlet = Outlet::find(22);
 
@@ -250,7 +250,7 @@ class BuildingController extends Controller
             session(['edit_step_'.$id => 1]); // Set edit pertama
         }
 
-        return view('building.tickets.edit', compact('building', 'outlets', 'pics', 'vendors','specialOutlet'));
+        return view('building.tickets.edit', compact('building', 'outlets', 'employeebuilds', 'vendors','specialOutlet'));
 
     }
     
@@ -334,18 +334,18 @@ class BuildingController extends Controller
         $tanggal = Carbon::parse($building->start_date)->format('d-m-y') ?? 'No date start available';
         // $tanggal = Carbon::parse($building->start_date?->format('d-m-y') ?? 'No date start available');
         
-        $message = "
-        🎟️ *TICKETING*
-        *======================*
-        Tanggal : {$tanggal}
-        Outlet  : {$building->outlet->name}
-        Problem : {$building->problem}
-        Ticket  : {$building->ticketing}
-        Status  : {$building->status}
-        Description : {$building->description}
-        ";
+        // $message = "
+        // 🎟️ *TICKETING*
+        // *======================*
+        // Tanggal : {$tanggal}
+        // Outlet  : {$building->outlet->name}
+        // Problem : {$building->problem}
+        // Ticket  : {$building->ticketing}
+        // Status  : {$building->status}
+        // Description : {$building->description}
+        // ";
 
-        WhatsappService::send($employee->phone_number, $message);
+        // WhatsappService::send($employee->phone_number, $message);
 
         session(['edit_step_'.$id => session('edit_step_'.$id, 1) + 1]);
          
