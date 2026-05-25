@@ -96,7 +96,7 @@
                     {{-- <a href="{{ route('building.tickets.create') }}">
                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Ticket</button>
                     </a> --}}
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|superadmin|building|maintenance|maintenance1'))
                         {{-- <button data-modal-target="add-modal" data-modal-toggle="add-modal" class="block text-white w-full ml-3 sm:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-2.5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -194,8 +194,8 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                @if (isset ($building->pic->name))
-                                {{ $building->pic->name }}
+                                @if (isset ($building->employeebuild->name))
+                                {{ $building->employeebuild->name }}
                                 @else
                                 <p>No PIC</p>
                                 @endif

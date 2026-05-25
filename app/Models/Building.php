@@ -12,7 +12,8 @@ class Building extends Model
         'description',
         'vendor_id',
         'outlet_id',
-        'pic_id',
+        // 'pic_id',
+        'employeebuild_id',
         'user',
         'start_date',
         'finish_date',
@@ -34,6 +35,11 @@ class Building extends Model
     public function pic()
     {
         return $this->belongsTo(Pic::class);
+    }
+
+    public function employeebuild()
+    {
+        return $this->belongsTo(Employeebuild::class);
     }
 
     public function image_buildings()

@@ -34,6 +34,11 @@ class Employeebuild extends Model
     {
         return $this->hasMany(Outlet::class);
     }
+    
+    public function buildings()
+    {
+        return $this->hasMany(Building::class);
+    }   
 
     public function visitbuildings()
     {
