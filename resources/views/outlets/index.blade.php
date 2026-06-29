@@ -17,10 +17,29 @@
 
 
             <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10" style="max-height:30em;">
-                
+                <table class=" text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead>    
+                <!-- <thead class="text-xs text-gray-700 uppercase sticky top-0 z-10 dark:text-gray-400"> -->
+                        <tr class="bg-gray-100 dark:bg-gray-800">
+                            <th scope="col" class="px-6 py-3">Area</th>
+                            <th scope="col" class="px-6 py-3">IT Name</th>
+                            <th scope="col" class="px-6 py-3">Total Outlet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($countOutlets as $count)
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $count->area}}</td>
+                            <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $count->employee->name ?? 'Belum ada'}}</td>
+                            <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $count->total}}</td>
+                        </tr>
+
+                        @endforeach
+                    </tbody>
+                </table>
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase sticky top-0 z-10 dark:text-gray-400">
-                            <tr class="bg-gray-100 dark:bg-gray-800">
+                            <tr class="bg-gray-100 dark:bg-gray-800">   
                                 <th scope="col" class="px-6 py-3 ">
                                     No
                                 </th>

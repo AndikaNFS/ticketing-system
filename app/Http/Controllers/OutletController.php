@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\Areait;
 use App\Models\Employee;
 use App\Models\Outlet;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class OutletController extends Controller
@@ -19,8 +20,12 @@ class OutletController extends Controller
         // $search = $request->input
         // $outlets = Outlet::with(['employee']);
         $employees = Employee::all();
+        $countOutlets = Outlet::select('area', 'employee_id', DB::raw('COUNT(*) as total'))
+            ->with('employee')
+            ->groupBy('area', 'employee_id')
+            ->get();
 
-        return view('outlets.index', compact('outlets','employees'));
+        return view('outlets.index', compact('outlets','employees', 'countOutlets'));
     }
 
     /**
