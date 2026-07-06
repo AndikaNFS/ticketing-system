@@ -16,16 +16,34 @@ class OutletController extends Controller
      */
     public function index()
     {
-        $outlets = Outlet::all();
+        $outlets = Outlet::with('employee')->get();
         // $search = $request->input
         // $outlets = Outlet::with(['employee']);
         $employees = Employee::all();
+        $employee_id = request()->input('employee_id');
         $countOutlets = Outlet::select('area', 'employee_id', DB::raw('COUNT(*) as total'))
             ->with('employee')
             ->groupBy('area', 'employee_id')
             ->get();
+        $totalPerEmployee = $countOutlets->groupBy('employee_id')->map(function ($items) {
+            return [
+                'employee' => optional($items->first()->employee)->name ?? 'Unknown',
+                'total' => $items->sum('total'),
+            ];
+        });
+        // $countEmployees = Employee::select('id', 'name', DB::raw('COUNT(*) as total'))
+        //     ->with('')
+        //     ->groupBy('id', 'name')
+        //     ->get();
 
-        return view('outlets.index', compact('outlets','employees', 'countOutlets'));
+        // $outlets = Outlet::all();
+
+        // Filter IT Name
+        // if ($employee_id) {
+        //     $countOutlets = $countOutlets->where('employee_id', $employee_id);
+        // }
+
+        return view('outlets.index', compact('outlets','employees', 'countOutlets', 'totalPerEmployee', 'employee_id'));
     }
 
     /**
