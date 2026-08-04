@@ -27,7 +27,7 @@
 
         
 {{-- <form action="{{ route('tickets.update', $ticket->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10"> --}}
-<form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-2">
+<form action="{{ isset($ticket) ? route('tickets.update', $ticket->id) : route('tickets.store') }}" id="ticketForm" method="post" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-2">
     
     @csrf
     @method('PUT')
@@ -79,7 +79,7 @@
             <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
             {{-- <input value="{{ $ticket->outlet }}" type="text" name="outlet" id="outlet" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=" " required /> --}}
             <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        
+                        onchange="if(['Done'].includes(this.value)) document.getElementById('ticketForm').submit();"
                         >
                             <option value="Open" {{ old('status', $ticket->status) == 'Open' ? 'selected' : '' }}>Open</option>
                             <option value="InProgress" {{ old('status', $ticket->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
@@ -88,7 +88,15 @@
                             <option value="Cancel" {{ old('status', $ticket->status) == 'Cancel' ? 'selected' : '' }}>Cancel</option>
                             @endif
                         </select>
+            <!-- <script>
+                function submitIfClosed(select) {
+                    if (['Done', 'Cancel'].includes(select.value)) {
+                        select.form.submit();
+                    }
+                }
+            </script> -->
         </div>  
+
         <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
             <select id="employee_id" name="employee_id" 
