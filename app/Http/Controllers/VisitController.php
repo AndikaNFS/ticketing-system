@@ -82,6 +82,8 @@ class VisitController extends Controller
                 $q2->where('name', 'like', '%' . $search . '%');
             })
 
+            ->orWhere('description', 'like', '%' . $search . '%')
+
             ->orWhereHas('ticket', function ($q2) use ($search) {
                 $q2->where('ticketing', 'like', '%' . $search . '%')
                    ->orWhere('problem', 'like', '%' . $search . '%');

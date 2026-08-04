@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-2xl text-center text-gray-800 dark:text-gray-50 font-bold mb-4">User List</h1>
-        <div class="grid justify-end mb-10">
+        <div class="grid justify-end mb-5">
             <a href="{{ url('/register') }}">
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add User</button>   
              </a>
@@ -9,7 +9,7 @@
         </div>
         {{-- <a href="{{ route('roles.create') }}">Add Role</a>     --}}
         <div class="flex justify-center">
-            <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg mt-10 bg-red-500 max-w-min" style="max-height:30em;">
+            <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg bg-red-500 max-w-min" style="max-height:30em;">
                 <table class="min-w-auto bg-white border border-gray-200 rounded-lg overflow">
                     <thead class="bg-gray-100 dark:bg-gray-600 text-left text-sm font-semibold uppercase sticky top-0 z-10 text-gray-600">
                             <tr class="text-black dark:text-gray-200 text-center">

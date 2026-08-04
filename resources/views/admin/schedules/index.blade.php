@@ -41,7 +41,7 @@
                         <th class="border px-2 py-1">Total WD</th>
                         <th class="border px-2 py-1">Total OFF</th>
                         <th class="border px-2 py-1">Remarks</th>
-                        {{-- @if(auth()->user()->hasRole('superadmin|admin')) --}}
+                        {{-- @if(auth()->user()->hasRole('superadmin|admin1|admin')) --}}
                             <th class="border px-2 py-1">Aksi</th>
                         {{-- @endif --}}
                     </tr>
@@ -83,7 +83,7 @@
                             
                             <td class="border px-2 py-1">
                                 <a href="{{ route('schedules.show.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 pr-2 hover:underline">Detail</a>
-                                @if(auth()->user()->hasRole('superadmin|admin'))
+                                @if(auth()->user()->hasRole('superadmin|admin1|admin'))
                                     <a href="{{ route('schedules.edit.weekly', ['id' => $employee->id, 'start_date' => $week['start']->format('Y-m-d')]) }}" class="text-blue-500 hover:underline">Edit</a>
                                 @endif
                             </td>

@@ -4,7 +4,7 @@
             
             <h1 class="text-gray-800 dark:text-gray-100 text-3xl m-5 max-w-md mx-auto text-center">Area Outlet</h1>
             <div class="flex place-content-end pr-4">
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                     
                     <div class="flex flex-nowrap gap-2">
                         <button data-modal-target="add-modal" data-modal-toggle="add-modal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 mr-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Count</button>   
@@ -53,7 +53,7 @@
                                 <th scope="col" class="px-6 py-3 ">
                                     No
                                 </th>
-                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                 <th scope="col" class="px-6 py-3">
                                     IT Name
                                 </th>
@@ -65,7 +65,7 @@
                                     Area
                                 </th>
 
-                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                 <th scope="col" class="px-6 py-3">
                                     PIC
                                 </th>
@@ -84,7 +84,7 @@
                                     {{ $outlet->id }}
                                 </th>
 
-                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     @if (isset($outlet->employee->name))
                                         {{ $outlet->employee->name }}
@@ -108,7 +108,7 @@
                                     
                                 </td>
 
-                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                     {{-- @foreach ( $areas as area ) --}}
                                     {{ $outlet->pic }}

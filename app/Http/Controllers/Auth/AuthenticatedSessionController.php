@@ -20,7 +20,7 @@ class AuthenticatedSessionController extends Controller
             // return redirect()->route('tickets.index');
             $user = Auth::user();
 
-            if ($user->hasRole(['superadmin','admin','direksi'])) {
+            if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
                 return redirect()->route('tickets.index');
             } elseif ($user->hasRole('hrd')) {
                 return redirect()->route('schedules.index');
@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->hasRole(['superadmin','admin','direksi'])) {
+        if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
             return redirect()->route('tickets.index');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');

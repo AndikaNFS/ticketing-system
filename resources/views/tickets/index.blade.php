@@ -50,7 +50,7 @@
                         </svg>    
                     </button>
                     <!-- Create/Add -->
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                         <button data-modal-target="add-modal" data-modal-toggle="add-modal" class="block text-white w-full ml-3 sm:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-2.5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -141,7 +141,7 @@
             </div>
 
             <div class="flex justify-between p-1">
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|admin1|superadmin'))
 
                 <div class="relative z-20">
                     
@@ -266,7 +266,7 @@
                             <td class="px-6 py-4 text-right">
                                 <div class="flex space-x-4">
                                     <a href="{{ route('tickets.detail', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                                    @if (auth()->user()->hasRole('admin|superadmin'))
+                                    @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                     <a href="{{ route('tickets.edit', $ticket->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                     @endif  
 

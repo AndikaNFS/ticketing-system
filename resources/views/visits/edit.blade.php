@@ -93,10 +93,12 @@
                     onchange="this.form.submit()"
                     >
                         <option value="Open" {{ old('status', $visits->status) == 'Open' ? 'selected' : '' }}>Open</option>
-                        <option value="Finished" {{ old('status', $visits->status) == 'Finished' ? 'selected' : '' }}>Finished</option>
                         <option value="InProgress" {{ old('status', $visits->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
+                        @if (auth()->user()->hasRole(['superadmin','admin1']))
                         <option value="Reschedule" {{ old('status', $visits->status) == 'Reschedule' ? 'selected' : '' }}>Reschedule</option>
+                        <option value="Finished" {{ old('status', $visits->status) == 'Finished' ? 'selected' : '' }}>Finished</option>
                         <option value="Cancelled" {{ old('status', $visits->status) == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        @endif
                     </select>
     </div>  
 

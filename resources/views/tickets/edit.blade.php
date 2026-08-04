@@ -83,8 +83,10 @@
                         >
                             <option value="Open" {{ old('status', $ticket->status) == 'Open' ? 'selected' : '' }}>Open</option>
                             <option value="InProgress" {{ old('status', $ticket->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
+                            @if (auth()->user()->hasRole(['superadmin','admin1']))
                             <option value="Done" {{ old('status', $ticket->status) == 'Done' ? 'selected' : '' }}>Done</option>
                             <option value="Cancel" {{ old('status', $ticket->status) == 'Cancel' ? 'selected' : '' }}>Cancel</option>
+                            @endif
                         </select>
         </div>  
         <div>
@@ -118,7 +120,8 @@
                     
         </div>
         <div>
-            @if (in_array (old('status', $ticket->status), ['Done', 'Cancel']))
+            @if (in_array (old('status', $ticket->status), ['Done', 'Cancel']) &&
+            auth()->user()->hasRole(['superadmin','admin1']))
             <label for="date_finish" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Finish</label>
             {{-- <input type="url" id="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required /> --}}
                     <label for="date_finish" class="peer-focus:font-medium absolute text-sm text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Date Finish</label>

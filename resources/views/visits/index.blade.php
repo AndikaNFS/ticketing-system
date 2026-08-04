@@ -54,7 +54,7 @@
                                     </svg>    
                                 </button>
                                 <!-- Add -->
-                                @if (auth()->user()->hasRole('admin|superadmin'))
+                                @if (auth()->user()->hasRole('admin|admin1|superadmin'))
                                     <button data-modal-target="add-modal" data-modal-toggle="add-modal" class="block text-white w-full ml-3 sm:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-2.5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                         <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -149,7 +149,7 @@
             
                 {{-- <a href="{{ route('visits.create') }}" class="mb-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">+ Tambah Kunjungan</a> --}}
                 <div class="flex place-content-between">
-                    @if (auth()->user()->hasRole('admin|superadmin'))
+                    @if (auth()->user()->hasRole('admin|admin1|superadmin'))
 
                 <div class="relative z-20 pr-7">
 
@@ -181,7 +181,7 @@
                                 <th class="px-4 py-3">Ticket</th>
                                 <th class="px-4 py-3">Job Desk</th>
                                 <th class="px-4 py-3">Status</th>
-                                {{-- @if (auth()->user()->hasRole('admin|superadmin')) --}}
+                                {{-- @if (auth()->user()->hasRole('admin|admin1|superadmin')) --}}
                                 
                                     <th class="px-4 py-3">Action</th>
                                 {{-- @endif --}}
@@ -228,12 +228,12 @@
                                      {{ $visit->status }}
                                 </span>
                                     </td>
-                                     {{-- @if (auth()->user()->hasRole('admin|superadmin')) --}}
+                                     {{-- @if (auth()->user()->hasRole('admin|admin1|superadmin')) --}}
 
                                     <td class="px-4 py-2 text-right">
                                         <div class="flex space-x-2">
                                             @can('edit visit')
-                                            {{-- @if (auth()->user()->hasRole('admin|superadmin')) --}}
+                                            {{-- @if (auth()->user()->hasRole('admin|admin1|superadmin')) --}}
                                             <a href="{{ route('visits.edit', $visit->id) }}" class="hover:text-blue-400">Edit</a>
                                             {{-- @endif --}}
                                             @endcan

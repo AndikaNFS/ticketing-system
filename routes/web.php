@@ -81,13 +81,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index')->middleware('role:admin|superadmin|direksi');
-    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|superadmin|direksi');
-    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index')->middleware('role:admin|superadmin|direksi');
-    Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail')->middleware('role:admin|superadmin|direksi');
-    Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail')->middleware('role:admin|superadmin|direksi');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index')->middleware('role:admin|admin1|superadmin|direksi');
+    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index')->middleware('role:admin|admin1|superadmin|direksi');
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index')->middleware('role:admin|admin1|superadmin|direksi');
+    Route::get('/visits/{id}/detail', [VisitController::class, 'show'])->name('visits.detail')->middleware('role:admin|admin1|superadmin|direksi');
+    Route::get('/ticket/{id}/detail', [TicketController::class, 'show'])->name('tickets.detail')->middleware('role:admin|admin1|superadmin|direksi');
 
-    Route::middleware(['role:admin|superadmin', 'auth'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin', 'auth'])->group(function () {
         Route::get('/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::get('/ticket/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
         Route::put('/ticket/{id}', [TicketController::class, 'update'])->name('tickets.update');
@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/schedules/exports/pdf', [ScheduleController::class, 'exportPdf'])->name('schedules.exports.pdf');
     Route::get('/schedules/exports/excel', [ScheduleController::class, 'exportExcel'])->name('schedules.exports.excel');
-    Route::middleware(['role:admin|superadmin'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin'])->group(function () {
         Route::get('/schedules/{id}/edit/{start_date?}', [ScheduleController::class, 'edit'])->name('schedules.edit.weekly');
         Route::post('/schedules/{id}/store', [ScheduleController::class, 'store'])->name('schedules.store');
     });
@@ -128,16 +128,16 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/building/schedules/exports/pdf', [ScheduleBuildingController::class, 'exportPdf'])->name('building.schedules.exports.pdf');
     Route::get('/building/schedules/exports/excel', [ScheduleBuildingController::class, 'exportExcel'])->name('building.schedules.exports.excel');
-    Route::middleware(['role:admin|superadmin|maintenance'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin|maintenance'])->group(function () {
         Route::get('/building/schedules/{id}/edit/{start_date?}', [ScheduleBuildingController::class, 'edit'])->name('building.schedules.edit.weekly');
         Route::post('/building/schedules/{id}/store', [ScheduleBuildingController::class, 'store'])->name('building.schedules.store');
 
     });
-    Route::middleware(['role:admin|superadmin|direksi|maintenance|maintenance1'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin|direksi|maintenance|maintenance1'])->group(function () {
         Route::get('/building/visits/index', [VisitBuildingController::class, 'index'])->name('building.visits.index');
     });
 
-    Route::middleware(['role:admin|superadmin|maintenance|maintenance1', 'auth'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin|maintenance|maintenance1', 'auth'])->group(function () {
         Route::get('/building/visits/create', [VisitBuildingController::class, 'create'])->name('building.visits.create');
         Route::post('/building/visits/store', [VisitBuildingController::class, 'store'])->name('building.visits.store');
         Route::get('/building/visits/{id}/edit', [VisitBuildingController::class, 'edit'])->name('building.visits.edit');
@@ -189,11 +189,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/outlets/store', [OutletController::class, 'store'])->name('outlets.store');
     Route::put('/outlets/{id}/update', [OutletController::class, 'update'])->name('outlets.update');
     
-    Route::middleware(['role:admin|superadmin|building|direksi|maintenance|maintenance1'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin|building|direksi|maintenance|maintenance1'])->group(function () {
         Route::get('/building/index', [BuildingController::class, 'index'])->name('building.tickets.index');
     });
     
-    Route::middleware(['role:admin|superadmin|admin|building|maintenance|maintenance1'])->group(function () {
+    Route::middleware(['role:admin|admin1|superadmin|admin|building|maintenance|maintenance1'])->group(function () {
     
         Route::get('/building/create', [BuildingController::class, 'create'])->name('building.tickets.create');
         Route::post('/building/store', [BuildingController::class, 'store'])->name('building.tickets.store');
