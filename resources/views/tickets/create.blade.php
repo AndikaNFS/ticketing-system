@@ -25,8 +25,7 @@
         </div> --}}
 
         <!-- Main modal -->
-    {{-- <div id="add-modal" tabindex="-1" aria-hidden="true" class=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"> --}}
-        <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                 <!-- Modal header -->
@@ -98,55 +97,7 @@
 
                 </div>
             </div>
-        </div>
+    </div>
 
-        {{-- <div class="">
-            <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 bg-gray-200 rounded-xl p-5 pt-10 pb-10">
-                @csrf
-                <input type="hidden" value="{{ $user->name }}" name="user" id="user">
-                <div class="relative z-0 w-full mb-5 group">
-                    <input type="text" name="problem" id="problem" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="problem" class="peer-focus:font-medium absolute text-sm  text-gray-800 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Problem</label>
-                    
-                </div>
-                <div class="relative z-0 w-full mb-5 group mt-10">
-                    <label for="outlet_id" class="peer-focus:font-medium absolute text-xl  text-gray-800 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label>
-                    @error('outlet_id')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                    <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-800 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                        <option disabled selected >Pilih Lokasi</option>
-                        @if ($specialOutlet)
-                            <option value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
-                        @endif
-
-                        @foreach ($outlets as $outlet)
-                            @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
-                                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
-                <div class="grid md:grid-cols-2 md:gap-6">
-                  <div class="relative z-0 w-full mb-5 group">
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="hidden" value="Open" name="status" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    </div> 
-                  </div>
-                  <div class="relative z-0 w-full mb-5 group">
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="hidden" value=" " name="it_name" id="it_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    </div> 
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="hidden" value=" " name="lama_pengerjaan" id="lama_pengerjaan" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="hidden" value=" " name="date_finish" id="date_finish" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    </div>
-                </div>
-                </div>
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-            </form>
-
-        </div> --}}
+        
 {{-- </x-app-layout> --}}

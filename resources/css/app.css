@@ -5,3 +5,7 @@
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
+
+
+/* import '..//css/choices.css'; */
+@import './../css/choices.css';

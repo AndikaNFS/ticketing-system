@@ -57,7 +57,7 @@
                             </svg>
                         </button>
                     @endif
-
+    
                 </div>
 
                 <!-- Main modal -->
