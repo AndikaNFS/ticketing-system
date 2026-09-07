@@ -48,14 +48,14 @@
             @enderror
             <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                 <option disabled selected >Pilih Lokasi</option>
-                @if ($specialOutlet)
+                {{-- @if ($specialOutlet)
                     <option class="text-gray-700" value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
-                @endif
+                @endif --}}
 
                 @foreach ($outlets as $outlet)
-                    @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                    {{-- @if (!$specialOutlet || $outlet->id != $specialOutlet->id)  --}}
                         <option class="text-gray-700" value="{{ $outlet->id }}" {{ $visits->outlet_id == $outlet->id ? 'selected' : ''}}>{{ $outlet->name }}</option>
-                    @endif
+                    {{-- @endif --}}
                 @endforeach
             </select>
         </div>

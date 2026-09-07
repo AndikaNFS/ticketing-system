@@ -31,7 +31,6 @@ class VisitController extends Controller
         $endDate    = $request->input('end_date');
         $outlet_id  = $request->input('outlet_id');
         $employee_id    = $request->input('employee_id');
-        $specialOutlet = Outlet::find(22);
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
 
 
@@ -54,20 +53,6 @@ class VisitController extends Controller
         if ($employee_id) {
             $visits->where('employee_id', $employee_id);
         }
-        
-        // $search = $request->input('search');
-        // if ($search) {
-        //     $visits = Visit::with(['outlet', 'ticket', 'employee_id'])
-        //         ->when($search, function ($query) use ($search) {
-        //             $query->where('employee_id', 'like', '%' . $search . '%')
-        //                     ->orWhereHas('ticket', function ($q) use ($search) {
-        //                         $q->where('ticketing', 'like', '%' . $search . '%')
-        //                             ->orWhere('employee_id', 'like', '%' . $search . '%')
-        //                             ->orWhere('problem', 'like', '%' . $search . '%');
-        //                     });
-
-        //         });
-        // }
 
 
         // Search
@@ -92,31 +77,6 @@ class VisitController extends Controller
         });
     }
 
-        // if ($search) {
-        //     $visits = Visit::with(['outlet', 'ticket', 'employee'])
-        //         ->when($search, function ($query) use ($search) {
-        //             $query->where(function ($q) use ($search) {
-        //                 $q->whereHas('employee', function ($q2) use ($search) {
-        //                     $q2->where('name', 'like', '%' . $search . '%');
-        //                 })
-        //                 ->orWhereHas('outlet', function ($q2) use ($search) {
-        //                     $q2->where('name', 'like', '%' . $search . '%');
-        //                 })
-        //                 ->orWhereHas('ticket', function ($q2) use ($search) {
-        //                     $q2->where('ticketing', 'like', '%' . $search . '%')
-        //                     ->orWhere('problem', 'like', '%' . $search . '%');
-        //                 });
-        //             });
-        //         })
-        //         ->orderBy('tanggal_visit', 'desc')
-        //         ->paginate(10)
-        //         ->withQueryString();
-        //         // ->get();
-        // }
-
-        // ->orderBy('tanggal_visit', 'desc')
-        // ->paginate(10);
-
         // Filter by date range
     if ($request->filled('start') && $request->filled('end')) {
         $visits->whereBetween('tanggal_visit', [
@@ -130,7 +90,8 @@ class VisitController extends Controller
 
 
     // Data tambahan untuk filter dropdown
-    $outlets   = Outlet::all();
+    $outlets = Outlet::where('id', '!=', 22)->get();
+    
     // $employees = Employee::all();
     $employees = Employee::active()
                 ->where('name', '!=', 'All')
@@ -140,7 +101,7 @@ class VisitController extends Controller
 
 
 
-        return view('visits.index', compact('visits', 'search', 'outlets', 'employees', 'search', 'startDate', 'endDate', 'outlet_id', 'specialOutlet', 'tickets'));
+        return view('visits.index', compact('visits', 'search', 'outlets', 'employees', 'search', 'startDate', 'endDate', 'outlet_id', 'tickets'));
     }
 
     /**
@@ -149,14 +110,13 @@ class VisitController extends Controller
     public function create(Request $request)
     {
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
-        $outlets = Outlet::all();
+        $outlets = Outlet::where('id', '!=', 22)->get();
         $employees = Employee::where('name', '!=', 'All')->get();
-        $specialOutlet = Outlet::find(22);
         $employees = Employee::active()
                 ->where('name', '!=', 'All')
                 ->orderBy('name')
                 ->get();
-        return view('visits.create', compact('tickets', 'outlets', 'specialOutlet', 'employees'));
+        return view('visits.create', compact('tickets', 'outlets', 'employees'));
     }
 
 
@@ -240,11 +200,11 @@ class VisitController extends Controller
     public function edit($id)
     {
         $visits = Visit::findOrFail($id);
-        $outlets = Outlet::all();
+        $outlets = Outlet::where('id', '!=', 22)->get();
         $employees = Employee::active()->get();
         // $employees = Employee::all()->where('name', '!=', 'All');
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
-        $specialOutlet = Outlet::find(22);
+        // $specialOutlet = Outlet::find(22);
 
          // Cek apakah ini edit pertama kali
         if (!session()->has('edit_step_'.$id)) {
@@ -252,7 +212,7 @@ class VisitController extends Controller
         }
 
 
-        return view('visits.edit', compact('visits', 'outlets', 'tickets', 'specialOutlet', 'employees'));
+        return view('visits.edit', compact('visits', 'outlets', 'tickets', 'employees'));
     }
 
     /**

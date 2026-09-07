@@ -57,14 +57,14 @@
                                 <label for="problem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
                                 <select id="outlet_id" name="outlet_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected >Pilih Lokasi</option>
-                                        @if ($specialOutlet)
+                                        {{-- @if ($specialOutlet)
                                             <option value="{{ $specialOutlet->id}}" class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500">{{ $specialOutlet->name }}</option>
-                                        @endif
+                                        @endif --}}
 
                                         @foreach ($outlets as $outlet)
-                                            @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                                            {{-- @if ($outlet->id)  --}}
                                                 <option value="{{ $outlet->id }}" class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500">{{ $outlet->name }}</option>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                 </select>
                             </div>
