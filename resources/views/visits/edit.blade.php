@@ -25,9 +25,9 @@
     <form action="{{ route('visits.update', $visits->id) }}" id="visitForm" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-3">
         @csrf
         @method('PUT')
-        <div class="relative z-0 w-full mb-5 group">
+        <div class="relative z-0 w-full mb-10 group">
             <div>
-                <label for="employee_id" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">IT Name</label>
+                <label for="employee_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
                 <select id="employee_id" name="employee_id" 
                         class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                         >
@@ -38,17 +38,11 @@
                             </option>
                             
                         @endforeach
-                        {{-- @foreach (['Andika', 'Usman', 'Asep', 'Santo', 'Kodam'] as $pic)
-                           <option 
-                           class="text-gray-800"
-                           value="{{ $pic }}" {{ $visits->pic === $pic ? 'selected' : '' }} {{ $pic === 'Usman' ? 'disabled' : '' }}
-                           >{{ $pic }}</option>
-                        @endforeach --}}
                     </select>
             </div>
         </div>
-        <div class="relative z-0 w-full mb-5 group mt-10">
-            <label for="outlet_id" class="peer-focus:font-medium absolute text-xl text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Outlet</label>
+        <div class="grid md:grid-cols-1 mt-6 md:gap-3">
+            <label for="outlet_id" class="block text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
             @error('outlet_id')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -67,7 +61,7 @@
         </div>
         <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 w-full mb-5 group mt-10">
-                <label for="ticket_id" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Ticket</label>
+                <label for="ticket_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticket</label>
                 <select name="ticket_id" id="ticket_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                     <option value="" class="text-black dark:text-gray-700"> Tidak ada ticket </option>
                 @foreach ($tickets as $ticket)
@@ -81,8 +75,8 @@
             </div> 
             <div class="relative z-0 w-full mb-5 group">
               <div class="relative z-0 w-full mb-5 group mt-10">
-                  <label for="tanggal_visit" class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Visit Date</label>
-                  <input type="datetime-local" name="tanggal_visit" id="tanggal_visit" value="{{ \Carbon\Carbon::parse($visits->tanggal_visit)->format('Y-m-d\TH:i')  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                    <label for="tanggal_visit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Date</label>
+                    <input type="datetime-local" name="tanggal_visit" id="tanggal_visit" value="{{ \Carbon\Carbon::parse($visits->tanggal_visit)->format('Y-m-d\TH:i')  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
               </div>
             </div>
          </div>
