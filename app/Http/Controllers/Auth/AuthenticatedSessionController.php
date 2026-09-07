@@ -14,8 +14,31 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        if (Auth::check()) {
+            // return redirect()->route('tickets.index');
+            $user = Auth::user();
+
+            if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
+                return redirect()->route('tickets.index');
+            } elseif ($user->hasRole('hrd')) {
+                return redirect()->route('schedules.index');
+            } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
+                return redirect()->route('building.tickets.index');
+            } elseif ($user->hasRole(['user'])) {
+                return redirect()->route('welcome');
+            } else {
+                return redirect()->route('welcome');
+
+            }
+        //     return match ($user->hasRole) {
+        //     'superadmin|admin' => redirect()->route('tickets.index'),
+        //     'hrd' => redirect()->route('schedules'),
+        //     'building' => redirect()->route('building.tickets.index'),
+        //     default => abort(403, 'Unauthorized hasRole'),
+        // };
+        }
         return view('auth.login');
     }
 
@@ -28,7 +51,23 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
+            return redirect()->route('tickets.index');
+        } elseif ($user->hasRole('hrd')) {
+            return redirect()->route('schedules.index');
+        } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
+            return redirect()->route('building.tickets.index');
+        } elseif ($user->hasRole('user')) {
+            return redirect()->route('welcome');
+        } else {
+        // abort(403, 'Unauthorized role');
+                return redirect()->route('welcome');
+
+        }
+
+        return redirect()->intended(route('welcome', absolute: false));
     }
 
     /**

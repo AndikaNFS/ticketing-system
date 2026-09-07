@@ -1,0 +1,186 @@
+<x-app-layout>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class=" grid grid-cols-3 items-center">
+        <div class="relative p-3 ">
+            <a href="{{ route('visits.index') }}" class="text-white p-3 text-lg m-10 rounded-full  dark:text-gray-700 max-w-min ">
+                <svg class="w-6 h-6 text-gray-800 absolute inset-y-0 left-2 top-3 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+    
+            </a>
+
+        </div>
+
+        <h1 class="text-gray-800  dark:text-gray-100 text-xl md:text-3xl m-5 max-w-md mx-auto text-center">Form Edit Visit</h1>
+        <div class=" pe-1 px-5">
+        </div>
+    </div>
+
+    <form action="{{ route('visits.update', $visits->id) }}" id="visitForm" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-3">
+        @csrf
+        @method('PUT')
+        <div class="relative z-0 w-full mb-10 group">
+            <div>
+                <label for="employee_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT Name</label>
+                <select id="employee_id" name="employee_id" 
+                        class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                        >
+                        @foreach ($employees as $emp)
+                            <option value="{{ $emp->id }}"
+                                {{ old('employee_id', $visits->employee_id) == $emp->id ? 'selected' : '' }}>
+                            {{ $emp->name }}
+                            </option>
+                            
+                        @endforeach
+                    </select>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-1 mt-6 md:gap-3">
+            <label for="outlet_id" class="block text-sm font-medium text-gray-900 dark:text-white">Outlet</label>
+            @error('outlet_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+            <select id="outlet_id" name="outlet_id" class="block py-2.5 px-0 w-full text-sm text-gray-800 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                <option disabled selected >Pilih Lokasi</option>
+                @if ($specialOutlet)
+                    <option class="text-gray-700" value="{{ $specialOutlet->id}}">{{ $specialOutlet->name }}</option>
+                @endif
+
+                @foreach ($outlets as $outlet)
+                    @if (!$specialOutlet || $outlet->id != $specialOutlet->id) 
+                        <option class="text-gray-700" value="{{ $outlet->id }}" {{ $visits->outlet_id == $outlet->id ? 'selected' : ''}}>{{ $outlet->name }}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="relative z-0 w-full mb-5 group mt-10">
+                <label for="ticket_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticket</label>
+                <select name="ticket_id" id="ticket_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                    <option value="" class="text-black dark:text-gray-700"> Tidak ada ticket </option>
+                @foreach ($tickets as $ticket)
+                    <option
+                        class="bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-700 hover:bg-gray-300 text-black dark:text-gray-500" 
+                        value="{{ $ticket->id }}" {{ $visits->ticket_id == $ticket->id ? 'selected' : '' }}>
+                        {{ $ticket->ticketing }} - {{ $ticket->problem }}
+                    </option>
+                @endforeach
+                </select>
+            </div> 
+            <div class="relative z-0 w-full mb-5 group">
+              <div class="relative z-0 w-full mb-5 group mt-10">
+                    <label for="tanggal_visit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Date</label>
+                    <input type="datetime-local" name="tanggal_visit" id="tanggal_visit" value="{{ \Carbon\Carbon::parse($visits->tanggal_visit)->format('Y-m-d\TH:i')  }}" required class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+              </div>
+            </div>
+         </div>
+
+    <div>
+        <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    onchange="if(['Done'].includes(this.value)) document.getElementById('visitForm').submit();"
+                    >
+                        <option value="Open" {{ old('status', $visits->status) == 'Open' ? 'selected' : '' }}>Open</option>
+                        <option value="InProgress" {{ old('status', $visits->status) == 'InProgress' ? 'selected' : '' }}>InProgress</option>
+                        @if (auth()->user()->hasRole(['superadmin','admin1']))
+                        <option value="Reschedule" {{ old('status', $visits->status) == 'Reschedule' ? 'selected' : '' }}>Reschedule</option>
+                        <option value="Finished" {{ old('status', $visits->status) == 'Finished' ? 'selected' : '' }}>Finished</option>
+                        <option value="Cancelled" {{ old('status', $visits->status) == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        @endif
+                    </select>
+    </div>  
+
+    <div class="mb-5 mt-5">
+        
+        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+        <textarea 
+        name="description" id="description"
+        cols="30" rows="5" 
+            class="w-full text-gray-900 bg-gray-300 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."
+           
+        > {{ old('description', $visits->description ) }}</textarea>
+        {{-- <textarea
+        id="description" name="description"
+        cols="30"
+        rows="5" 
+        class="w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
+        {{ old('description', $visits->description) }}
+    </textarea> --}}
+
+    <div class="mb-4 mt-5">
+        <label class="block text-sm text-gray-700 font-medium dark:text-gray-50">Upload Gambar</label>
+        <input 
+            type="file" 
+            name="images[]" 
+            id="images"
+            multiple
+            accept="image/*,video/mp4"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500">
+        <p class="text-xs text-gray-500 mt-1">Boleh upload lebih dari satu.</p>
+
+        <div class="grid grid-cols-3 gap-4 mt-4" id="imagePreview"></div>
+    </div>
+    {{-- @endforeach --}}
+    </div>
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mb-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    </form>
+
+    @if (isset($visits) && $visits->images->count())
+    <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-10">
+        @foreach ($visits->images as $media)
+            <div class="relative">
+                {{-- <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" /> --}}
+                @php
+                $ext = pathinfo($media->path, PATHINFO_EXTENSION);
+                @endphp
+        
+                @if(in_array(strtolower($ext), ['mp4']))
+                    <video controls class="w-full h-32 object-cover mb-10 rounded">
+                        <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
+                    <img src="{{ asset('storage/' . $media->path) }}" alt="" class="w-full h-32 object-cover mb-10 rounded" />
+                @endif
+                
+                <form action="{{ route('visits.images.destroy', $media->id) }}" method="POST" class="absolute top-1 right-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                        class="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                        onclick="return confirm('Yakin hapus media ini?')">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        @endforeach
+    </div>
+    @endif
+
+{{-- </form> --}}
+
+<script>
+document.getElementById('images').addEventListener('change', function(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.innerHTML = ''; // Clear preview
+
+    Array.from(event.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('w-full', 'h-32', 'object-cover', 'rounded');
+            imagePreview.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+    });
+});
+</script>
+</x-app-layout>
+

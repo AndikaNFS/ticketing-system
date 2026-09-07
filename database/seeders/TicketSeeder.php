@@ -16,17 +16,17 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-    //     for ($i = 0; $i < 20; $i++) {
-    //     Ticket::create([
-    //         'ticketing' => 'R001'. strtoupper(Str::random(6)),
-    //         'problem' => 'Printer Error' . ($i + 1),
-    //         'outlet' => 'Lotte' . rand(1, 5),
-    //         'status' => collect(['Open', 'InProgress', 'Done', 'Cancel'])->random(),
-    //         'it_name' => 'IT-' . rand(1, 5),
-    //         'date_finish' => now()->addDays(rand(1, 7)),
-    //         'lama_pengerjaan' => null,
-    //     ]);
-    // }
+        for ($i = 0; $i < 20; $i++) {
+        Ticket::create([
+            'ticketing' => 'R001'. strtoupper(Str::random(6)),
+            'problem' => 'Printer Error' . ($i + 1),
+            'outlet' => 'Lotte' . rand(1, 5),
+            'status' => collect(['Open', 'InProgress', 'Done', 'Cancel'])->random(),
+            'it_name' => 'IT-' . rand(1, 5),
+            'date_finish' => now()->addDays(rand(1, 7)),
+            'lama_pengerjaan' => null,
+        ]);
+    }
 
         // User::create(
         //     [

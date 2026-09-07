@@ -5,25 +5,98 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    {{-- <a href="{{ route('dashboard') }}"> --}}
                         {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> --}}
                         <x-application-logo class="flex items-center h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
+                    {{-- </a> --}}
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
+                    @if(auth()->user()->hasRole('superadmin|admin|direksi'))
+                    
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Ticketing') }}
                     </x-nav-link>
-                    @if(auth()->user()->hasRole('superadmin'))
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('User') }}
+                    <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                        {{ __('Visit Schedule') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('outlets.index')" :active="request()->routeIs('outlets.index')">
+                        {{ __('Area Outlet') }}
                     </x-nav-link>
                     @endif
-                    {{-- <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
-                        {{ __('Visit Schedule') }}
+                    @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
+
+                    <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
+                        {{ __('Schedule IT') }}
+                    </x-nav-link>
+                    @endif
+                    @if(auth()->user()->hasRole('superadmin|hrd'))
+
+                    <x-nav-link :href="route('schedulebuilds.index')" :active="request()->routeIs('schedulebuilds.index')">
+                        {{ __('Schedule Maintenance') }}
+                    </x-nav-link>
+                    @endif
+                    @if(auth()->user()->hasRole('superadmin|admin|building|direksi|maintenance|maintenance1'))
+
+                    
+                    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-gray-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center " type="button">Building <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+                        <li>
+                            <a href="{{ route('building.tickets.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ticketing</a>
+                        </li>
+                        
+                        </ul>
+                    @if(auth()->user()->hasRole('superadmin|admin|direksi|maintenance|maintenance1'))
+                        <div class="py-2">
+                            <ul>
+                                <li>
+                                    <a href="{{ route('schedulebuilds.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Schedule</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('building.visits.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Visit</a>
+                                </li>
+
+                            </ul>
+                        {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Separated link</a> --}}
+                        </div>
+                        
+                    @endif
+                    </div>
+
+                    {{-- <x-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
+                        {{ __('Building') }}
                     </x-nav-link> --}}
+                    @endif
+
+                    @if(auth()->user()->hasRole('superadmin'))
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">Manage user <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                      </svg></button>
+                     <!-- Dropdown menu -->
+                    <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownLargeButton">
+                          <li>
+                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Users</a>
+                          </li>
+                          <li>
+                            <a href="{{ route('roles.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Roles</a>
+                          </li>
+                          <li>
+                            <a href="{{ route('permissions.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Permissions</a>
+                          </li>
+                        </ul>
+                        {{-- <div class="py-1">
+                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                        </di           v> --}}
+                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -43,12 +116,17 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        @if(auth()->user()->hasRole('superadmin|admin'))
+                        @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
                         @endif
 
+                        @if(auth()->user()->hasRole('superadmin|admin'))
+                        <x-dropdown-link :href="route('reports.index')">
+                            {{ __('Report') }}
+                        </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -74,13 +152,68 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            {{-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> --}}
+            @if(auth()->user()->hasRole('superadmin|admin|direksi'))
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Ticketing') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('visits.index')" :active="request()->routeIs('visits.index')">
+                    {{ __('Visit Schedule') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('outlets.index')" :active="request()->routeIs('outlets.index')">
+                    {{ __('Area Outlet') }}
+                </x-responsive-nav-link>
+            @endif
+             @if(auth()->user()->hasRole('superadmin|admin|hrd|direksi'))
+             
+
+                <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
+                    {{ __('Schedule IT') }}
+                </x-responsive-nav-link>
+            @endif
+             @if(auth()->user()->hasRole('superadmin|admin|direksi|building|maintenance|maintenance1'))
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+
+
+                <x-responsive-nav-link :href="route('building.tickets.index')" :active="request()->routeIs('building.tickets.index')">
+                    {{ __('Building') }}
+                </x-responsive-nav-link>
+            @endif
+            
+            @if(auth()->user()->hasRole('superadmin|admin|hrd|maintenance|maintenance1'))
+
+                <x-responsive-nav-link :href="route('schedulebuilds.index')" :active="request()->routeIs('schedulebuilds.index')">
+                    {{ __('Schedule') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
+
+                <x-responsive-nav-link :href="route('building.visits.index')" :active="request()->routeIs('building.visits.index')">
+                    {{ __('Visit') }}
+                </x-responsive-nav-link>
+            @endif
+            </div>
+            @if(auth()->user()->hasRole('superadmin'))
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                    {{ __('User') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                    {{ __('Role') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
+                    {{ __('Permission') }}
+                </x-responsive-nav-link>
+            </div>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -91,7 +224,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                @if(auth()->user()->hasRole('superadmin|admin'))
+                @if(auth()->user()->hasRole('superadmin|admin|maintenance|maintenance1'))
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
@@ -109,4 +242,6 @@
             </div>
         </div>
     </div>
+
+    
 </nav>
