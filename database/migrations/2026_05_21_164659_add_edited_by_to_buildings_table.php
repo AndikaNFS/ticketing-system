@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('buildings', function (Blueprint $table) {
-            $table->unsignedBigInteger('edited_by')->nullable()->constrained('users');
+        Schema::table('assets', function (Blueprint $table) {
+            $table->string('asset_number')->nullable()->unique()->after('serial_number');
 
 
         });
@@ -23,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('buildings', function (Blueprint $table) {
-            //
+        Schema::table('assets', function (Blueprint $table) {
+            $table->dropColumn('asset_number');
         });
     }
 };

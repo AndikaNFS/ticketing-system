@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetImageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
@@ -21,7 +23,9 @@ use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VisitBuildingController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WhatsappController;
+use App\Models\Asset;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -234,6 +238,31 @@ Route::prefix('admin')->middleware('role:superadmin')->group(function () {
 Route::prefix('building')->middleware('role:superadmin')->group(function () {
     // Route::resource('tickets', BuildingController::class);
 });
+
+// INVENTORY
+Route::prefix('inventory')->middleware(['auth'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+
+    Route::patch(
+        'categories/{category}/toggle-status',
+        [CategoryController::class, 'toggleStatus']
+    )->name('categories.toggle-status');
+
+    Route::resource('inventories', InventoryController::class);
+
+    // Route::resource('assets', AssetController::class);
+    Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+    Route::get('/assets/outlet/{outlet}', [AssetController::class, 'outlet'])->name('assets.outlet');
+    Route::get('/assets/outlet/{outlet}/create', [AssetController::class, 'create'])->name('assets.create');
+    Route::post('/assets/outlet/{outlet}', [AssetController::class, 'store'])->name('assets.store');
+    Route::get('/assets/{asset}', [AssetController::class, 'show'])->name('assets.show');
+    Route::get('/assets/{asset}/edit', [AssetController::class, 'edit'])->name('assets.edit');
+    Route::put('/assets/{asset}', [AssetController::class, 'update'])->name('assets.update');
+    Route::delete('/assets/{asset}', [AssetController::class, 'destroy'])->name('assets.destroy');
+    
+    Route::post('/assets/{asset}/images', [AssetImageController::class, 'store'])->name('assets.images.store');
+    Route::delete('/assets/{asset}/images/{image}', [AssetImageController::class, 'destroy'])->name('assets.images.destroy');
+}); 
 
 // Route::post('/whatsapp/webhook', [WhatsappController::class, 'webhook'])->name('whatsapp.webhook');
 

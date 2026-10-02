@@ -6,9 +6,12 @@
          @php
             $isITSupportActive = request()->routeIs('tickets.*') || 
                                  request()->routeIs('visits.*') || 
-                                 request()->routeIs('schedules.*') ||
-                                 request()->routeIs('inventory.*');
-         
+                                 request()->routeIs('schedules.*');
+                                 
+            $isInventoryActive = request()->routeIs('categories.*') ||
+                                 request()->routeIs('inventories.*') ||
+                                 request()->routeIs('assets.*');
+
             $isMaintenanceActive = request()->routeIs('building.tickets.*') || 
                                  request()->routeIs('building.visits.*') || 
                                  request()->routeIs('schedulebuilds.*');
@@ -17,6 +20,8 @@
                                  request()->routeIs('roles.*') || 
                                  request()->routeIs('employees.*')||
                                  request()->routeIs('permissions.*');
+            
+                                 
          @endphp
 
          {{-- IT Support --}}
@@ -78,16 +83,62 @@
                         </a>
                      </li>
                @endif
-               {{-- @if(auth()->user()->hasRole('superadmin|admin'))
+               @if(auth()->user()->hasRole('superadmin|admin'))
                      <li>
+                     </li>
+                     @endif
+                  </ul>
+                  
+               <button type="button"
+                  class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group
+                  {{ $isInventoryActive ? 'bg-gray-200 dark:bg-gray-700 text-blue-600 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                  aria-controls="dropdown-inv"
+                  data-collapse-toggle="dropdown-inv">
+                  
+                  {{-- <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+               
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"/>
+                  </svg> --}}
+
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 12v1h4v-1m4 7H6a1 1 0 0 1-1-1V9h14v9a1 1 0 0 1-1 1ZM4 5h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+                  </svg>
+
+
+
+                  <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Inventory</span>
+                  <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                  </svg>
+               </button>
+               <ul id="dropdown-inv" class="hidden py-2 space-y-2 {{ $isInventoryActive ? '' : 'hidden'}}">
+                     <li>
+                        {{-- <a href="{{ route('categories.index') }}" 
+                        class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">Category</a> --}}
+                        <a href="{{ route('categories.index') }}"
+                           class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
+                           {{ request()->routeIs('categories.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           Category
+                        </a>
+                     </li>
+                     <li>
+                        {{-- <a href="{{ route('inventory.index') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">Inventory</a> --}}
                         <a href="{{ route('inventory.index') }}"
                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
-                           {{ request()->routeIs('inventory.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           {{ request()->routeIs('inventory.inventories.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                            Inventory
                         </a>
                      </li>
-               @endif --}}
-            </ul>
+                     <li>
+                        {{-- <a href="{{ route('assets.index') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">Assets</a> --}}
+                        <a href="{{ route('assets.index') }}"
+                           class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group 
+                           {{ request()->routeIs('assets.*') ? 'text-blue-600 font-semibold' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                           Assets
+                        </a>
+                     </li>
+               </ul>
+            
          </li>
 
          {{-- Maintenance --}}

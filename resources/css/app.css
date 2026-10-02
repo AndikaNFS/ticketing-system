@@ -9,3 +9,7 @@
 
 /* import '..//css/choices.css'; */
 @import './../css/choices.css';
+
+[x-cloak] {
+    display: none !important;
+}
