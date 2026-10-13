@@ -17,6 +17,12 @@ class InventoryRepair extends Model
         'completed_at',
     ];
 
+    protected $casts = [
+        'repair_date' => 'datetime',
+        'completed_at' => 'datetime',
+        'cost' => 'decimal:2',
+    ];
+
     public function inventory()
     {
         return $this->belongsTo(Inventory::class);

@@ -26,6 +26,8 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('schedules.index');
             } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
                 return redirect()->route('building.tickets.index');
+            } elseif ($user->hasRole(['inventory', 'superadmin', 'admin', 'admin1', 'direksi'])) {
+                return redirect()->route('inventory.index');
             } elseif ($user->hasRole(['user'])) {
                 return redirect()->route('welcome');
             } else {
@@ -59,6 +61,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('schedules.index');
         } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
             return redirect()->route('building.tickets.index');
+        } elseif ($user->hasRole(['inventory', 'superadmin', 'admin', 'admin1', 'direksi'])) {
+            return redirect()->route('inventory.index');
         } elseif ($user->hasRole('user')) {
             return redirect()->route('welcome');
         } else {

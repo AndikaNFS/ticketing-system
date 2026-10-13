@@ -2,22 +2,21 @@
 
     <x-slot name="header">
 
+        
+    </x-slot>
+    
+    
+    <div class="py-6">
         <div>
-
+    
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
                 Tambah Asset
             </h2>
-
+    
             <p class="text-sm text-gray-500 mt-1">
                 {{ $outlet->name }}
             </p>
-
         </div>
-
-    </x-slot>
-
-
-    <div class="py-6">
 
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 

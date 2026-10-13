@@ -52,7 +52,7 @@
                             Device
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->inventory->device }}
                         </p>
                     </div>
@@ -63,7 +63,7 @@
                             Merk
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->inventory->brand ?? '-' }}
                         </p>
                     </div>
@@ -74,7 +74,7 @@
                             Category
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->inventory->category->name ?? '-' }}
                         </p>
                     </div>
@@ -85,7 +85,7 @@
                             Outlet
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->outlet->name ?? '-' }}
                         </p>
                     </div>
@@ -96,7 +96,7 @@
                             Area
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->outlet->area ?? '-' }}
                         </p>
                     </div>
@@ -107,7 +107,7 @@
                             Quantity Inventory
                         </p>
 
-                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-900">
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->inventory->quantity }}
                         </p>
                     </div>

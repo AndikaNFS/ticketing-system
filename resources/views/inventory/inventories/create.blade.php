@@ -2,13 +2,16 @@
 
     <x-slot name="header">
 
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
-            Tambah Inventaris
-        </h2>
-
+        
     </x-slot>
-
+    
     <div class="py-6">
+        <div class="">
+
+        </div>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 mb-3">
+            Add Device
+        </h2>
 
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
@@ -25,7 +28,7 @@
 
                         <div class="mb-5">
 
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200 text-gray-900 dark:text-gray-200">
+                            <label class="block mb-2 text-sm font-medium  text-gray-900 dark:text-gray-200">
                                 Device
                             </label>
 
@@ -73,7 +76,7 @@
                                     class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                                 <option value="">
-                                     Pilih Category 
+                                     Select Category 
                                 </option>
 
                                 @foreach ($categories as $category)
@@ -111,7 +114,7 @@
                                     class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                                 <option value="">
-                                     Pilih Outlet 
+                                     Select Outlet 
                                 </option>
 
                                 @foreach ($outlets as $outlet)

@@ -22,19 +22,19 @@
             @endif
                 <div class="flex items-center justify-between">
 
-                <div>
+                <div class="mb-3">
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
-                            Inventaris IT
+                            Quantity List
                         </h2>
 
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Data perangkat dan aset IT
+                            IT Device and Asset Data
                         </p>
                     </div>
 
                     <a href="{{ route('inventories.create') }}"
                     class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                        + Tambah Inventaris
+                        + Add Device
                     </a>
 
                 </div>

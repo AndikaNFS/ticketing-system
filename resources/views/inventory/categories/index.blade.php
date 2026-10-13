@@ -1,25 +1,25 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+    </x-slot>
+    
+    <div class="py-6">
+        <div class="flex items-center justify-between mb-3">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
-                    Kategori Inventaris
+                    Category Quantity
                 </h2>
-
+    
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Kelola kategori perangkat IT
+                    Manage IT Device Categories
                 </p>
             </div>
-
+    
             <a href="{{ route('categories.create') }}"
                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                + Tambah Kategori
+                + Add Category
             </a>
         </div>
-    </x-slot>
-
-    <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- Alert --}}
@@ -50,7 +50,7 @@
                                     </th>
 
                                     <th class="px-6 py-3">
-                                        Nama
+                                        Name
                                     </th>
 
                                     <th class="px-6 py-3">

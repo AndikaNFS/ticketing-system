@@ -38,6 +38,22 @@
                             </p>
                         </div>
 
+                        {{-- @if ($asset->status !== 'Repair') --}}
+                        @if (!in_array($asset->status, ['Repair', 'Lost', 'Disposed']))
+                            <a
+                                href="{{ route('assets.repairs.create', $asset) }}"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white
+                                    bg-red-600 rounded-lg hover:bg-red-700"
+                            >
+                                Mulai Perbaikan
+                            </a>
+                        @endif
+                        @if (!in_array($asset->status, ['Repair', 'Lost', 'Disposed']))
+                            <a href="{{ route('assets.asset-transfers.create', $asset) }}"
+                                class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+                                Transfer Asset
+                            </a>
+                        @endif
                         <a href="{{ route('assets.edit', $asset) }}"
                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
                             Edit Asset
@@ -285,6 +301,7 @@
                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                                 Format JPG, JPEG, PNG, WEBP. Maksimal 5 MB per foto.
                                 Bisa memilih beberapa foto sekaligus.
+                                Sertakan foto serial number asset jika ada.
                             </p>
                         </div>
                         @error('images')

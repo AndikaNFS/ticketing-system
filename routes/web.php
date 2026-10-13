@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetImageController;
+use App\Http\Controllers\AssetRepairController;
+use App\Http\Controllers\AssetTransferController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
@@ -240,8 +242,9 @@ Route::prefix('building')->middleware('role:superadmin')->group(function () {
 });
 
 // INVENTORY
-Route::prefix('inventory')->middleware(['auth'])->group(function () {
+Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|direksi'])->group(function () {
     Route::resource('categories', CategoryController::class);
+    Route::resource('inventory', InventoryController::class);
 
     Route::patch(
         'categories/{category}/toggle-status',
@@ -262,6 +265,15 @@ Route::prefix('inventory')->middleware(['auth'])->group(function () {
     
     Route::post('/assets/{asset}/images', [AssetImageController::class, 'store'])->name('assets.images.store');
     Route::delete('/assets/{asset}/images/{image}', [AssetImageController::class, 'destroy'])->name('assets.images.destroy');
+    Route::get('/assets/{asset}/transfer', [AssetTransferController::class, 'create'])->name('assets.asset-transfers.create');
+    Route::post('/assets/{asset}/transfer', [AssetTransferController::class, 'store'])->name('assets.asset-transfers.store');
+    Route::get('/asset-transfers', [AssetTransferController::class, 'index'])->name('assets.transfers.index');
+    
+    Route::get('/asset-repairs', [AssetRepairController::class, 'index'])->name('assets.repairs.index');
+    Route::get('/asset-repairs/{repair}', [AssetRepairController::class, 'show'])->name('assets.repairs.show');
+    Route::put('/asset-repairs/{repair}/complete', [AssetRepairController::class, 'complete'])->name('assets.repairs.complete');
+    Route::get('/assets/{asset}/repair', [AssetRepairController::class, 'create'])->name('assets.repairs.create');
+    Route::post('/assets/{asset}/repair', [AssetRepairController::class, 'store'])->name('assets.repairs.store');
 }); 
 
 // Route::post('/whatsapp/webhook', [WhatsappController::class, 'webhook'])->name('whatsapp.webhook');

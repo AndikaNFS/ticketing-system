@@ -161,6 +161,13 @@ class AssetController extends Controller
             ],
         ]);
 
+        if ($asset->status === 'Disposed' && $validated['status'] !== 'Disposed') {
+            return back()->withInput()->with(
+                'error',
+                "Asset yang sudah Disposed tidak dapat dikembalikan ke status lain."
+            );
+        }
+
         $asset->update([
             'serial_number' => $validated['serial_number'] ?? null,
             'asset_number' => $validated['asset_number'] ?? null,

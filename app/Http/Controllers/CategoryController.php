@@ -41,7 +41,7 @@ class CategoryController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()->route('inventory.categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -66,7 +66,12 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:100' . Rule::unique('categories', 'name')->ignore($category->id),
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('categories', 'name')->ignore($category->id)
+            ],
             'description' => 'nullable|string',
         ]);
 
@@ -75,7 +80,7 @@ class CategoryController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        return redirect()->route('inventory.categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
@@ -89,7 +94,7 @@ class CategoryController extends Controller
 
         $category->delete();
         
-        return redirect()->route('inventory.categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 
     public function toggleStatus(Category $category)
@@ -98,6 +103,6 @@ class CategoryController extends Controller
             'is_active' => !$category->is_active,
         ]);
 
-        return redirect()->route('inventory.categories.index')->with('success', 'Category status updated successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category status updated successfully.');
     }
 }

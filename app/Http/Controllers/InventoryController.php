@@ -100,13 +100,16 @@ class InventoryController extends Controller
      */
     public function show(Inventory $inventory)
     {
-        $inventory = Inventory::with([
-            'category',
-            'outlet',
-            'sourceOutlet',
-            'assets',
-            'images',
-        ]);
+        // $inventory = Inventory::with([
+        //     'category',
+        //     // 'device',
+        //     'outlet',
+        //     'sourceOutlet',
+        //     'assets',
+        //     'images',
+        // ]);
+
+        $inventory->load(['category', 'outlet', 'sourceOutlet', 'assets', 'images',]);
 
         return view('inventory.inventories.show', compact('inventory'));
     }
@@ -123,7 +126,7 @@ class InventoryController extends Controller
 
         $inventory->load('assets');
 
-        return view('inventories.edit', compact('inventory', 'categories', 'outlets'));
+        return view('inventory.inventories.edit', compact('inventory', 'categories', 'outlets'));
     }
 
     /**
@@ -136,12 +139,44 @@ class InventoryController extends Controller
             'brand' => 'nullable|string|max:100',
             'category_id' => 'required|exists:categories,id',
             'outlet_id' => 'required|exists:outlets,id',
-            'sources_outlet_id' => 'nullable|exists:outlets,id',
-            'quality' => 'required|integer|min:1',
+            'source_outlet_id' => 'nullable|exists:outlets,id',
+            'is_tracked' => 'required|boolean',
+            'quantity' => 'required|integer|min:1',
             'placement' => 'nullable|string|max:150',
             'entry_date' => 'required|date',
             'description' => 'nullable|string|max:500',
         ]);
+
+        $assetCount = $inventory->assets()->count();
+
+        // Validasi Quantity
+        if ($validated['quantity'] < $assetCount) {
+            return back()->withInput()
+                ->with(
+                    'error',
+                    'Quantity tidak boleh kurang dari jumlah Asset yang sudah dibuat ({$assetCount} Asset).'
+                );
+        }
+
+        // Inventory Tracked -> Bulk
+        if (!$validated['is_tracked'] && $assetCount > 0) {
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    "Inventory tidak dapat diubah menjadi Bulk karena masih memiliki {$assetCount} Asset."
+                );
+        }
+
+        // Outlet Inventory
+        if((int) $validated['outlet_id'] !== (int) $inventory->outlet_id && $assetCount >0) {
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Outlet Inventory tidak dapat diubah karena Inventory sudah memiliki Asset. Gunakan fitur Transfer Asset untuk memindahkan Asset'
+                );
+        }
 
         $inventory->update([
             'category_id' => $validated['category_id'],

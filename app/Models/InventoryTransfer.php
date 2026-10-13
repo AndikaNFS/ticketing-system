@@ -18,9 +18,19 @@ class InventoryTransfer extends Model
         'created_by',
     ];
 
+    protected $casts = [
+        'transfer_date' => 'datetime',
+        'quantity' => 'integer',
+    ];
+
     public function inventory()
     {
         return $this->belongsTo(Inventory::class);
+    }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
     }
 
     public function fromOutlet()
