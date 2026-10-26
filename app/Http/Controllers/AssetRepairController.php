@@ -25,12 +25,12 @@ class AssetRepairController extends Controller
             $query->where('outlet_id', $request->outlet_id);
         }
 
-        // Filter status
+        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter tanggal mulai
+        // Filter by start date
         if ($request->filled('start_date')) {
             $query->whereDate(
                 'repair_date',
@@ -39,7 +39,7 @@ class AssetRepairController extends Controller
             );
         }
 
-        // Filter tanggal akhir
+        // Filter by end date
         if ($request->filled('end_date')) {
             $query->whereDate(
                 'repair_date',
@@ -63,7 +63,7 @@ class AssetRepairController extends Controller
         if (in_array($asset->status, ['Repair', 'Lost', 'Disposed',], true)) {
             return redirect()->route('assets.show', $asset)->with(
                 'error',
-                "Asset dengan status {$asset->status} tidak dapat dibuatkan proses perbaikan."
+                "An asset with status {$asset->status} cannot be sent for repair."
             );
         }
         
@@ -96,12 +96,12 @@ class AssetRepairController extends Controller
             ], true)) {
                 throw ValidationException::withMessages([
                     'repair_date' =>
-                        "Asset dengan status {$lockedAsset->status} tidak dapat dibuatkan proses perbaikan.",
+                        "An asset with status {$lockedAsset->status} cannot be sent for repair.",
                 ]);
             }
             // if ($lockedAsset->status === 'Repair') {
             //     throw ValidationException::withMessages([
-            //         'repair_date' => 'Asset ini sedang dala proses perbaikan.',
+            //         'repair_date' => 'This asset is already under repair.',
             //     ]);
             // }
 
@@ -116,13 +116,13 @@ class AssetRepairController extends Controller
                 'completed_at' => null,
             ]);
 
-            // Ubah status asset
+            // Update asset status.
             $lockedAsset->update([
                 'status' => 'Repair',
             ]);
         });
 
-        return redirect()->route('assets.show', $asset)->with('success', 'Asset berhasil masuk proses perbaikan');
+        return redirect()->route('assets.show', $asset)->with('success', 'Asset repair process started successfully.');
     }
 
     public function show(InventoryRepair $repair)
@@ -148,10 +148,10 @@ class AssetRepairController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            // Tidak boleh menyelesaikan repair yang sudah selesai
+            // A completed repair cannot be completed again.
             if ($lockedRepair->status === 'Completed') {
                 throw ValidationException::withMessages([
-                    'completed_at' => 'Perbaikan ini sudah diselesaikan.',
+                    'completed_at' => 'This repair has already been completed.',
                 ]);
             }
 
@@ -163,31 +163,31 @@ class AssetRepairController extends Controller
             // Pastikan asset sedang Repair
             if ($lockedAsset->status !== 'Repair') {
                 throw ValidationException::withMessages([
-                    'asset_status' => 'Status Asset tidak sedang Repair.'
+                    'asset_status' => 'The asset status is not Repair.'
                 ]);
             }
 
-            // Pastikan tanggal selesai tidak sebelum tanggal mulai
+            // Ensure the completion date is not before the start date.
             if (
                 strtotime($validated['completed_at']) < strtotime($lockedRepair->repair_date)
             ) {
                 throw ValidationException::withMessages([
-                    'completed_at' => 'Tanggal selesai tidak boleh sebelum tanggal mulai perbaikan.',
+                    'completed_at' => 'The completion date cannot be earlier than the repair start date.',
                 ]);
             }
 
-            // Update riwayat repair
+            // Update repair history.
             $lockedRepair->update([
                 'status' => 'Completed',
                 'completed_at' => $validated['completed_at'],
             ]);
 
-            // Update status Asset
+            // Update asset status.
             $lockedAsset->update([
                 'status' => $validated['asset_status'],
             ]);
         });
 
-        return redirect()->route('assets.repairs.show', $repair)->with('success', 'Perbaikan berhasil diselesaikan');
+        return redirect()->route('assets.repairs.show', $repair)->with('success', 'Repair completed successfully.');
     }
 }

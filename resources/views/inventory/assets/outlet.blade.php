@@ -16,7 +16,7 @@
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Daftar asset yang berada di outlet ini
+                    Assets located at this outlet
                 </p>
     
             </div>
@@ -25,7 +25,7 @@
                 href="{{ route('assets.create', $outlet) }}"
                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
             >
-                + Tambah Asset
+                + Add Asset
             </a>
     
         </div>
@@ -95,6 +95,57 @@
 
                     </div>
 
+                    
+                    {{-- <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
+                                    Outlet
+                                </p>
+                                <p class="font-semibold text-gray-900 dark:text-white">
+                                    {{ $outlet->name }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
+                                    Area
+                                </p>
+                                <p class="font-semibold text-gray-900 dark:text-white">
+                                    {{ $outlet->area ?? '-' }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
+                                    Inventory Type
+                                </p>
+                                <p class="font-semibold text-blue-600">
+                                    {{ $totalInventories }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
+                                    Asset Individual
+                                </p>
+                                <p class="font-semibold text-blue-600">
+                                    {{ $totalIndividualAssets }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
+                                    Total Unit Bulk
+                                </p>
+                                <p class="font-semibold text-blue-600">
+                                    {{ $totalBulkUnits }}
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
+
+
 
                     {{-- Back --}}
                     <div class="mb-4">
@@ -103,7 +154,7 @@
                             href="{{ route('assets.index') }}"
                             class="text-sm text-blue-600 hover:underline"
                         >
-                            ← Kembali ke daftar Outlet
+                            ← Back to Outlet List
                         </a>
 
                     </div>
@@ -131,6 +182,10 @@
                                     </th>
 
                                     <th class="px-6 py-3">
+                                        Type
+                                    </th>
+
+                                    <th class="px-6 py-3">
                                         Serial Number
                                     </th>
 
@@ -146,8 +201,12 @@
                                         Placement
                                     </th>
 
+                                    <th class="px-6 py-3">
+                                        Qty Image
+                                    </th>
+
                                     <th class="px-6 py-3 text-center">
-                                        Action
+                                        Actions
                                     </th>
 
                                 </tr>
@@ -173,6 +232,10 @@
 
                                         <td class="px-6 py-4">
                                             {{ $asset->inventory?->brand ?? '-' }}
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            {{ $asset->inventory?->type ?? '-' }}
                                         </td>
 
 
@@ -211,6 +274,10 @@
                                             {{ $asset->placement ?? '-' }}
                                         </td>
 
+                                        <td class="px-6 py-4">
+                                            {{-- {{ $asset->placement ?? '-' }} --}}
+                                        </td>
+
 
                                         <td class="px-6 py-4">
 
@@ -220,7 +287,7 @@
                                                     href="{{ route('assets.show', $asset) }}"
                                                     class="px-3 py-2 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                                                 >
-                                                    Detail
+                                                    Details
                                                 </a>
 
                                                 <a
@@ -233,7 +300,7 @@
                                                 <form
                                                     action="{{ route('assets.destroy', $asset) }}"
                                                     method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus asset ini?')"
+                                                    onsubmit="return confirm('Are you sure you want to delete this asset?')"
                                                 >
 
                                                     @csrf
@@ -243,7 +310,7 @@
                                                         type="submit"
                                                         class="px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
                                                     >
-                                                        Hapus
+                                                        Delete
                                                     </button>
 
                                                 </form>
@@ -264,11 +331,11 @@
                                         >
 
                                             <p class="text-lg font-medium text-gray-900">
-                                                Belum ada Asset
+                                                No assets found
                                             </p>
 
                                             <p class="text-sm text-gray-500 mt-1">
-                                                Tambahkan Asset untuk outlet ini.
+                                                Add an asset to this outlet.
                                             </p>
 
                                         </td>
@@ -282,6 +349,83 @@
                         </table>
 
                     </div>
+
+                    
+                    {{-- Inventory Table --}}
+                    {{-- <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                            Inventory List
+                        </h3>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700
+                                            text-gray-700 dark:text-gray-200">
+                                    <tr>
+                                        <th class="px-4 py-3">No</th>
+                                        <th class="px-4 py-3">Device</th>
+                                        <th class="px-4 py-3">Category</th>
+                                        <th class="px-4 py-3">Merk</th>
+                                        <th class="px-4 py-3">Tipe</th>
+                                        <th class="px-4 py-3">Quantity</th>
+                                        <th class="px-4 py-3">Placement</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @forelse ($inventories as $inventory)
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="px-4 py-3">
+                                                {{ $loop->iteration }}
+                                            </td>
+
+                                            <td class="px-4 py-3 font-medium text-gray-900
+                                                    dark:text-white">
+                                                {{ $inventory->device }}
+                                            </td>
+
+                                            <td class="px-4 py-3">
+                                                {{ $inventory->category?->name ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-3">
+                                                {{ $inventory->brand ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-3">
+                                                @if ($inventory->is_tracked)
+                                                    <span class="px-2 py-1 text-xs rounded-full
+                                                                bg-blue-100 text-blue-800">
+                                                        Tracked
+                                                    </span>
+                                                @else
+                                                    <span class="px-2 py-1 text-xs rounded-full
+                                                                bg-gray-100 text-gray-800">
+                                                        Bulk
+                                                    </span>
+                                                @endif
+                                            </td>
+
+                                            <td class="px-4 py-3">
+                                                {{ $inventory->quantity }}
+                                            </td>
+
+                                            <td class="px-4 py-3">
+                                                {{ $inventory->placement ?? '-' }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="px-4 py-8 text-center">
+                                                No inventory items found for this outlet.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> --}}
+
 
 
                     @if ($assets->hasPages())

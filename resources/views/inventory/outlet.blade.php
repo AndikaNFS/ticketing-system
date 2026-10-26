@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 p-4">
         <div>
         {{-- <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="inline-flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none" type="button">
-            Action
+            Actions
             <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
         </button>
         <!-- Dropdown menu -->
@@ -47,7 +47,7 @@
                     Status
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Action
+                    Actions
                 </th>
             </tr>
         </thead>
@@ -69,7 +69,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit user</a>
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit User</a>
                 </td>
             </tr>
             <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
@@ -89,7 +89,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit user</a>
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit User</a>
                 </td>
             </tr>
             <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
@@ -109,7 +109,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit user</a>
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit User</a>
                 </td>
             </tr>
             <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
@@ -129,7 +129,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit user</a>
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit User</a>
                 </td>
             </tr>
             <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
@@ -149,7 +149,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit user</a>
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit User</a>
                 </td>
             </tr>
         </tbody>

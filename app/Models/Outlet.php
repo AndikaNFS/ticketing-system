@@ -46,13 +46,18 @@ class Outlet extends Model
 
     public function inventories()
     {
-        return $this->hasMany(Inventory::class);
+        return $this->hasMany(Inventory::class, 'outlet_id');
     }
 
     public function sourceInventories()
     {
-        return $this->hasMany(Inventory::class, 'source_outlet_id');
+        return $this->hasMany(Inventory::class, 'sources_outlet_id');
     }
+
+    // public function sourceOutlet()
+    // {
+    //     return $this->hasMany(Inventory::class, 'sources_outlet_id');
+    // }
 
     public function assets()
     {

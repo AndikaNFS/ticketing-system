@@ -103,6 +103,29 @@
                             >
 
                         </div>
+                        
+                        {{-- Type --}}
+                        <div>
+
+                            <label
+                                for="type"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Merk
+                            </label>
+
+                            <input
+                                type="text"
+                                id="type"
+                                name="type"
+                                value="{{ old('type', $inventory->type) }}"
+                                maxlength="100"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                       focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                                       dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            >
+
+                        </div>
 
 
                         {{-- Category --}}
@@ -175,10 +198,10 @@
                             @if ($inventory->assets->count() > 0)
 
                                 <p class="mt-2 text-xs text-yellow-600 dark:text-yellow-400">
-                                    Inventory ini sudah memiliki
+                                    This inventory already has
                                     {{ $inventory->assets->count() }} Asset.
-                                    Outlet tidak dapat dipindahkan dari Inventory.
-                                    Gunakan Transfer Asset untuk memindahkan Asset.
+                                    The inventory outlet cannot be changed.
+                                    Use Transfer Asset to move an asset.
                                 </p>
 
                             @endif
@@ -190,29 +213,29 @@
                         <div>
 
                             <label
-                                for="source_outlet_id"
+                                for="sources_outlet_id"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Asal Barang
+                                Source Outlet
                             </label>
 
                             <select
-                                id="source_outlet_id"
-                                name="source_outlet_id"
+                                id="sources_outlet_id"
+                                name="sources_outlet_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                                        dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             >
 
                                 <option value="">
-                                     Tidak Ada 
+                                     None 
                                 </option>
 
                                 @foreach ($outlets as $outlet)
 
                                     <option
                                         value="{{ $outlet->id }}"
-                                        @selected(old('source_outlet_id', $inventory->source_outlet_id) == $outlet->id)
+                                        @selected(old('sources_outlet_id', $inventory->sources_outlet_id) == $outlet->id)
                                     >
                                         {{ $outlet->name }}
                                     </option>
@@ -266,7 +289,7 @@
                                 for="is_tracked"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Dicatat sebagai Asset?
+                                Recorded an as Asset?
                             </label>
 
                             <select
@@ -291,7 +314,7 @@
                                     value="0"
                                     @selected(old('is_tracked', $inventory->is_tracked) == 0)
                                 >
-                                    Tidak - Bulk
+                                    No - Bulk
                                 </option>
 
                             </select>
@@ -339,7 +362,7 @@
                                 for="entry_date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Tanggal Masuk
+                                Entry Date
                             </label>
 
                             <input
@@ -389,14 +412,14 @@
                                    rounded-lg hover:bg-gray-100
                                    dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         >
-                            Batal
+                            Cancel
                         </a>
 
                         <button
                             type="submit"
                             class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                         >
-                            Simpan Perubahan
+                            Save Changes
                         </button>
 
                     </div>

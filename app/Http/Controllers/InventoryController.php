@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryTemplateExport;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Outlet;
@@ -9,6 +10,7 @@ use App\Models\Asset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
 {
@@ -65,7 +67,7 @@ class InventoryController extends Controller
             'description' => 'nullable|string|max:500',
         ]);
 
-        $inventory = Inventory::create([
+        Inventory::create([
             'category_id' => $validated['category_id'],
             'outlet_id' => $validated['outlet_id'],
             'sources_outlet_id' => $validated['sources_outlet_id'] ?? null,
@@ -139,7 +141,7 @@ class InventoryController extends Controller
             'brand' => 'nullable|string|max:100',
             'category_id' => 'required|exists:categories,id',
             'outlet_id' => 'required|exists:outlets,id',
-            'source_outlet_id' => 'nullable|exists:outlets,id',
+            'sources_outlet_id' => 'nullable|exists:outlets,id',
             'is_tracked' => 'required|boolean',
             'quantity' => 'required|integer|min:1',
             'placement' => 'nullable|string|max:150',
@@ -154,7 +156,7 @@ class InventoryController extends Controller
             return back()->withInput()
                 ->with(
                     'error',
-                    'Quantity tidak boleh kurang dari jumlah Asset yang sudah dibuat ({$assetCount} Asset).'
+                    'Quantity cannot be less than the number of assets already created ({$assetCount} Asset).'
                 );
         }
 
@@ -164,7 +166,7 @@ class InventoryController extends Controller
                 ->withInput()
                 ->with(
                     'error',
-                    "Inventory tidak dapat diubah menjadi Bulk karena masih memiliki {$assetCount} Asset."
+                    "Inventory cannot be changed to Bulk because it still has {$assetCount} Asset."
                 );
         }
 
@@ -174,7 +176,7 @@ class InventoryController extends Controller
                 ->withInput()
                 ->with(
                     'error',
-                    'Outlet Inventory tidak dapat diubah karena Inventory sudah memiliki Asset. Gunakan fitur Transfer Asset untuk memindahkan Asset'
+                    'The inventory outlet cannot be changed because this inventory already has assets. Use the Transfer Asset feature to move assets.'
                 );
         }
 
@@ -213,5 +215,19 @@ class InventoryController extends Controller
         $inventory->delete();
 
         return redirect()->route('inventories.index')->with('success', 'Inventory deleted successfully.');
+    }
+
+    public function downloadTemplate()
+    {
+        $categories = Category::orderBy('name')
+            ->pluck('name')
+            ->toArray();
+        $outlets = Outlet::orderby('name')
+            ->pluck('name')
+            ->toArray();
+        return Excel::download(
+            new InventoryTemplateExport($categories, $outlets),
+            'new-inventory-template.xlsx'
+        );
     }
 }

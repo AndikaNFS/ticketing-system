@@ -5,7 +5,7 @@
     
     <div class="py-6">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Mulai Perbaikan Asset
+            Start Asset Repair
         </h2>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -24,7 +24,7 @@
             <div class="mb-6 bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
 
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Informasi Asset
+                    Asset Information
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -81,7 +81,7 @@
 
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Status Saat Ini
+                            Current Status
                         </p>
 
                         <p class="font-medium text-red-600 dark:text-red-400">
@@ -98,7 +98,7 @@
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
 
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-5">
-                    Data Perbaikan
+                    Repair Information
                 </h3>
 
                 <form
@@ -116,7 +116,7 @@
                                 for="repair_date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Tanggal Perbaikan
+                                Repair Date
                             </label>
 
                             <input
@@ -162,7 +162,7 @@
                                 for="cost"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Biaya Perbaikan
+                                Repair Cost
                             </label>
 
                             <input
@@ -188,14 +188,14 @@
                                 for="description"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Keterangan Kerusakan / Perbaikan
+                                Damage / Repair Description
                             </label>
 
                             <textarea
                                 id="description"
                                 name="description"
                                 rows="5"
-                                placeholder="Jelaskan kerusakan atau tindakan perbaikan..."
+                                placeholder="Describe the damage or repair action..."
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                                        dark:bg-gray-700 dark:border-gray-600
@@ -216,7 +216,7 @@
                                    dark:bg-gray-700 dark:text-white dark:border-gray-600
                                    dark:hover:bg-gray-600"
                         >
-                            Batal
+                            Cancel
                         </a>
 
                         <button
@@ -225,7 +225,7 @@
                                    hover:bg-red-700 focus:ring-4 focus:ring-red-300
                                    dark:focus:ring-red-900"
                         >
-                            Mulai Perbaikan
+                            Start Repair
                         </button>
 
                     </div>

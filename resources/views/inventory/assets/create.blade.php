@@ -10,7 +10,7 @@
         <div>
     
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
-                Tambah Asset
+                Add Asset
             </h2>
     
             <p class="text-sm text-gray-500 mt-1">
@@ -74,7 +74,7 @@
                         >
 
                             <option value="">
-                                 Pilih Inventory 
+                                 Select Inventory 
                             </option>
 
                             @foreach ($inventories as $inventory)
@@ -101,7 +101,7 @@
                         @if ($inventories->isEmpty())
 
                             <p class="mt-2 text-sm text-red-600">
-                                Tidak ada Inventory Tracked yang tersedia untuk outlet ini.
+                                No tracked inventory is available for this outlet.
                             </p>
 
                         @endif
@@ -136,7 +136,7 @@
                         >
 
                         <p class="mt-1 text-xs text-gray-500">
-                            Kosongkan jika barang tidak memiliki Serial Number.
+                            Leave blank if the item does not have a serial number.
                         </p>
 
                         @error('serial_number')
@@ -267,7 +267,7 @@
                             for="entry_date"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
                         >
-                            Tanggal Masuk
+                            Entry Date
                         </label>
 
                         <input
@@ -297,14 +297,14 @@
                             href="{{ route('assets.outlet', $outlet) }}"
                             class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100"
                         >
-                            Batal
+                            Cancel
                         </a>
 
                         <button
                             type="submit"
                             class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                         >
-                            Simpan Asset
+                            Save Asset
                         </button>
 
                     </div>

@@ -12,7 +12,7 @@ class AssetController extends Controller
 {
     public function index()
     {
-        $outlets = Outlet::withCount('assets')
+        $outlets = Outlet::withCount(['assets', 'inventories'])
             ->orderBy('name')
             ->paginate(12);
 
@@ -21,14 +21,31 @@ class AssetController extends Controller
 
     public function outlet(Outlet $outlet)
     {
+        // $assets = $outlet->assets()
+        //     ->with([
+        //         'inventory.category',
+        //     ])
+        //     ->latest()
+        //     ->paginate(15);
+
+        $inventories = $outlet->inventories()
+            ->with('category')
+            ->orderBy('device')
+            ->get();
+
         $assets = $outlet->assets()
-            ->with([
-                'inventory.category',
-            ])
+            ->with(['inventory.category'])
             ->latest()
             ->paginate(15);
 
-        return view('inventory.assets.outlet', compact('outlet', 'assets'));
+        $totalBulkUnits = $inventories
+            ->where('is_tracked', false)
+            ->sum('quantity');
+
+        $totalInventories = $inventories->count();
+        $totalIndividualAssets = $outlet->assets()->count();
+
+        return view('inventory.assets.outlet', compact('outlet', 'inventories', 'assets', 'totalBulkUnits', 'totalIndividualAssets', 'totalInventories'));
     }
 
     public function create(Outlet $outlet)
@@ -59,37 +76,37 @@ class AssetController extends Controller
             ->where('outlet_id', $outlet->id)
             ->firstOrFail();
 
-        // Hitung jumlah asset yang sudah dibuat
+        // Count the assets that have already been created.
         $assetCount = Asset::where('inventory_id', $inventory->id)->count();
 
-        // Jangan sampai asset melebihi quantity Inventory
+        // Ensure the asset count does not exceed the inventory quantity.
         if ($assetCount >= $inventory->quantity) {
             return back()
                     ->withInput()
                     ->with(
-                        'error', "Jumlah Asset untuk {$inventory->device} sudah mencapai quantity Inventory ({$inventory->quantity})."
+                        'error', "The asset quantity for {$inventory->device} has reached the inventory quantity ({$inventory->quantity})."
                     );
         }
 
-        // Cek serial number jika di isi
+        // Check the serial number if provided.
         if (!empty($validated['serial_number'])) {
             $serialExists = Asset::where('serial_number', $validated['serial_number'])->exists();
 
             if ($serialExists) {
                 return back()
                         ->withInput()
-                        ->with('error', "Serial Number tersebut sudah digunakan oleh Asset lain.");
+                        ->with('error', "This serial number is already assigned to another asset.");
             }
         }
 
-        // Cek Asset Number jika di isi
+        // Check the asset number if provided.
         if (!empty($validated['asset_nnumber'])) {
             $assetNumberExists = Asset::where('asset_number', $validated['asset_number'])->exists();
 
             if ($assetNumberExists) {
                 return back()
                     ->withInput()
-                    ->with('error', "Asset Number tersebut sudah di gunakan oleh Asset lain.");
+                    ->with('error', "This asset number is already assigned to another asset.");
             }
         }
 
@@ -105,7 +122,7 @@ class AssetController extends Controller
 
         return redirect()
             ->route('assets.outlet', $outlet)
-            ->with('success', 'Asset berhasil ditambah');
+            ->with('success', 'Asset added successfully.');
     }
 
     public function show(Asset $asset)
@@ -164,7 +181,7 @@ class AssetController extends Controller
         if ($asset->status === 'Disposed' && $validated['status'] !== 'Disposed') {
             return back()->withInput()->with(
                 'error',
-                "Asset yang sudah Disposed tidak dapat dikembalikan ke status lain."
+                "A disposed asset cannot be changed to another status."
             );
         }
 
@@ -176,20 +193,20 @@ class AssetController extends Controller
             'entry_date' => $validated['entry_date'],
         ]);
 
-        return redirect()->route('assets.outlet', $asset->outlet_id)->with('success', 'Asset berhasil diperbarui.');
+        return redirect()->route('assets.outlet', $asset->outlet_id)->with('success', 'Asset updated successfully.');
     }
 
     public function destroy(Asset $asset)
     {
         if ($asset->transfers()->exists()) {
             return back()
-                ->with('error', 'Asset tidak dapat dihapus karena sudah memiliki riwayat transfer.');
+                ->with('error', 'This asset cannot be deleted because it has transfer history.');
         }
 
         $outletId = $asset->outlet_id;
 
         $asset->delete();
 
-        return redirect()->route('inventory.assets.outlet', $outletId)->with('success', 'Asset berhasil dihapus');
+        return redirect()->route('inventory.assets.outlet', $outletId)->with('success', 'Asset deleted successfully.');
     }
 }

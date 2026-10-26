@@ -11,12 +11,14 @@ class Inventory extends Model
         'outlet_id',
         'sources_outlet_id',
         'device',
+        'type',
         'brand',
         'is_tracked',
         'quantity',
         'placement',
         'entry_date',
         'description',
+        'import_ref',
     ];
 
     protected $casts = [

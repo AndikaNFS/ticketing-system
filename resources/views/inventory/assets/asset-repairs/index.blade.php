@@ -5,7 +5,7 @@
     
     <div class="py-6">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-3">
-            Riwayat Perbaikan
+            Repair History
         </h2>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -51,7 +51,7 @@
                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                                        dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             >
-                                <option value="">Semua Outlet</option>
+                                <option value="">All Outlets</option>
 
                                 @foreach ($outlets as $outlet)
                                     <option
@@ -81,7 +81,7 @@
                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                                        dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             >
-                                <option value="">Semua Status</option>
+                                <option value="">All Statuses</option>
 
                                 <option
                                     value="Repair"
@@ -106,7 +106,7 @@
                                 for="start_date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Dari Tanggal
+                                From Date
                             </label>
 
                             <input
@@ -127,7 +127,7 @@
                                 for="end_date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Sampai Tanggal
+                                To Date
                             </label>
 
                             <input
@@ -176,7 +176,7 @@
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
 
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Data Perbaikan
+                        Repair Information
                     </h3>
 
                 </div>
@@ -193,11 +193,11 @@
                                 <th class="px-6 py-3">Asset</th>
                                 <th class="px-6 py-3">SN</th>
                                 <th class="px-6 py-3">Outlet</th>
-                                <th class="px-6 py-3">Tanggal Repair</th>
+                                <th class="px-6 py-3">Repair Date</th>
                                 <th class="px-6 py-3">Durasi</th>
-                                <th class="px-6 py-3">Biaya</th>
+                                <th class="px-6 py-3">Cost</th>
                                 <th class="px-6 py-3">Status</th>
-                                <th class="px-6 py-3">Action</th>
+                                <th class="px-6 py-3">Actions</th>
                             </tr>
 
                         </thead>
@@ -294,7 +294,7 @@
                                         @else
 
                                             <span class="text-yellow-600 dark:text-yellow-400">
-                                                Masih berjalan
+                                                In Progress
                                             </span>
 
                                         @endif
@@ -302,7 +302,7 @@
                                     </td>
 
 
-                                    {{-- Action --}}
+                                    {{-- Actions --}}
                                     <td class="px-6 py-4">
 
                                         @if ($repair->asset)
@@ -311,7 +311,7 @@
                                                 href="{{ route('assets.repairs.show', $repair) }}"
                                                 class="font-medium text-blue-600 hover:underline dark:text-blue-500"
                                             >
-                                                Detail
+                                                Detailss
                                             </a>
 
                                         @else
@@ -329,7 +329,7 @@
                                         colspan="10"
                                         class="px-6 py-10 text-center text-gray-500 dark:text-gray-400"
                                     >
-                                        Belum ada data perbaikan.
+                                        No repair records found.
                                     </td>
                                 </tr>
 

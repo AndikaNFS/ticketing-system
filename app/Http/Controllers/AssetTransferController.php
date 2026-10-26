@@ -20,17 +20,17 @@ class AssetTransferController extends Controller
             'creator',
         ]);
 
-        // Filter outlet asal
+        // Filter by source outlet
         if ($request->filled('from_outlet_id')) {
             $query->where('from_outlet_id', $request->from_outlet_id);
         }
 
-        // Filter outlet tujuan
+        // Filter by destination outlet
         if ($request->filled('to_outlet_id')) {
             $query->where('to_outlet_id', $request->to_outlet_id);
         }
 
-        // Filter tanggal awal
+        // Filter by start date
         if ($request->filled('start_date')) {
             $query->whereDate(
                 'transfer_date',
@@ -39,7 +39,7 @@ class AssetTransferController extends Controller
             );
         }
 
-        // Filter tanggal akhir
+        // Filter by end date
         if ($request->filled('end_date')) {
             $query->whereDate(
                 'tranfer_date',
@@ -73,7 +73,7 @@ class AssetTransferController extends Controller
         if (in_array($asset->status, ['Repair', 'Lost', 'Disposed'], true)) {
             return redirect()->route('assets.show', $asset)->with(
                 'error',
-                "Asset dengan status {$asset->status} tidak dapat ditransfer."
+                "An asset with status {$asset->status} cannot be transferred."
             );
         }
 
@@ -101,27 +101,27 @@ class AssetTransferController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            // Validasi status asset
+            // Validate asset status.
             if (in_array($lockedAsset->status, [
                 'Repair',
                 'Lost',
                 'Disposed',
             ], true)) {
                 throw ValidationException::withMessages([
-                    'to_outlet_id' => "Asset dengan status {$lockedAsset->status} tidak dapat ditransfer.",
+                    'to_outlet_id' => "An asset with status {$lockedAsset->status} cannot be transferred.",
                 ]);
             }
 
-            // Pastikan Asset tidak di pindahkan ke outlet yg sama
+            // Ensure the asset is not moved to the same outlet.
             if ((int) $validated['to_outlet_id'] === (int) $lockedAsset->outlet_id) {
                 throw ValidationException::withMessages([
-                    'to_outlet_id' => 'Outlet tujuan harus berbeda dengan outlet asal.',
+                    'to_outlet_id' => 'The destination outlet must be different from the source outlet.',
                 ]);
             }
 
             $fromOutletId = $lockedAsset->outlet_id;
 
-            // Simpan riawat transfer
+            // Save riawat transfer
             InventoryTransfer::create([
                 'inventory_id' => $lockedAsset->inventory_id,
                 'asset_id' => $lockedAsset->id,
@@ -134,12 +134,12 @@ class AssetTransferController extends Controller
                 'created_by' => auth()->id(),
             ]);
 
-            // Perbarui lokasi asset.
+            // Update the asset location.
             $lockedAsset->update([
                 'outlet_id' => $validated['to_outlet_id'],
             ]);
         });
 
-        return redirect()->route('assets.show', $asset)->with('success', 'Asset berhasil ditransfer.');
+        return redirect()->route('assets.show', $asset)->with('success', 'Asset transferred successfully.');
     }
 }

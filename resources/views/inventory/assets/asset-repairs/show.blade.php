@@ -4,8 +4,8 @@
     </x-slot>
     
     <div class="py-6">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Detail Perbaikan
+        <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
+            Repair Detailsss
         </h2>
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -81,7 +81,7 @@
                 <div class="p-6">
 
                     <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-5">
-                        Informasi Asset
+                        Asset Information
                     </h4>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -165,7 +165,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Status Asset Saat Ini
+                                Current Asset Status
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -186,7 +186,7 @@
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
 
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Informasi Perbaikan
+                        Repair Information
                     </h3>
 
                 </div>
@@ -198,7 +198,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Tanggal Mulai
+                                Start Date
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -209,7 +209,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Tanggal Selesai
+                                Completion Date
                             </p>
 
                             
@@ -229,7 +229,7 @@
     
                                     <div>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                                            Lama Perbaikan
+                                            Repair Duration
                                         </p>
     
                                         <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -246,7 +246,7 @@
                                             @endif
     
                                             @if ($days === 0 && $hours === 0 && $minutes === 0)
-                                                Kurang dari 1 menit
+                                                Less than 1 minute
                                             @endif
                                         </p>
                                     </div>
@@ -270,7 +270,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Biaya
+                                Cost
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -282,7 +282,7 @@
                         <div class="md:col-span-2">
 
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Keterangan
+                                Description
                             </p>
 
                             <div class="mt-2 p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
@@ -293,6 +293,139 @@
 
                             </div>
 
+                        </div>
+                        <div class="">
+                            Asset Photo
+
+
+                            {{-- Gallery --}}
+                    @if ($asset->images->count())
+
+                        <div
+                            x-data="{
+                                showModal: false,
+                                selectedImage: ''
+                            }"
+                            @keydown.escape.window="showModal = false"
+                        >
+
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+                                @foreach ($asset->images as $image)
+
+                                    <div class="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+
+                                        {{-- Image --}}
+                                        <button
+                                            type="button"
+                                            @click="
+                                                selectedImage = '{{ asset('storage/' . $image->image_path) }}';
+                                                showModal = true;
+                                            "
+                                            class="block w-full cursor-pointer"
+                                        >
+                                            <img
+                                                src="{{ asset('storage/' . $image->image_path) }}"
+                                                alt="Asset Photo"
+                                                class="w-full h-40 object-cover hover:opacity-80 transition"
+                                            >
+                                        </button>
+
+                                        {{-- Image Information --}}
+                                        <div class="p-3 bg-gray-50 dark:bg-gray-700">
+
+                                            <p class="text-xs text-gray-500 dark:text-gray-300 truncate">
+                                                {{ basename($image->path) }}
+                                            </p>
+
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                Outlet: {{ $image->outlet->name ?? '-' }}
+                                            </p>
+
+                                            {{-- Delete Button --}}
+                                            <form
+                                                action="{{ route('assets.images.destroy', [$asset, $image]) }}"
+                                                method="POST"
+                                                class="mt-3"
+                                                onsubmit="return confirm('Are you sure you want to delete this photo?')"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button
+                                                    type="submit"
+                                                    class="w-full px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
+                                                >
+                                                    Delete Photo
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                @endforeach
+
+                            </div>
+
+
+                            {{-- Image Modal --}}
+                            <div
+                                x-show="showModal"
+                                x-transition.opacity
+                                x-cloak
+                                @click.self="showModal = false"
+                                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+                            >
+
+                                <div class="relative max-w-5xl w-full flex items-center justify-center">
+
+                                    {{-- Close Button --}}
+                                    <button
+                                        type="button"
+                                        @click="showModal = false"
+                                        class="absolute -top-10 right-0 text-white hover:text-gray-300"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="w-8 h-8"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="2">
+
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M6 18L18 6M6 6l12 12" />
+
+                                        </svg>
+                                    </button>
+
+                                    {{-- Full Image --}}
+                                    <img
+                                        :src="selectedImage"
+                                        alt="Preview Asset Photo"
+                                        @click.stop
+                                        class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-xl"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @else
+
+
+                        <div class="text-center py-8">
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                No photos available for this asset.
+                            </p>
+
+                        </div>
+
+                    @endif
                         </div>
 
                     </div>
@@ -310,11 +443,11 @@
                     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
 
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Selesaikan Perbaikan
+                            Complete Repair
                         </h3>
 
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Tentukan tanggal selesai dan status Asset setelah perbaikan.
+                            Set the completion date and the asset status after repair.
                         </p>
 
                     </div>
@@ -340,7 +473,7 @@
                                         for="completed_at"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Tanggal Selesai
+                                        Completion Date
                                     </label>
 
                                     <input
@@ -364,7 +497,7 @@
                                         for="asset_status"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Status Asset Setelah Perbaikan
+                                        Asset Status After Repair
                                     </label>
 
                                     <select
@@ -377,7 +510,7 @@
                                     >
 
                                         <option value="">
-                                            -- Pilih Status --
+                                             Select Status 
                                         </option>
 
                                         <option
@@ -412,11 +545,11 @@
 
                                 <button
                                     type="submit"
-                                    onclick="return confirm('Yakin perbaikan ini sudah selesai?')"
+                                    onclick="return confirm('Are you sure this repair is complete?')"
                                     class="px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg
                                            hover:bg-green-700 focus:ring-4 focus:ring-green-300"
                                 >
-                                    Selesaikan Perbaikan
+                                    Complete Repair
                                 </button>
 
                             </div>
@@ -439,7 +572,7 @@
                            rounded-lg hover:bg-gray-100
                            dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600"
                 >
-                    ← Riwayat Perbaikan
+                    ← Repair History
                 </a>
 
 
@@ -448,7 +581,7 @@
                     class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg
                            hover:bg-blue-700"
                 >
-                    Detail Asset
+                    Asset Detailsss
                 </a>
 
             </div>

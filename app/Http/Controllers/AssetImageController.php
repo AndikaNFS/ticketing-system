@@ -20,12 +20,12 @@ class AssetImageController extends Controller
                 'max:5120',
             ],
         ], [
-            'images.required' => 'Pilih minimal satu gambar',
-            'images.array' => 'Format gambar tidak di dukung',
-            'images.mim' => 'Pilih minimal satu gambar',
-            'images.*.image' => 'File harus berupa gambar',
-            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP',
-            'images.*.max' => 'Ukuran setiap foto maksimal 5 MB',
+            'images.required' => 'Please select at least one image.',
+            'images.array' => 'Unsupported image format.',
+            'images.mim' => 'Please select at least one image.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Images must be JPG, JPEG, PNG, or WEBP.',
+            'images.*.max' => 'Each photo must not exceed 5 MB.',
         ]);
 
         foreach ($validated['images'] as $image) {
@@ -38,18 +38,18 @@ class AssetImageController extends Controller
             ]);
         }
 
-        return redirect()->route('assets.show', $asset)->with('success', 'Foto Asset berhasil diunggah.');
+        return redirect()->route('assets.show', $asset)->with('success', 'Asset photo uploaded successfully.');
     }
 
     public function destroy(Asset $asset, AssetImage $image)
     {
-        // Pastikan foto memang milik Asset yang sedang dibuka.
+        // Ensure the photo belongs to the asset currently being viewed.
         $assetImage = $asset->images()->where('id', $image->id)->firstOrFail();
 
         Storage::disk('public')->delete($assetImage->image_path);
 
         $assetImage->delete();
 
-        return redirect()->route('assets.show', $asset)->with('success', 'Foto Asset berhasil dihapus');
+        return redirect()->route('assets.show', $asset)->with('success', 'Asset photo deleted successfully.');
     }
 }

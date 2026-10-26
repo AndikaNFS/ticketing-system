@@ -8,13 +8,13 @@
                 </h2>
 
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Pindahkan Asset ke outlet lain
+                    Move this asset to another outlet
                 </p>
             </div>
 
             <a href="{{ route('assets.show', $asset) }}"
                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600">
-                ← Kembali
+                ← Back
             </a>
         </div>
     </x-slot>
@@ -32,12 +32,12 @@
                 </div>
             @endif
 
-            {{-- Informasi Asset --}}
+            {{-- Asset Information --}}
             <div class="mb-6 bg-white dark:bg-gray-800 shadow-sm rounded-lg">
 
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Informasi Asset
+                        Asset Information
                     </h3>
                 </div>
 
@@ -105,7 +105,7 @@
 
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Outlet Asal
+                            Source Outlet
                         </p>
 
                         <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -142,10 +142,10 @@
 
                     <div class="p-6 space-y-6">
 
-                        {{-- Outlet Asal --}}
+                        {{-- Source Outlet --}}
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Outlet Asal
+                                Source Outlet
                             </label>
 
                             <input
@@ -156,11 +156,11 @@
                             >
                         </div>
 
-                        {{-- Outlet Tujuan --}}
+                        {{-- Destination Outlet --}}
                         <div>
                             <label for="to_outlet_id"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Outlet Tujuan
+                                Destination Outlet
                             </label>
 
                             <select
@@ -170,7 +170,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
                                 <option value="">
-                                    -- Pilih Outlet Tujuan --
+                                     Select Destination Outlet 
                                 </option>
 
                                 @foreach ($outlets as $outlet)
@@ -192,11 +192,11 @@
                             @enderror
                         </div>
 
-                        {{-- Tanggal Transfer --}}
+                        {{-- Transfer Date --}}
                         <div>
                             <label for="transfer_date"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Tanggal dan Waktu Transfer
+                                Transfer Date and Time
                             </label>
 
                             <input
@@ -219,14 +219,14 @@
                         <div>
                             <label for="description"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Keterangan
+                                Description
                             </label>
 
                             <textarea
                                 id="description"
                                 name="description"
                                 rows="4"
-                                placeholder="Contoh: Pemindahan PC karena kebutuhan operasional outlet."
+                                placeholder="Example: Moving a PC due to outlet operational needs."
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             >{{ old('description') }}</textarea>
 
@@ -243,12 +243,12 @@
 
                         <a href="{{ route('assets.show', $asset) }}"
                            class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                            Batal
+                            Cancel
                         </a>
 
                         <button
                             type="submit"
-                            onclick="return confirm('Apakah kamu yakin ingin mentransfer Asset ini?')"
+                            onclick="return confirm('Are you sure you want to transfer this asset?')"
                             class="px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
 
                             Transfer Asset

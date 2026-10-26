@@ -11,13 +11,13 @@
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Ubah informasi asset
+                    Edit asset information
                 </p>
             </div>
     
             <a href="{{ route('assets.show', $asset) }}"
                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                ← Kembali
+                ← Back
             </a>
         </div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +28,7 @@
                      role="alert">
 
                     <div class="font-medium mb-2">
-                        Terdapat kesalahan pada input:
+                        There are errors in the input:
                     </div>
 
                     <ul class="list-disc list-inside space-y-1">
@@ -65,6 +65,17 @@
 
                         <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
                             {{ $asset->inventory->brand ?? '-' }}
+                        </p>
+                    </div>
+
+                    {{-- Type --}}
+                    <div>
+                        <p class="text-xs text-blue-600 dark:text-blue-400">
+                            Type
+                        </p>
+
+                        <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">
+                            {{ $asset->inventory->type ?? '-' }}
                         </p>
                     </div>
 
@@ -123,7 +134,7 @@
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
 
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Informasi Asset
+                        Asset Information
                     </h3>
 
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -153,13 +164,13 @@
                                 id="serial_number"
                                 name="serial_number"
                                 value="{{ old('serial_number', $asset->serial_number) }}"
-                                placeholder="Masukkan Serial Number jika ada"
+                                placeholder="Enter the serial number, if available"
                                 maxlength="150"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
 
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                Kosongkan jika asset tidak memiliki Serial Number.
+                                Leave blank if the asset does not have a serial number.
                             </p>
 
                             @error('serial_number')
@@ -182,13 +193,13 @@
                                 id="asset_number"
                                 name="asset_number"
                                 value="{{ old('asset_number', $asset->asset_number) }}"
-                                placeholder="Masukkan Asset Number jika ada"
+                                placeholder="Enter the asset number, if available"
                                 maxlength="150"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
 
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                Kosongkan jika asset belum memiliki nomor asset.
+                                Leave blank if the asset does not have an asset number.
                             </p>
 
                             @error('asset_number')
@@ -214,7 +225,7 @@
                             >
 
                                 <option value="">
-                                     Pilih Status 
+                                     Select Status 
                                 </option>
 
                                 <option value="Available"
@@ -269,7 +280,7 @@
                                 id="placement"
                                 name="placement"
                                 value="{{ old('placement', $asset->placement) }}"
-                                placeholder="Contoh: Kasir, Ruang IT, Gudang"
+                                placeholder="Example: Cashier, IT Room, Warehouse"
                                 maxlength="150"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
@@ -286,7 +297,7 @@
                         <div>
                             <label for="entry_date"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Tanggal Masuk
+                                Entry Date
                             </label>
 
                             <input
@@ -313,14 +324,14 @@
 
                         <a href="{{ route('assets.show', $asset) }}"
                            class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
-                            Batal
+                            Cancel
                         </a>
 
                         <button
                             type="submit"
                             class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
-                            Simpan Perubahan
+                            Save Changes
                         </button>
 
                     </div>

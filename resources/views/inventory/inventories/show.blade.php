@@ -5,7 +5,7 @@
     
     <div class="py-6">
         <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
-            Detail Inventory
+            Inventory Details
         </h2>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -101,7 +101,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Outlet
+                               Outlet
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -112,7 +112,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Asal Barang
+                                Source Outlet
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -182,7 +182,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Tanggal Masuk
+                                Entry Date
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -222,7 +222,7 @@
                     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
 
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Asset dari Inventory Ini
+                            Assets in This Inventory
                         </h3>
 
                     </div>
@@ -241,7 +241,7 @@
                                     <th class="px-6 py-3">Outlet</th>
                                     <th class="px-6 py-3">Status</th>
                                     <th class="px-6 py-3">Placement</th>
-                                    <th class="px-6 py-3">Action</th>
+                                    <th class="px-6 py-3">Actions</th>
                                 </tr>
 
                             </thead>
@@ -282,7 +282,7 @@
                                                 href="{{ route('assets.show', $asset) }}"
                                                 class="font-medium text-blue-600 hover:underline dark:text-blue-500"
                                             >
-                                                Detail
+                                                Details
                                             </a>
 
                                         </td>
@@ -296,7 +296,7 @@
                                             colspan="7"
                                             class="px-6 py-8 text-center text-gray-500 dark:text-gray-400"
                                         >
-                                            Belum ada Asset.
+                                            No assets found.
                                         </td>
                                     </tr>
 

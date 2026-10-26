@@ -19,11 +19,13 @@ return new class extends Migration
             $table->foreignId('sources_outlet_id')->nullable()->constrained('outlets')->onDelete('cascade');
             $table->string('device');
             $table->string('brand')->nullable();
+            $table->string('type')->nullable();
             $table->string('placement')->nullable();
             $table->boolean('is_tracked')->default(false);
             $table->unsignedBigInteger('quantity')->default(0);
             $table->date('entry_date')->nullable();
             $table->text('description')->nullable();
+            $table->string('import_ref')->nullable()->unique();
             $table->timestamps();
 
             $table->index('device');

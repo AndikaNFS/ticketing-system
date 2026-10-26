@@ -7,22 +7,22 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                    Detail Asset
+                    Asset Detailsss
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Informasi lengkap asset
+                    Complete asset information
                 </p>
             </div>
     
             <a href="{{ route('assets.outlet', $asset->outlet_id) }}"
                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                ← Kembali
+                ← Back
             </a>
         </div>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            {{-- Informasi Asset --}}
+            {{-- Asset Information --}}
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
 
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -45,7 +45,7 @@
                                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white
                                     bg-red-600 rounded-lg hover:bg-red-700"
                             >
-                                Mulai Perbaikan
+                                Start Repair
                             </a>
                         @endif
                         @if (!in_array($asset->status, ['Repair', 'Lost', 'Disposed']))
@@ -85,6 +85,17 @@
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
                                 {{ $asset->inventory->brand ?? '-' }}
+                            </p>
+                        </div>
+
+                        {{-- Type --}}
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Type
+                            </p>
+
+                            <p class="mt-1 font-medium text-gray-900 dark:text-white">
+                                {{ $asset->inventory->type ?? '-' }}
                             </p>
                         </div>
 
@@ -180,7 +191,7 @@
                         {{-- Entry Date --}}
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Tanggal Masuk
+                                Entry Date
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -194,7 +205,7 @@
             </div>
 
 
-            {{-- Informasi Inventory --}}
+            {{-- Inventory Information --}}
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
 
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -243,17 +254,17 @@
             </div>
 
 
-            {{-- Foto Asset --}}
+            {{-- Asset Photo --}}
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
 
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between">
                         <div class="">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Foto Asset
+                                Asset Photo
                             </h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                Total foto : {{ $asset->images->count()}}
+                                Total photos: {{ $asset->images->count()}}
                             </p>
                         </div>
                     </div>
@@ -285,7 +296,7 @@
                         <div>
                             <label for="images"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Upload Foto
+                                Upload Photos
                             </label>
 
                             <input
@@ -299,9 +310,9 @@
                             >
 
                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                                Format JPG, JPEG, PNG, WEBP. Maksimal 5 MB per foto.
-                                Bisa memilih beberapa foto sekaligus.
-                                Sertakan foto serial number asset jika ada.
+                                JPG, JPEG, PNG, or WEBP. Maximum 5 MB per photo.
+                                You can select multiple photos at once.
+                                Include a photo of the asset serial number, if available.
                             </p>
                         </div>
                         @error('images')
@@ -313,7 +324,7 @@
                             type="submit"
                             class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
 
-                            Upload Foto
+                            Upload Photos
                         </button>
                     </form>
                     <hr class="border-gray-200 dark:border-gray-700">
@@ -346,7 +357,7 @@
                                         >
                                             <img
                                                 src="{{ asset('storage/' . $image->image_path) }}"
-                                                alt="Foto Asset"
+                                                alt="Asset Photo"
                                                 class="w-full h-40 object-cover hover:opacity-80 transition"
                                             >
                                         </button>
@@ -367,7 +378,7 @@
                                                 action="{{ route('assets.images.destroy', [$asset, $image]) }}"
                                                 method="POST"
                                                 class="mt-3"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus foto ini?')"
+                                                onsubmit="return confirm('Are you sure you want to delete this photo?')"
                                             >
                                                 @csrf
                                                 @method('DELETE')
@@ -376,7 +387,7 @@
                                                     type="submit"
                                                     class="w-full px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
                                                 >
-                                                    Hapus Foto
+                                                    Delete Photo
                                                 </button>
                                             </form>
 
@@ -423,7 +434,7 @@
                                     {{-- Full Image --}}
                                     <img
                                         :src="selectedImage"
-                                        alt="Preview Foto Asset"
+                                        alt="Preview Asset Photo"
                                         @click.stop
                                         class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-xl"
                                     >
@@ -440,7 +451,7 @@
                         <div class="text-center py-8">
 
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Belum ada foto untuk asset ini.
+                                No photos available for this asset.
                             </p>
 
                         </div>

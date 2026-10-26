@@ -7,11 +7,11 @@
         <div class="flex items-center justify-between mb-3">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
-                    Category Quantity
+                    Categories
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Manage IT Device Categories
+                    Manage IT device categories
                 </p>
             </div>
     
@@ -62,7 +62,7 @@
                                     </th>
 
                                     <th class="px-6 py-3 text-center">
-                                        Action
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
@@ -121,7 +121,7 @@
                                                     <button type="submit"
                                                             class="px-3 py-2 text-xs font-medium text-white {{ $category->is_active ? 'bg-gray-600 hover:bg-gray-700' : 'bg-green-600 hover:bg-green-700' }} rounded-lg">
 
-                                                        {{ $category->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                                        {{ $category->is_active ? 'Deactivate' : 'Activate' }}
 
                                                     </button>
 
@@ -131,14 +131,14 @@
 
                                                     <form action="{{ route('categories.destroy', $category) }}"
                                                           method="POST"
-                                                          onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                                          onsubmit="return confirm('Are you sure you want to delete this category?')">
 
                                                         @csrf
                                                         @method('DELETE')
 
                                                         <button type="submit"
                                                                 class="px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
-                                                            Hapus
+                                                            Delete
                                                         </button>
 
                                                     </form>
@@ -156,7 +156,7 @@
                                     <tr>
                                         <td colspan="5"
                                             class="px-6 py-8 text-center text-gray-500">
-                                            Belum ada kategori.
+                                            No categories found.
                                         </td>
                                     </tr>
 

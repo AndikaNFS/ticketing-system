@@ -26,6 +26,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VisitBuildingController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryExcelController;
 use App\Http\Controllers\WhatsappController;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Route;
@@ -243,15 +244,52 @@ Route::prefix('building')->middleware('role:superadmin')->group(function () {
 
 // INVENTORY
 Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|direksi'])->group(function () {
-    Route::resource('categories', CategoryController::class);
-    Route::resource('inventory', InventoryController::class);
+    // Route::resource('categories', CategoryController::class);
+    // Route::resource('inventory', InventoryController::class);
+
+    // Inventories : lihat daftar
+    Route::get('/inventories', [InventoryController::class, 'index'])->middleware('permission:inventory.view')->name('inventories.index');
+    // Inventories : tambah
+    Route::get('/inventories/create', [InventoryController::class, 'create'])->middleware('permission:inventory.create')->name('inventories.create');
+    Route::post('/inventories', [InventoryController::class, 'store'])->middleware('permission:inventory.create')->name('inventories.store');
+    
+    // Export Import
+    Route::get('/inventories/export', [InventoryExcelController::class, 'export'])->middleware('permission:inventory.export')->name('inventories.export');
+    Route::get('/inventories/download-template', [InventoryController::class, 'downloadTemplate'])->name('inventories.download-template');
+    // Route::get('/inventories/template', [InventoryExcelController::class, 'template'])->name('inventories.download-template');
+    
+    Route::post('/inventories/import', [InventoryExcelController::class, 'import'])->middleware('permission:inventory.create')->name('inventories.import');
+    // Inventory : detail
+    Route::get('/inventories/{inventory}', [InventoryController::class, 'show'])->middleware('permission:inventory.view')->name('inventories.show');
+    // Inventory : edit
+    Route::get('/inventories/{inventory}/edit', [InventoryController::class, 'edit'])->middleware('permission:inventory.edit')->name('inventories.edit');
+    Route::put('/inventories/{inventory}', [InventoryController::class, 'update'])->middleware('permission:inventory.edit')->name('inventories.update');
+    // Inventory : delete
+    Route::delete('/inventories/{inventory}', [InventoryController::class, 'destroy'])->middleware('permission:inventory.delete')->name('inventories.destroy');
+    
+    // Category: lihat daftar
+    Route::get('/categories', [CategoryController::class, 'index'])->middleware('permission:category.view')->name('categories.index');
+    // Category: tambah
+    Route::get('/categories/create', [CategoryController::class, 'create'])->middleware('permission:category.create')->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->middleware('permission:category.create')->name('categories.store');
+    // Category : detail
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->middleware('permission:category.view')->name('categories.show');
+    // Category : edit
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('permission:category.edit')->name('categories.edit');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->middleware('permission:category.edit')->name('categories.update');
+    // Category : delete
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->middleware('permission:category.delete')->name('categories.destroy');
+
+
+    
+    
 
     Route::patch(
         'categories/{category}/toggle-status',
         [CategoryController::class, 'toggleStatus']
     )->name('categories.toggle-status');
 
-    Route::resource('inventories', InventoryController::class);
+    // Route::resource('inventories', InventoryController::class);
 
     // Route::resource('assets', AssetController::class);
     Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
@@ -274,7 +312,8 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::put('/asset-repairs/{repair}/complete', [AssetRepairController::class, 'complete'])->name('assets.repairs.complete');
     Route::get('/assets/{asset}/repair', [AssetRepairController::class, 'create'])->name('assets.repairs.create');
     Route::post('/assets/{asset}/repair', [AssetRepairController::class, 'store'])->name('assets.repairs.store');
-}); 
+
+});
 
 // Route::post('/whatsapp/webhook', [WhatsappController::class, 'webhook'])->name('whatsapp.webhook');
 

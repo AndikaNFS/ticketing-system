@@ -138,20 +138,20 @@
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                Asal Barang
+                                Source Outlet
                             </label>
 
-                            <select name="source_outlet_id"
+                            <select name="sources_outlet_id"
                                     class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                                 <option value="">
-                                     Tidak Ada / Tidak Diketahui 
+                                     None / Unknown 
                                 </option>
 
                                 @foreach ($outlets as $outlet)
 
                                     <option value="{{ $outlet->id }}"
-                                        @selected(old('source_outlet_id') == $outlet->id)>
+                                        @selected(old('sources_outlet_id') == $outlet->id)>
 
                                         {{ $outlet->name }}
 
@@ -169,7 +169,7 @@
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                Dicatat sebagai Asset?
+                                Recorded as an Asset?
                             </label>
 
                             <div class="flex gap-6">
@@ -196,13 +196,13 @@
                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                                            {{-- onchange="toggleInventoryType()"> --}}
 
-                                    <span class="ms-2 text-sm text-gray-900 dark:text-gray-300">Tidak</span>
+                                    <span class="ms-2 text-sm text-gray-900 dark:text-gray-300">No</span>
                                 </label>
                             </div>
 
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                Jika Ya, setiap  unit dapat dicatat sebagai Asset.
-                                Serial Number tidak wajib.
+                                If Yes, each unit can be tracked as an individual asset.
+                                Serial number is optional.
                             </p>
 
                             @error('is_tracked')
@@ -286,7 +286,7 @@
                         <div>
                             <label for="quantity"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200 text-gray-900 dark:text-white">
-                                Jumlah
+                                Quantity
                             </label>
 
                             <input
@@ -302,7 +302,7 @@
                             >
 
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                Jika dicatat sebagai Asset, jumlah ini menjadi target jumlah Asset.
+                                If tracked as assets, this quantity becomes the target number of assets.
                             </p>
 
                             @error('quantity')
@@ -342,7 +342,7 @@
                             <input type="text"
                                    name="placement"
                                    value="{{ old('placement') }}"
-                                   placeholder="Contoh: Office"
+                                   placeholder="Example: Office"
                                    class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                         </div>
@@ -353,7 +353,7 @@
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                Tanggal Masuk
+                                Entry Date
                             </label>
 
                             <input type="date"
@@ -384,12 +384,12 @@
 
                             <a href="{{ route('inventories.index') }}"
                                class="px-4 py-2 bg-gray-200 rounded-lg">
-                                Batal
+                                Cancel
                             </a>
 
                             <button type="submit"
                                     class="px-4 py-2 text-white bg-blue-600 rounded-lg">
-                                Simpan
+                                Save
                             </button>
 
                         </div>
