@@ -247,7 +247,7 @@
 
                                     {{-- Repair Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $repair->repair_date?->format('d-m-Y H:i') ?? '-' }}
+                                        {{ $repair->repair_date?->format('Y-m-d H:i') ?? '-' }}
                                     </td>
 
 

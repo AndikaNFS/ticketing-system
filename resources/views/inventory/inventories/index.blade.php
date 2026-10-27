@@ -199,9 +199,9 @@
                                     <th class="px-6 py-3">
                                         Tracking
                                     </th>
-                                    <th class="px-6 py-3">
+                                    {{-- <th class="px-6 py-3">
                                         Placement
-                                    </th>
+                                    </th> --}}
                                     <th class="px-6 py-3">
                                         Entry Date
                                     </th>
@@ -273,12 +273,12 @@
                                             @endif
                                         </td>
                                         {{-- Placement --}}
-                                        <td class="px-6 py-4">
+                                        {{-- <td class="px-6 py-4">
                                             {{ $inventory->placement ?? '-' }}
-                                        </td>
+                                        </td> --}}
                                         {{-- Entry Date --}}
                                         <td class="px-6 py-4">
-                                            {{ $inventory->entry_date?->format('d-m-Y') ?? '-' }}
+                                            {{ $inventory->entry_date?->format('Y-m-d') ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex gap-2">

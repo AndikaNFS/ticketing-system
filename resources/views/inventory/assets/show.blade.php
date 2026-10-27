@@ -195,7 +195,7 @@
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
-                                {{ $asset->entry_date?->format('d-m-Y') ?? '-' }}
+                                {{ $asset->entry_date?->format('Y-m-d') ?? '-' }}
                             </p>
                         </div>
 

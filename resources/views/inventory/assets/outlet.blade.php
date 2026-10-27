@@ -275,7 +275,10 @@
                                         </td>
 
                                         <td class="px-6 py-4">
-                                            {{-- {{ $asset->placement ?? '-' }} --}}
+                                            <span class="inline-flex items-center  px-2.5 py-1 text-xs font-medium text-blue-800  dark:text-blue-400">
+                                                {{ $asset->images_count }} Images
+                                            </span>
+
                                         </td>
 
 
@@ -346,9 +349,13 @@
 
                             </tbody>
 
+                            {{-- Modal Image --}}
+                                
                         </table>
+                        
 
                     </div>
+
 
                     
                     {{-- Inventory Table --}}
@@ -444,4 +451,7 @@
 
     </div>
 
+    
+
 </x-app-layout>
+

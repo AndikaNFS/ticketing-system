@@ -38,7 +38,7 @@ class InventoryTemplateSheet implements FromArray, WithHeadings, WithEvents
             'Source Outlet',
             'Is Tracked',
             'Quantity',
-            'Placement',
+            // 'Placement',
             'Entry Date',
             'Description',
         ];
@@ -76,9 +76,9 @@ class InventoryTemplateSheet implements FromArray, WithHeadings, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 $sheet->freezePane('A2');
-                $sheet->getStyle('A1:L1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:K1')->getFont()->setBold(true);
 
-                foreach (range('A', 'L') as $column) {
+                foreach (range('A', 'K') as $column) {
                     $sheet->getColumnDimension($column)
                         ->setAutoSize(true);
                 }

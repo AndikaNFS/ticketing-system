@@ -34,9 +34,15 @@ class AssetController extends Controller
             ->get();
 
         $assets = $outlet->assets()
-            ->with(['inventory.category'])
+            ->with(['inventory.category', 'images',])
+            ->withCount('images')
             ->latest()
             ->paginate(15);
+
+        // $images = $outlet->imageAssets()
+        //     ->with(['images.outlet'])
+        //     ->latest()
+        //     ->get();
 
         $totalBulkUnits = $inventories
             ->where('is_tracked', false)
@@ -44,6 +50,8 @@ class AssetController extends Controller
 
         $totalInventories = $inventories->count();
         $totalIndividualAssets = $outlet->assets()->count();
+
+        // $totalImage = $images->imageAssets()->count();
 
         return view('inventory.assets.outlet', compact('outlet', 'inventories', 'assets', 'totalBulkUnits', 'totalIndividualAssets', 'totalInventories'));
     }

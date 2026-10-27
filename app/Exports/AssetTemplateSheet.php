@@ -113,7 +113,7 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
                         $validation->setAllowBlank($config['blank']);
 
                         // false agar panah dropdown tidak disembunyikan.
-                        $validation->setShowDropDown(false);
+                        $validation->setShowDropDown(true);
 
                         $validation->setShowErrorMessage(true);
                         $validation->setFormula1($config['formula']);

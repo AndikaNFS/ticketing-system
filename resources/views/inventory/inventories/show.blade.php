@@ -87,6 +87,16 @@
                             </p>
                         </div>
 
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Type
+                            </p>
+
+                            <p class="mt-1 font-medium text-gray-900 dark:text-white">
+                                {{ $inventory->type ?? '-' }}
+                            </p>
+                        </div>
+
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -186,7 +196,7 @@
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
-                                {{ $inventory->entry_date?->format('d-m-Y') ?? '-' }}
+                                {{ $inventory->entry_date?->format('Y-m-d') ?? '-' }}
                             </p>
                         </div>
 
