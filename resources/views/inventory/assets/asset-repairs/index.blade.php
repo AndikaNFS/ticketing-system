@@ -1,9 +1,6 @@
 <x-app-layout>
 
-    <x-slot name="header">
-    </x-slot>
-    
-    <div class="py-6">
+    <div class="py-2">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-3">
             Repair History
         </h2>
@@ -311,7 +308,7 @@
                                                 href="{{ route('assets.repairs.show', $repair) }}"
                                                 class="font-medium text-blue-600 hover:underline dark:text-blue-500"
                                             >
-                                                Detailss
+                                                Details
                                             </a>
 
                                         @else

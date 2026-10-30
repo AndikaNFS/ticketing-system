@@ -281,7 +281,10 @@
          
          
       </ul>
-      @include('components.footer')
+      <div class="">
+         @include('components.footer')
+
+      </div>
    </div>
 </aside>
 

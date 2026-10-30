@@ -17,19 +17,88 @@ class InventoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $inventories = Inventory::with([
-            'category',
-            'outlet',
-            'sourceOutlet',
-            // 'assets',
-        ])
-        ->withCount('assets')
-        ->latest()
-        ->paginate(10);
+        $query = Inventory::query()
+            ->with([
+                'category',
+                'outlet',
+            ])->withCount('assets');
 
-        return view('inventory.inventories.index', compact('inventories'));
+        // Search
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+
+            $query->where(function ($q) use ($search) {
+                $q->where('device', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('placement', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                        $categoryQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('outlet', function ($outletQuery) use ($search) {
+                        $outletQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Filter Category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Filter Outlet
+        if ($request->filled('outlet_id')) {
+            $query->where('outlet_id', $request->outlet_id);
+        }
+
+        // Filter Entry Date - From
+        if ($request->filled('entry_date')) {
+            $query->whereDate('entry_date', $request->entry_date);
+        }
+
+        // Filter Entry Date - To
+        // if ($request->filled('date_to')) {
+        //     $query->where('entry_date', '<=', $request->date_to);
+        // }
+
+        // Rows per page
+        $allowedPerPage = [10, 20, 50, 100];
+
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
+
+        // $inventories = $query
+        //     ->latest()
+        //     ->paginate(15)
+        //     ->withQueryString();
+
+        // Pagination
+        $inventories = $query
+            ->orderByDesc('id')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        // Data untuk dropdown filter
+        $categories = Category::orderBy('name')->get();
+        $outlets = Outlet::orderBy('name')->get();
+
+
+
+        // $inventories = Inventory::with([
+        //     'category',
+        //     'outlet',
+        //     'sourceOutlet',
+        //     // 'assets',
+        // ])
+        // ->withCount('assets')
+        // ->latest()
+        // ->paginate(10);
+
+        return view('inventory.inventories.index', compact('inventories', 'categories', 'outlets'));
     }
 
     /**
@@ -54,6 +123,7 @@ class InventoryController extends Controller
         $validated = $request->validate([
             'device' => 'required|string|max:150',
             'brand' => 'nullable|string|max:100',
+            'type' => 'nullable|string|max:100',
             'category_id' => 'required|exists:categories,id',
             'outlet_id' => 'required|exists:outlets,id',
             'sources_outlet_id' => 'nullable|exists:outlets,id',
@@ -73,6 +143,7 @@ class InventoryController extends Controller
             'sources_outlet_id' => $validated['sources_outlet_id'] ?? null,
             'device' => $validated['device'],
             'brand' => $validated['brand'] ?? null,
+            'type' => $validated['type'] ?? null,
             'is_tracked' => $validated['is_tracked'],
             'quantity' => $validated['quantity'],
             'placement' => $validated['placement'] ?? null,
@@ -139,6 +210,7 @@ class InventoryController extends Controller
         $validated = $request->validate([
             'device' => 'required|string|max:150',
             'brand' => 'nullable|string|max:100',
+            'type' => 'nullable|string|max:100',
             'category_id' => 'required|exists:categories,id',
             'outlet_id' => 'required|exists:outlets,id',
             'sources_outlet_id' => 'nullable|exists:outlets,id',
@@ -186,6 +258,7 @@ class InventoryController extends Controller
             'sources_outlet_id' => $validated['sources_outlet_id'] ?? null,
             'device' => $validated['device'],
             'brand' => $validated['brand'] ?? null,
+            'type' => $validated['type'] ?? null,
             'is_tracked' => $validated['is_tracked'],
             'quantity' => $validated['quantity'],
             'placement' => $validated['placement'] ?? null,

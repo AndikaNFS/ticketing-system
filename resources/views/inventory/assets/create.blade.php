@@ -1,15 +1,15 @@
 <x-app-layout>
 
-    <x-slot name="header">
+    {{-- <x-slot name="header">
 
         
     </x-slot>
-    
+     --}}
     
     <div class="py-6">
-        <div>
+        <div class="w-auto text-center mb-3">
     
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
+            <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200">
                 Add Asset
             </h2>
     
@@ -39,11 +39,11 @@
                     @csrf
 
 
-                    {{-- Outlet --}}
+                    {{-- Site --}}
                     <div class="mb-5">
 
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                            Outlet
+                            Site
                         </label>
 
                         <input

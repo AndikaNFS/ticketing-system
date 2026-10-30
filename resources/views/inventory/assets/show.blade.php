@@ -1,10 +1,7 @@
 <x-app-layout>
-
-    <x-slot name="header">
-    </x-slot>
     
-    <div class="py-6">
-        <div class="flex items-center justify-between">
+    <div class="py-2">
+        <div class="flex items-center justify-between mb-3">
             <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
                     Asset Detailsss
@@ -155,10 +152,10 @@
                             </span>
                         </div>
 
-                        {{-- Outlet --}}
+                        {{-- Site --}}
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Outlet
+                                Site
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
@@ -240,7 +237,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Source Outlet
+                                Source Site
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">

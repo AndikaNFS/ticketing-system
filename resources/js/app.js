@@ -25,7 +25,6 @@ Alpine.start();
 import Choices from 'choices.js';
 import 'choices.js/public/assets/styles/choices.min.css';
 
-
 new Choices('#outlet_id', {
     searchEnabled: true,
     searchPlaceholderValue: 'Search an outlet',

@@ -7,7 +7,7 @@
     
     
     <div class="py-6">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between mb-3">
     
             <div>
     
@@ -16,7 +16,7 @@
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Assets located at this outlet
+                    Assets located at this site
                 </p>
     
             </div>
@@ -63,7 +63,7 @@
 
                             <div>
                                 <p class="text-xs text-gray-500">
-                                    Outlet
+                                    Site
                                 </p>
 
                                 <p class="font-semibold text-gray-900 dark:text-white">
@@ -154,7 +154,7 @@
                             href="{{ route('assets.index') }}"
                             class="text-sm text-blue-600 hover:underline"
                         >
-                            ← Back to Outlet List
+                            ← Back to Site List
                         </a>
 
                     </div>
@@ -174,7 +174,7 @@
                                     </th>
 
                                     <th class="px-6 py-3">
-                                        Device
+                                        Item Name
                                     </th>
 
                                     <th class="px-6 py-3">
@@ -193,7 +193,7 @@
                                         Asset Number
                                     </th>
 
-                                    <th class="px-6 py-3">
+                                    <th class="px-6 py-3 min-w-px">
                                         Status
                                     </th>
 
@@ -262,8 +262,7 @@
                                                     default => 'bg-gray-100 text-gray-800',
                                                 };
                                             @endphp
-
-                                            <span class="px-2.5 py-1 text-xs font-medium rounded-full {{ $statusClass }}">
+                                            <span class="px-2.5 py-1 inline-block whitespace-nowrap text-xs font-medium rounded-full {{ $statusClass }}">
                                                 {{ $asset->status }}
                                             </span>
 
@@ -338,7 +337,7 @@
                                             </p>
 
                                             <p class="text-sm text-gray-500 mt-1">
-                                                Add an asset to this outlet.
+                                                Add an asset to this site.
                                             </p>
 
                                         </td>

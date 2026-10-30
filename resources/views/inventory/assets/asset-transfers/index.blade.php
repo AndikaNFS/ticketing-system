@@ -1,10 +1,7 @@
 
 <x-app-layout>
 
-    <x-slot name="header">
-    </x-slot>
-    
-    <div class="py-6">
+    <div class="py-2">
         <div class="flex items-center justify-between mb-2">
             <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">

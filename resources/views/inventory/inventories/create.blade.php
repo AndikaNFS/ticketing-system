@@ -10,7 +10,7 @@
 
         </div>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 mb-3">
-            Add Device
+            Add Item
         </h2>
 
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -24,13 +24,13 @@
 
                         @csrf
 
-                        {{-- Device --}}
+                        {{-- Item --}}
 
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium  text-gray-900 dark:text-gray-200">
-                                Device
-                            </label>
+                                Item Name
+                            </label> 
 
                             <input type="text"
                                    name="device"
@@ -47,7 +47,7 @@
                         </div>
 
 
-                        {{-- Brand --}}
+                        {{-- Merk --}}
 
                         <div class="mb-5">
 
@@ -58,6 +58,21 @@
                             <input type="text"
                                    name="brand"
                                    value="{{ old('brand') }}"
+                                   class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
+
+                        </div>
+                        
+                        {{-- Type --}}
+
+                        <div class="mb-5">
+
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+                                Type
+                            </label>
+
+                            <input type="text"
+                                   name="type"
+                                   value="{{ old('type') }}"
                                    class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                         </div>
@@ -101,12 +116,12 @@
                         </div>
 
 
-                        {{-- Outlet --}}
+                        {{-- Site --}}
 
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                Outlet
+                                Site
                             </label>
 
                             <select name="outlet_id"
@@ -114,7 +129,7 @@
                                     class="bg-gray-50 border border-gray-300 rounded-lg block w-full p-2.5">
 
                                 <option value="">
-                                     Select Outlet 
+                                     Select Site
                                 </option>
 
                                 @foreach ($outlets as $outlet)
@@ -138,7 +153,7 @@
                         <div class="mb-5">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                Source Outlet
+                                Source Site
                             </label>
 
                             <select name="sources_outlet_id"
@@ -333,7 +348,7 @@
 
                         {{-- Placement --}}
 
-                        <div class="mb-5">
+                        <div class="mb-5 mt-3">
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
                                 Placement

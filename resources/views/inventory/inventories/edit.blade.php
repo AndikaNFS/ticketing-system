@@ -111,7 +111,7 @@
                                 for="type"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Merk
+                                Type
                             </label>
 
                             <input
@@ -170,7 +170,7 @@
                                 for="outlet_id"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Outlet
+                                Site
                             </label>
 
                             <select
@@ -216,7 +216,7 @@
                                 for="sources_outlet_id"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Source Outlet
+                                Source Site
                             </label>
 
                             <select
