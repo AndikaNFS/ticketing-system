@@ -55,6 +55,7 @@ class InventoryReferenceSheet implements
             'In Use',
             'Repair',
             'Lost',
+            'Broken',
             'Disposed',
         ];
 
