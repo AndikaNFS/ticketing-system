@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('outlets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('area')->nullable();
+            $table->foreignId('employee_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('pic')->nullable();
             $table->string('location')->nullable();
             $table->timestamps();
         });

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Dashboard') }}</title>
+        <link rel="icon" href="{{ asset('images/logo-rr.png') }}" type="image/png">
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="//unpkg.com/alpinejs" defer></script>
+
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-300 dark:bg-gray-900">
+         
+            {{-- @include('layouts.navigation') --}}
+
+            <!-- Page Heading -->
+            @isset($header)
+                <header class="bg-white dark:bg-gray-800 shadow">
+                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            <!-- Page Content -->
+            <main>
+                
+                <div class="">
+                    <div class="mx-auto sm:px-6 lg:px-8 pt-10">
+                        {{ $slot }}
+                    </div>
+                </div>
+            </main>
+            {{-- @include('components.footer') --}}
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
+
+        {{-- @vite(['resources/js/guest/charts.js']) --}}
+        {{-- <script src=""> --}}
+            {{-- @vite(['resources/js/dashboard/charts.js']) --}}
+        {{-- </script> --}}
+    </body>
+    {{-- @yield('script') --}}
+    
+    {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></> --}}
+    
+</html>
