@@ -40,7 +40,8 @@ class VisitBuildingController extends Controller
     public function create()
     {
         $tickets = Building::orderBy('created_at', 'desc')->get();
-        $outlets = Outlet::all();
+        $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+
         $specialOutlet = Outlet::find(22);
         $employees = Employeebuild::all();
         return view('building.visits.create', compact('tickets','employees', 'outlets', 'specialOutlet'));
@@ -91,7 +92,8 @@ class VisitBuildingController extends Controller
     {
         $visits = VisitBuilding::findOrFail($id);
         $tickets = Building::orderBy('created_at', 'desc')->get();
-        $outlets = Outlet::all();
+        $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+
         $employees = Employeebuild::all();
         $specialOutlet = Outlet::find(22);
 

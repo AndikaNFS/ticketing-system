@@ -151,9 +151,9 @@
 
                     <!-- Dropdown menu Export-->
                     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-80 dark:bg-gray-700">
-                        <ul class=" text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                        <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
                             <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
-                                <span class="p-2 text-sm text-gray-900 dark:text-gray-200">Export</span>
+                                <span class="p-2 text-sm text-gray-900 ">Export</span>
 
                             </div>
                             <li class="">
@@ -165,14 +165,14 @@
                             </li>
 
                             <div class="w-full bg-gray-400 p-2 text-center">
-                                <span class="p-2 text-sm text-gray-900 dark:text-gray-200">Import</span>
+                                <span class="p-2 text-sm text-gray-900 ">Import</span>
 
                             </div>
                             <li>
                                 <form action="{{ route('inventories.import') }}"
                                     method="POST"
                                     enctype="multipart/form-data"
-                                    class="flex flex-wrap items-center gap-2">
+                                    class="flex flex-wrap items-center">
                                     @csrf
 
                                     <input type="file"name="file" accept=".xlsx,.xls,.csv" required

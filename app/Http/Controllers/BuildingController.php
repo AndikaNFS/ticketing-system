@@ -74,7 +74,9 @@ class BuildingController extends Controller
     $buildings = $buildings->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
     // Data tambahan untuk filter dropdown
-    $outlets   = Outlet::all();
+    // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+    $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
+
 
        
 
@@ -99,7 +101,9 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        $outlets = Outlet::all();
+        // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+        $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
+
         $employeebuilds = Employeebuild::all();
         $vendors = Vendor::all();
         $user = Auth::user();
@@ -240,7 +244,9 @@ class BuildingController extends Controller
     public function edit($id)
     {
         $building = Building::findOrFail($id);
-        $outlets = Outlet::all();
+        // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+        $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
+
         $employeebuilds = Employeebuild::active()->get();
         $vendors = Vendor::all();
         $specialOutlet = Outlet::find(22);

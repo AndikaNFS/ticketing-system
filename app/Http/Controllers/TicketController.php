@@ -94,7 +94,8 @@ public function index(Request $request)
     $tickets = $tickets->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
     // Data tambahan untuk filter dropdown
-    $outlets   = Outlet::all();
+    // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+    $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
 
     return view('tickets.index', compact('tickets', 'status', 'outlets', 'search', 'startDate', 'endDate', 'employee_id', 'outlet_id', 'specialOutlet', 'user'));
 }
@@ -107,7 +108,9 @@ public function index(Request $request)
     public function create(Request $request)
     {
         $specialOutlet = Outlet::find(22);
-        $outlets = Outlet::all();
+        // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+        $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
+
         $user = Auth::user(); // ambil dari user login
         // dd($request->all());
         
@@ -206,7 +209,8 @@ public function index(Request $request)
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
-        $outlets = Outlet::all();
+        // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+        $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
         $employees = Employee::active()->get();
         // $employees = Employee::all()->where('name', '!=', 'All');
 

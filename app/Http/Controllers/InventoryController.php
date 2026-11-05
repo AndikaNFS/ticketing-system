@@ -58,11 +58,6 @@ class InventoryController extends Controller
             $query->whereDate('entry_date', $request->entry_date);
         }
 
-        // Filter Entry Date - To
-        // if ($request->filled('date_to')) {
-        //     $query->where('entry_date', '<=', $request->date_to);
-        // }
-
         // Rows per page
         $allowedPerPage = [10, 20, 50, 100];
 
@@ -70,11 +65,6 @@ class InventoryController extends Controller
         if (! in_array($perPage, $allowedPerPage, true)) {
             $perPage = 10;
         }
-
-        // $inventories = $query
-        //     ->latest()
-        //     ->paginate(15)
-        //     ->withQueryString();
 
         // Pagination
         $inventories = $query
@@ -85,18 +75,6 @@ class InventoryController extends Controller
         // Data untuk dropdown filter
         $categories = Category::orderBy('name')->get();
         $outlets = Outlet::orderBy('name')->get();
-
-
-
-        // $inventories = Inventory::with([
-        //     'category',
-        //     'outlet',
-        //     'sourceOutlet',
-        //     // 'assets',
-        // ])
-        // ->withCount('assets')
-        // ->latest()
-        // ->paginate(10);
 
         return view('inventory.inventories.index', compact('inventories', 'categories', 'outlets'));
     }
@@ -300,7 +278,7 @@ class InventoryController extends Controller
             ->toArray();
         return Excel::download(
             new InventoryTemplateExport($categories, $outlets),
-            'new-inventory-template.xlsx'
+            'inventory-template.xlsx'
         );
     }
 }

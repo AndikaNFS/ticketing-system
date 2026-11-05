@@ -166,6 +166,7 @@
                                 <th class="px-6 py-3">No</th>
                                 <th class="px-6 py-3">Asset</th>
                                 <th class="px-6 py-3">Serial Number</th>
+                                <th class="px-6 py-3">Asset Number</th>
                                 <th class="px-6 py-3">Source Outlet</th>
                                 <th class="px-6 py-3">Destination Outlet</th>
                                 <th class="px-6 py-3">Transfer Date</th>
@@ -209,6 +210,11 @@
                                     {{-- Serial Number --}}
                                     <td class="px-6 py-4">
                                         {{ $transfer->asset?->serial_number ?? '-' }}
+                                    </td>
+
+                                    {{-- Asset Number --}}
+                                    <td class="px-6 py-4">
+                                        {{ $transfer->asset?->asset_number ?? '-' }}
                                     </td>
 
                                     {{-- Source Outlet --}}

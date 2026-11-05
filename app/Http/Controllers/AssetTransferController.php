@@ -42,7 +42,7 @@ class AssetTransferController extends Controller
         // Filter by end date
         if ($request->filled('end_date')) {
             $query->whereDate(
-                'tranfer_date',
+                'transfer_date',
                 '<=',
                 $request->end_date
             );

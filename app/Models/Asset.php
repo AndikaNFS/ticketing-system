@@ -30,6 +30,11 @@ class Asset extends Model
         return $this->belongsTo(Outlet::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function images()
     {
         return $this->hasMany(AssetImage::class);
@@ -38,6 +43,11 @@ class Asset extends Model
     public function transfers()
     {
         return $this->hasMany(InventoryTransfer::class);
+    }
+
+    public function latestTransfer()
+    {
+        return $this->hasOne(InventoryTransfer::class, 'asset_id')->latestOfMany('transfer_date');
     }
 
     public function repairs()

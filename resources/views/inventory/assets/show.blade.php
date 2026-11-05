@@ -12,8 +12,15 @@
                 </p>
             </div>
     
-            <a href="{{ route('assets.outlet', $asset->outlet_id) }}"
-               class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+            @php
+                $isWarehouse = in_array($asset->outlet_id, [22, 23, 24]);
+            @endphp
+
+            <a href="{{ $isWarehouse
+                    ? route('assets.warehouse', $asset->outlet_id)
+                    : route('assets.outlet', $asset->outlet_id) }}"
+                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+
                 ← Back
             </a>
         </div>

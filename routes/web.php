@@ -294,6 +294,7 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     // Route::resource('assets', AssetController::class);
     Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
     Route::get('/assets/outlet/{outlet}', [AssetController::class, 'outlet'])->name('assets.outlet');
+    Route::get('/assets/outlet/{outlet}/warehouse', [AssetController::class, 'warehouse'])->name('assets.warehouse');
     Route::get('/assets/outlet/{outlet}/create', [AssetController::class, 'create'])->name('assets.create');
     Route::post('/assets/outlet/{outlet}', [AssetController::class, 'store'])->name('assets.store');
     Route::get('/assets/{asset}', [AssetController::class, 'show'])->name('assets.show');

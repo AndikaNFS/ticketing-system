@@ -80,7 +80,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 'inventory_ref' => ['required', 'string'],
                 'serial_number' => ['nullable', 'string', 'max:255'],
                 'asset_number'  => ['nullable', 'string', 'max:255'],
-                'status'        => ['required', 'in:Available,In Use,Repair,Lost,Disposed'],
+                'status'        => ['required', 'in:Available,In Use,Repair,Broken,Lost,Disposed'],
                 'placement'     => ['nullable', 'string', 'max:255'],
                 'entry_date'    => ['nullable'],
             ]);

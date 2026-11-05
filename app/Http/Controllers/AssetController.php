@@ -5,55 +5,201 @@ namespace App\Http\Controllers;
 use App\Models\Inventory;
 use App\Models\Outlet;
 use App\Models\Asset;
+use App\Models\Category;
+use App\Models\InventoryTransfer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $outlets = Outlet::withCount(['assets', 'inventories'])
-            ->orderBy('name')
-            ->paginate(12);
+        $search = $request->input('search');
+        $outletId = $request->input('outlet_id');
+        // $specialOutlet = Outlet::where('id', '!=', 22)->get();
 
-        return view ('inventory.assets.index', compact('outlets'));
+        // Ambil seluruh outlet beserta jumlah asset dan inventory
+        $outlets = Outlet::withCount(['assets', 'inventories'])
+            ->where('id', '!=', 22)
+            ->orderBy('name')
+            ->get();
+
+        // Ambil outlet yang dipilih
+        $selectedOutlet = $outletId
+            ? $outlets->firstWhere('id', $outletId)
+            : null;
+
+        // Siapkan daftar outlet yang akan ditampilkan
+        $displayOutlets = $selectedOutlet
+            ? collect([$selectedOutlet])
+            : $outlets;
+
+        // Query pencarian asset
+        $assets = Asset::with([
+            'inventory.category',
+            'outlet',
+        ])
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('serial_number', 'like', "%{$search}%")
+                        ->orWhere('asset_number', 'like', "%{$search}%");
+                });
+            })
+            ->when($outletId, function ($query, $outletId) {
+                $query->where('outlet_id', $outletId);
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('inventory.assets.index', compact(
+            'outlets',
+            'displayOutlets',
+            'selectedOutlet',
+            'assets',
+            'search',
+            'outletId',
+        ));
     }
 
-    public function outlet(Outlet $outlet)
+    // public function outlet(Outlet $outlet, Request $request)
+    // {
+    //     $query = $outlet->assets()
+    //         ->with(['inventory.category', 'images'])
+    //         ->withCount('images');
+
+    //     $inventories = $outlet->inventories()
+    //         ->with('category')
+    //         ->orderBy('device')
+    //         ->get();
+
+    //     $assets = $outlet->assets()
+    //         ->with(['inventory.category', 'images',])
+    //         ->withCount('images')
+    //         ->latest()
+    //         ->paginate(15);
+
+
+    //     $totalBulkUnits = $inventories
+    //         ->where('is_tracked', false)
+    //         ->sum('quantity');
+
+
+    //     $totalInventories = $inventories->count();
+    //     $totalIndividualAssets = $outlet->assets()->count();
+
+    //     // Rows per page
+    //     $allowedPerPage = [10, 20, 50, 100];
+
+    //     $perPage = (int) $request->input('per_page', 10);
+    //     if (! in_array($perPage, $allowedPerPage, true)) {
+    //         $perPage = 10;
+    //     }
+
+    //     // Pagination
+    //     $assets = $query
+    //         ->orderByDesc('id')
+    //         ->paginate($perPage)
+    //         ->withQueryString();
+
+    //     return view('inventory.assets.outlet', compact('outlet', 'inventories', 'assets', 'totalBulkUnits', 'totalIndividualAssets', 'totalInventories'));
+    // }
+
+    public function outlet(Outlet $outlet, Request $request)
     {
-        // $assets = $outlet->assets()
-        //     ->with([
-        //         'inventory.category',
-        //     ])
-        //     ->latest()
-        //     ->paginate(15);
+        return $this->showOutletAssets($outlet, $request, 'inventory.assets.outlet');
+    }
+
+    public function warehouse(Outlet $outlet, Request $request)
+    {
+        return $this->showOutletAssets($outlet, $request, 'inventory.assets.warehouse');
+    }
+
+    private function showOutletAssets(
+        Outlet $outlet,
+        Request $request,
+        string $view
+    ) {
+        $search = $request->input('search');
+
+        $allowedPerPage = [10, 20, 50, 100];
+
+        $perPage = (int) $request->input('per_page', 10);
+
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
 
         $inventories = $outlet->inventories()
             ->with('category')
             ->orderBy('device')
             ->get();
+        
+            
+        $query = $outlet->assets()
+        ->with([
+            'inventory.category', 
+            'images',
+            'latestTransfer.fromOutlet',
+            ])
+            ->withCount('images');
+            
+        // Filter Category
+        if ($request->filled('category_id')) {
+            $query->whereHas('inventory', function ($q) use ($request) {
+                $q->where('category_id', $request->category_id);
+            });
+        }
+        $query->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('serial_number', 'like', "%{$search}%")
+                    ->orWhere('asset_number', 'like', "%{$search}%")
+                    ->orWhereHas('inventory', function ($inventoryQuery) use ($search) {
+                        $inventoryQuery->where('device', 'like', "%{$search}%")
+                            ->orWhere('brand', 'like', "%{$search}%")
+                            ->orWhere('type', 'like', "%{$search}%");
+                    });
+            });
+        });
 
-        $assets = $outlet->assets()
-            ->with(['inventory.category', 'images',])
-            ->withCount('images')
-            ->latest()
-            ->paginate(15);
-
-        // $images = $outlet->imageAssets()
-        //     ->with(['images.outlet'])
-        //     ->latest()
-        //     ->get();
+        $assets = $query
+            ->orderByDesc('id')
+            ->paginate($perPage)
+            ->withQueryString();
 
         $totalBulkUnits = $inventories
             ->where('is_tracked', false)
             ->sum('quantity');
 
         $totalInventories = $inventories->count();
+
         $totalIndividualAssets = $outlet->assets()->count();
 
-        // $totalImage = $images->imageAssets()->count();
+        // $categories = Category::whereHas('inventories', function ($query) use ($outlet) {
+        //     $query->where('outlet_id', $outlet->id);
+        // })->orderBy('name')->get();
 
-        return view('inventory.assets.outlet', compact('outlet', 'inventories', 'assets', 'totalBulkUnits', 'totalIndividualAssets', 'totalInventories'));
+        $categoryIds = $outlet->assets()
+            ->join('inventories', 'assets.inventory_id', '=', 'inventories.id')
+            ->distinct()
+            ->pluck('inventories.category_id');
+
+        $categories = Category::whereIn('id', $categoryIds)
+            ->orderBy('name')
+            ->get();
+
+
+        return view($view, compact(
+            'outlet',
+            'inventories',
+            'assets',
+            'totalBulkUnits',
+            'totalIndividualAssets',
+            'totalInventories',
+            'search',
+            'perPage',
+            'categories',
+        ));
     }
 
     public function create(Outlet $outlet)

@@ -90,7 +90,9 @@ class VisitController extends Controller
 
 
     // Data tambahan untuk filter dropdown
-    $outlets = Outlet::where('id', '!=', 22)->get();
+    // $outlets = Outlet::where('id', '!=', 22)->get();
+    // $outlets = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+    $outlets = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
     
     // $employees = Employee::all();
     $employees = Employee::active()
@@ -110,7 +112,8 @@ class VisitController extends Controller
     public function create(Request $request)
     {
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
-        $outlets = Outlet::where('id', '!=', 22)->get();
+        // $outlets = Outlet::whereNotIn('id',[22, 23, 24])->orderBy('name')->get();
+        $outlets = Outlet::whereNotIn('id',[22, 40, 41])->orderBy('name')->get();
         $employees = Employee::where('name', '!=', 'All')->get();
         $employees = Employee::active()
                 ->where('name', '!=', 'All')
@@ -200,7 +203,8 @@ class VisitController extends Controller
     public function edit($id)
     {
         $visits = Visit::findOrFail($id);
-        $outlets = Outlet::where('id', '!=', 22)->get();
+        // $outlets = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
+        $outlets = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
         $employees = Employee::active()->get();
         // $employees = Employee::all()->where('name', '!=', 'All');
         $tickets = Ticket::orderBy('created_at', 'desc')->get();

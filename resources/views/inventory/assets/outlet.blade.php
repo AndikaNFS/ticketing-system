@@ -148,14 +148,83 @@
 
 
                     {{-- Back --}}
-                    <div class="mb-4">
+                    <div class="grid grid-cols-2 items-center mb-4 ">
+                        {{-- <div class=""> --}}
+                            <a
+                                href="{{ route('assets.index') }}"
+                                class="text-sm text-blue-600 hover:underline"
+                            >
+                                ← Back to Site List
+                            </a>
 
-                        <a
-                            href="{{ route('assets.index') }}"
-                            class="text-sm text-blue-600 hover:underline"
-                        >
-                            ← Back to Site List
-                        </a>
+                        {{-- </div> --}}
+                        <div class="flex justify-end items-center">
+                            {{-- Filter Category --}}
+                            <form action="{{ url()->current() }}" method="GET"
+                                class="flex flex-col md:flex-row pr-3 gap-3">
+                                <div class="col-span-2 sm:col-span-1">
+    
+                                    <select
+                                        name="category_id"
+                                        onchange="this.form.submit()"
+                                        class="w-full md:w-40 rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    >
+                                        <option value="">All Category</option>
+    
+                                        @foreach ($categories as $category)
+                                            <option
+                                                value="{{ $category->id }}"
+                                                {{ request('category_id') == $category->id ? 'selected' : '' }}
+                                            >
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </form>    
+    
+                            {{-- Search --}}
+                            <form action="{{ route('assets.outlet', $outlet) }}" method="GET"
+                            class="">
+                            
+                                <div class="flex flex-col justify-center sm:flex-row gap-2">
+    
+                                    {{-- Search --}}
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        value="{{ $search ?? '' }}"
+                                        placeholder="Search Asset Number, Serial Number, Device..."
+                                        class="w-full sm:w-96 rounded-lg border-gray-300
+                                            dark:border-gray-600 dark:bg-gray-700
+                                            dark:text-white"
+                                    >
+    
+    
+                                    <button
+                                        type="submit"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg
+                                            hover:bg-blue-700"
+                                    >
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                                        </svg>
+    
+                                    </button>
+    
+                                    @if ($search)
+                                        <a
+                                            href="{{ route('assets.outlet', $outlet) }}"
+                                            class="px-4 py-2 bg-gray-500 text-white rounded-lg
+                                                hover:bg-gray-600 text-center"
+                                        >
+                                            Reset
+                                        </a>
+                                    @endif
+                                </div>
+                            </form>
+
+                        </div>
 
                     </div>
 
@@ -183,6 +252,10 @@
 
                                     <th class="px-6 py-3">
                                         Type
+                                    </th>
+
+                                    <th class="px-6 py-3">
+                                        Category
                                     </th>
 
                                     <th class="px-6 py-3">
@@ -236,6 +309,10 @@
 
                                         <td class="px-6 py-4">
                                             {{ $asset->inventory?->type ?? '-' }}
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            {{ $asset->inventory?->category?->name ?? '-' }}
                                         </td>
 
 
@@ -434,13 +511,53 @@
 
 
 
-                    @if ($assets->hasPages())
+                   <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                        <div class="mt-6">
+                        {{-- Rows per page --}}
+                        <form
+                            method="GET"
+                            action="{{ route('assets.outlet', $outlet->id) }}"
+                            class="flex items-center gap-2"
+                        >
+                            {{-- Preserve existing filters --}}
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                            <input type="hidden" name="outlet_id" value="{{ request('outlet_id') }}">
+                            <input type="hidden" name="entry_date" value="{{ request('entry_date') }}">
+
+                            <label for="per_page" class="whitespace-nowrap text-sm text-gray-300 dark:text-gray-700">
+                                Rows per page:
+                            </label>
+
+                            <select
+                                id="per_page"
+                                name="per_page"
+                                onchange="this.form.submit()"
+                                class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm
+                                    text-gray-900 focus:border-blue-500 focus:ring-blue-500
+                                    dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            >
+                                @foreach ([10, 20, 50, 100] as $size)
+                                    <option
+                                        value="{{ $size }}"
+                                        {{ (int) request('per_page', 10) === $size ? 'selected' : '' }}
+                                    >
+                                        {{ $size }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <span class="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                of {{ $assets->total() }} entries
+                            </span>
+                        </form>
+
+                        {{-- Pagination --}}
+                        <div>
                             {{ $assets->links() }}
                         </div>
 
-                    @endif
+                    </div>
 
                 </div>
 
