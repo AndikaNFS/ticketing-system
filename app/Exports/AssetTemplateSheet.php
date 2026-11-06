@@ -37,6 +37,7 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents, WithTit
             'Asset Number',
             'Status',
             'Placement',
+            'Description',
             'Entry Date',
         ];
     }
@@ -48,6 +49,7 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents, WithTit
         for ($i = 0; $i < 100; $i++) {
             $rows[] = [
                 $this->assetRefs[$i] ?? null,
+                null,
                 null,
                 null,
                 null,
@@ -67,14 +69,14 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents, WithTit
                 $sheet = $event->sheet->getDelegate();
 
                 $sheet->freezePane('A2');
-                $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:H1')->getFont()->setBold(true);
 
-                foreach (range('A', 'G') as $column) {
+                foreach (range('A', 'H') as $column) {
                     $sheet->getColumnDimension($column)
                         ->setAutoSize(true);           
                 }
 
-                $sheet->getStyle('G2:G101')
+                $sheet->getStyle('H2:H101')
                     ->getNumberFormat()
                     ->setFormatCode('yyyy-mm-dd');
                 

@@ -36,13 +36,15 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 'serial_number' => $row['serial_number'] ?? null,
                 'asset_number' => $row['asset_number'] ?? null,
                 'status' => $row['status'] ?? null,
+                'description' => $row['description'] ?? null,
             ]);
 
             if (
                 empty($row['inventory_ref']) &&
                 empty($row['asset_ref']) &&
                 empty($row['serial_number']) &&
-                empty($row['asset_number'])
+                empty($row['asset_number']) &&
+                empty($row['description'])
             ) {
                 continue;
             }
@@ -82,6 +84,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 'status'        => ['required', 'in:Available,In Use,Repair,Broken,Lost,Unavailable'],
                 'placement'     => ['nullable', 'string', 'max:255'],
                 'entry_date'    => ['nullable'],
+                'description'    => ['nullable', 'string', 'max:255'],
             ]);
 
             if ($validator->fails()) {
@@ -116,6 +119,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
             $assetRef = $this->nullableString($row['asset_ref'] ?? null);
             $serialNumber = $this->nullableString($row['serial_number'] ?? null);
             $assetNumber = $this->nullableString($row['asset_number'] ?? null);
+            $description = $this->nullableString($row['description'] ?? null);
             $assetDate = filled($row['entry_date'] ?? null)
                 ? $this->parseDate($row['entry_date'])
                 : $inventory->entry_date;
@@ -163,6 +167,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 'placement'     => $this->nullableString($row['placement'] ?? null)
                     ?? $inventory->placement,
                 'entry_date'    => $assetDate,
+                'description'    => $description,
             ]);
         }
     }
