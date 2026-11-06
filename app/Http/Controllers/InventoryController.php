@@ -10,6 +10,7 @@ use App\Models\Asset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -17,13 +18,112 @@ class InventoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index(Request $request)
+    // {
+    //     $query = Inventory::query()
+    //         ->with([
+    //             'category',
+    //             'outlet',
+    //             'assets.outlet',
+    //         ])->withCount('assets');
+
+    //     // Search
+    //     if ($request->filled('search')) {
+    //         $search = trim($request->search);
+
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('device', 'like', "%{$search}%")
+    //                 ->orWhere('brand', 'like', "%{$search}%")
+    //                 ->orWhere('description', 'like', "%{$search}%")
+    //                 ->orWhere('placement', 'like', "%{$search}%")
+    //                 ->orWhereHas('category', function ($categoryQuery) use ($search) {
+    //                     $categoryQuery->where('name', 'like', "%{$search}%");
+    //                 })
+    //                 ->orWhereHas('outlet', function ($outletQuery) use ($search) {
+    //                     $outletQuery->where('name', 'like', "%{$search}%");
+    //                 });
+    //         });
+    //     }
+
+    //     // Filter Category
+    //     if ($request->filled('category_id')) {
+    //         $query->where('category_id', $request->category_id);
+    //     }
+
+    //     // Filter Outlet
+    //     if ($request->filled('outlet_id')) {
+    //         $query->where('outlet_id', $request->outlet_id);
+    //     }
+
+    //     // Filter Entry Date - From
+    //     if ($request->filled('entry_date')) {
+    //         $query->whereDate('entry_date', $request->entry_date);
+    //     }
+
+    //     // Rows per page
+    //     $allowedPerPage = [10, 20, 50, 100];
+
+    //     $perPage = (int) $request->input('per_page', 10);
+    //     if (! in_array($perPage, $allowedPerPage, true)) {
+    //         $perPage = 10;
+    //     }
+
+        
+    //     $inventories = $query->paginate(15)->withQueryString();
+        
+    //     $inventoryRows = collect();
+
+    //     // Pagination
+    //     $inventories = $query
+    //         ->orderByDesc('id')
+    //         ->paginate($perPage)
+    //         ->withQueryString();
+
+    //     foreach ($inventories as $inventory) {
+    //         if ($inventory->is_tracked) {
+    //             // Kelompokkan asset berdasarkan outlet saat ini
+    //             $groupedAssets = $inventory->assets->groupBy('outlet_id');
+
+    //             foreach ($groupedAssets as $outletId => $assets) {
+    //                 $inventoryRows->push([
+    //                     'inventory' => $inventory,
+    //                     'outlet' => $assets->first()->outlet,
+    //                     'quantity' => $assets->count(),
+    //                     'assets_count' => $assets->count(),
+    //                 ]);
+    //             }
+    //         } else {
+    //             // Inventory Bulk tetap menggunakan outlet dan quantity Inventory
+    //             $inventoryRows->push([
+    //                 'inventory' => $inventory,
+    //                 'outlet' => $inventory->outlet,
+    //                 'quantity' => $inventory->quantity,
+    //                 'assets_count' => 0,
+    //             ]);
+    //         }
+    //     }
+
+    //     // return view('inventory.index', compact(
+    //     //     'inventories',
+    //     //     'inventoryRows'
+    //     // ));
+
+    //     // Data untuk dropdown filter
+    //     $categories = Category::orderBy('name')->get();
+    //     $outlets = Outlet::orderBy('name')->get();
+
+    //     // return view('inventory.inventories.index', compact('inventories', 'categories', 'outlets'));
+    //     return view('inventory.inventories.index', compact('inventories', 'categories', 'outlets', 'inventoryRows'));
+    // }
     public function index(Request $request)
     {
         $query = Inventory::query()
             ->with([
                 'category',
                 'outlet',
-            ])->withCount('assets');
+                'assets.outlet',
+            ])
+            ->withCount('assets');
 
         // Search
         if ($request->filled('search')) {
@@ -32,13 +132,25 @@ class InventoryController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('device', 'like', "%{$search}%")
                     ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
                     ->orWhere('placement', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($categoryQuery) use ($search) {
                         $categoryQuery->where('name', 'like', "%{$search}%");
                     })
-                    ->orWhereHas('outlet', function ($outletQuery) use ($search) {
-                        $outletQuery->where('name', 'like', "%{$search}%");
+                    // Outlet saat ini untuk asset Tracked
+                    ->orWhere(function ($outletQuery) use ($search) {
+                        $outletQuery->where('is_tracked', true)
+                            ->whereHas('assets.outlet', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            });
+                    })
+                    // Outlet Inventory untuk Bulk
+                    ->orWhere(function ($outletQuery) use ($search) {
+                        $outletQuery->where('is_tracked', false)
+                            ->whereHas('outlet', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            });
                     });
             });
         }
@@ -48,12 +160,24 @@ class InventoryController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Filter Outlet
+        // Filter Outlet berdasarkan lokasi asset saat ini
         if ($request->filled('outlet_id')) {
-            $query->where('outlet_id', $request->outlet_id);
+            $outletId = $request->outlet_id;
+
+            $query->where(function ($q) use ($outletId) {
+                $q->where(function ($trackedQuery) use ($outletId) {
+                    $trackedQuery->where('is_tracked', true)
+                        ->whereHas('assets', function ($assetQuery) use ($outletId) {
+                            $assetQuery->where('outlet_id', $outletId);
+                        });
+                })->orWhere(function ($bulkQuery) use ($outletId) {
+                    $bulkQuery->where('is_tracked', false)
+                        ->where('outlet_id', $outletId);
+                });
+            });
         }
 
-        // Filter Entry Date - From
+        // Filter Entry Date
         if ($request->filled('entry_date')) {
             $query->whereDate('entry_date', $request->entry_date);
         }
@@ -62,22 +186,121 @@ class InventoryController extends Controller
         $allowedPerPage = [10, 20, 50, 100];
 
         $perPage = (int) $request->input('per_page', 10);
-        if (! in_array($perPage, $allowedPerPage, true)) {
+
+        if (!in_array($perPage, $allowedPerPage, true)) {
             $perPage = 10;
         }
 
-        // Pagination
+        // Ambil seluruh Inventory yang sudah difilter.
+        // Pagination dilakukan setelah pengelompokan.
         $inventories = $query
             ->orderByDesc('id')
-            ->paginate($perPage)
-            ->withQueryString();
+            ->get();
 
-        // Data untuk dropdown filter
+        $trackedRows = collect();
+        $bulkRows = collect();
+
+        foreach ($inventories as $inventory) {
+            if ($inventory->is_tracked) {
+                // Kelompokkan asset berdasarkan outlet saat ini
+                $assetsByOutlet = $inventory->assets->groupBy('outlet_id');
+
+                foreach ($assetsByOutlet as $outletId => $assets) {
+                    $outlet = $assets->first()->outlet;
+
+                    if (!$outlet) {
+                        continue;
+                    }
+
+                    $trackedRows->push([
+                        'inventory' => $inventory,
+                        'outlet' => $outlet,
+                        'quantity' => $assets->count(),
+                        'assets_count' => $assets->count(),
+                    ]);
+                }
+            } else {
+                // Bulk tetap mengikuti data Inventory
+                $bulkRows->push([
+                    'inventory' => $inventory,
+                    'outlet' => $inventory->outlet,
+                    'quantity' => $inventory->quantity,
+                    'assets_count' => 0,
+                    'inventories' => collect([$inventory]),
+                    'is_grouped' => false,
+                ]);
+            }
+        }
+
+        // Gabungkan Tracked berdasarkan spesifikasi dan outlet
+        $groupedTrackedRows = $trackedRows
+            ->groupBy(function ($row) {
+                $inventory = $row['inventory'];
+
+                return implode('|', [
+                    $inventory->device,
+                    $inventory->brand,
+                    $inventory->type,
+                    $inventory->category_id,
+                    $row['outlet']->id,
+                ]);
+            })
+            ->map(function ($group) {
+                $first = $group->first();
+
+                return [
+                    'inventory' => $first['inventory'],
+                    'outlet' => $first['outlet'],
+                    'quantity' => $group->sum('quantity'),
+                    'assets_count' => $group->sum('assets_count'),
+
+                    // Simpan semua Inventory sumber untuk referensi
+                    'inventories' => $group
+                        ->pluck('inventory')
+                        ->unique('id')
+                        ->values(),
+
+                    'is_grouped' => $group->count() > 1,
+                ];
+            });
+
+        // Gabungkan hasil Tracked dan Bulk
+        $inventoryRows = $groupedTrackedRows
+            ->concat($bulkRows)
+            ->sortByDesc(function ($row) {
+                return $row['inventory']->id;
+            })
+            ->values();
+
+        // Pagination setelah pengelompokan
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $currentItems = $inventoryRows
+            ->slice(($currentPage - 1) * $perPage, $perPage)
+            ->values();
+
+        $inventoryRows = new LengthAwarePaginator(
+            $currentItems,
+            $inventoryRows->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
+
+        // Dropdown filter
         $categories = Category::orderBy('name')->get();
         $outlets = Outlet::orderBy('name')->get();
 
-        return view('inventory.inventories.index', compact('inventories', 'categories', 'outlets'));
+        return view('inventory.inventories.index', compact(
+            'inventoryRows',
+            'categories',
+            'outlets'
+        ));
     }
+    
 
     /**
      * Show the form for creating a new resource.

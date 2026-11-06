@@ -56,17 +56,6 @@ class InventoryExcelController extends Controller
 
         $import = new InventoryImport();
 
-        // Excel::import($import, $request->file('file'));
-
-        // $failures = $import->failures();
-        // if ($failures->isNotEmpty()) {
-        //     dd($failures->map(fn ($failure) => [
-        //         'row' => $failure->row(),
-        //         'attribute' => $failure->attribute(),
-        //         'errors' => $failure->errors(),
-        //         'value' => $failure->values(),
-        //     ])->all());
-        // }
 
          try {
             DB::transaction(function () use ($request) {
@@ -75,15 +64,6 @@ class InventoryExcelController extends Controller
                     $request->file('file')
                 );
             });
-            // DB::transaction(function () use ($request, $import) {
-            //     Excel::import($import, $request->file('file'));
-            // });
-
-            // dd([
-            //     'inventory_rows' => $import->inventoryRows ?? 'not calculated',
-            //     'asset_rows' => $import->assetRows ?? 'not calculated',
-            //     'database' => config('database.default'),
-            // ]);
 
         return redirect()
             ->route('inventories.index')
@@ -102,45 +82,5 @@ class InventoryExcelController extends Controller
                 ->route('inventories.index')
                 ->with('error', 'Import failed. Please check the Excel format and Laravel log.');
         }
-
-        // $failures = collect($import->failures())->map(function ($failure) {
-        //     $attribute = $failure->attribute();
-
-        //     // Mengambil nama kolom, termasuk jika atribut memiliki prefix
-        //     $parts = explode('.', $attribute);
-        //     $column = end($parts);
-
-        //     $columnNames = [
-        //         'device' => 'Device',
-        //         'brand' => 'Brand',
-        //         'serial_number' => 'Serial Number',
-        //         'category' => 'Category',
-        //         'outlet' => 'Outlet',
-        //         'source_outlet_id' => 'Source Outlet',
-        //         'is_tracked' => 'Is Tracked',
-        //         'quantity' => 'Quantity',
-        //         'placement' => 'Placement',
-        //         'entry_date' => 'Entry Date',
-        //         'description' => 'Description',
-        //     ];
-
-        //     $values = $failure->values();
-
-        //     return [
-        //         'row' => $failure->row(),
-        //         'column' => $columnNames[$column] ?? $column,
-        //         'value' => $values[$column] ?? null,
-        //         'errors' => $failure->errors(),
-        //     ];
-        // })->values()->all();
-
-        // if (!empty($failures)) {
-        //     return redirect()
-        //         ->route('inventories.index')
-        //         ->with('import_failures', $failures)
-        //         ->with('warning', 'Import completed, but some rows failed validation.');
-        // }
-
-        // return redirect()->route('inventories.index')->with('success', 'Inventory data imported successfully.');
     }
 }

@@ -203,6 +203,22 @@
                             </p>
                         </div>
 
+                        
+                    </div>
+                    <div class="mt-6">
+
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Description
+                        </p>
+
+                        <div class="mt-2 p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
+
+                            <p class="text-gray-900 dark:text-gray-200 whitespace-pre-line">
+                                {{ $asset->description ?? '-' }}
+                            </p>
+
+                        </div>
+
                     </div>
 
                 </div>

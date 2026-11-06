@@ -56,6 +56,11 @@ class Inventory extends Model
         return $this->hasMany(InventoryTransfer::class);
     }
 
+    public function latestTransfer()
+    {
+        return $this->hasOne(InventoryTransfer::class, 'asset_id')->latestOfMany('transfer_date');
+    }
+
     public function repairs()
     {
         return $this->hasMany(InventoryRepair::class);

@@ -206,7 +206,7 @@
                                 'Repair',
                                 'Broken',
                                 'Lost',
-                                'Disposed'
+                                'Unavailable'
                             ] as $status)
 
                                 <option

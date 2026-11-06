@@ -37,12 +37,6 @@ class InventorySheetImport implements ToCollection, WithHeadingRow, WithTitle
         foreach ($rows as $index => $row) {
             $row = $row->toArray();
 
-            // if (collect($row)->every(
-            //     fn ($value) => $value === null || trim((string) $value) === ''
-            // )) {
-            //     continue;
-            // }
-
             $hasInventoryData = collect($row)
                 ->except(['inventory_ref'])
                 ->contains(fn ($value) => $value !== null && trim((string) $value) !== '' );
@@ -50,8 +44,6 @@ class InventorySheetImport implements ToCollection, WithHeadingRow, WithTitle
             if (!$hasInventoryData) {
                 continue;
             }
-
-            // $rowNumber = $index + 2;
 
             $rowNumber = $index + 2;
 

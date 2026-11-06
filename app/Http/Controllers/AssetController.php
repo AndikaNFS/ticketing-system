@@ -220,9 +220,10 @@ class AssetController extends Controller
             'inventory_id' => 'required|exists:inventories,id',
             'serial_number' => 'nullable|string|max:150',
             'asset_number' => 'nullable|string|max:150',
-            'status' => ['required', Rule::in(['Available', 'In Use', 'Repair', 'Broken', 'Lost', 'Disposed',])],
+            'status' => ['required', Rule::in(['Available', 'In Use', 'Repair', 'Broken', 'Lost', 'Unavailable',])],
             'placement' => 'nullable|string|max:150',
             'entry_date' => 'required|date',
+            'description' => 'nullable|string|max:250',
         ]);
 
         $inventory = Inventory::where('id', $validated['inventory_id'])
@@ -272,6 +273,7 @@ class AssetController extends Controller
             'status' => $validated['status'],
             'placement' => $validated['placement'] ?? null,
             'entry_date' => $validated['entry_date'],
+            'description' => $validated['description'] ?? null,
         ]);
 
         return redirect()
@@ -312,13 +314,19 @@ class AssetController extends Controller
 
             'status' => [
                 'required',
-                Rule::in(['Avilable', 'In Use', 'Repair', 'Broken', 'Lost', 'Disposed',]),
+                Rule::in(['Available', 'In Use', 'Repair', 'Broken', 'Lost', 'Unavailable']),
             ],
             
             'placement' => [
                 'nullable',
                 'string',
                 'max:150',
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+                'max:255',
             ],
 
             'asset_number' => [
@@ -332,7 +340,7 @@ class AssetController extends Controller
             ],
         ]);
 
-        if ($asset->status === 'Disposed' && $validated['status'] !== 'Disposed') {
+        if ($asset->status === 'Unavailable' && $validated['status'] !== 'Unavailable') {
             return back()->withInput()->with(
                 'error',
                 "A disposed asset cannot be changed to another status."
@@ -345,6 +353,7 @@ class AssetController extends Controller
             'status' => $validated['status'],
             'placement' => $validated['placement'] ?? null,
             'entry_date' => $validated['entry_date'],
+            'description' => $validated['description'] ?? null,
         ]);
 
         return redirect()->route('assets.outlet', $asset->outlet_id)->with('success', 'Asset updated successfully.');

@@ -14,6 +14,8 @@ class Asset extends Model
         'status',
         'placement',
         'entry_date',
+        'import_ref',
+        'description',
     ];
 
     protected $casts = [

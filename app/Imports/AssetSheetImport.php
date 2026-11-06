@@ -25,17 +25,14 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
     }
 
     public function collection(Collection $rows)
-    {
-        // Log::info('AssetSheetImport: collection dipanggil', [
-        //     'jumlah_baris' => $rows->count(),
-        // ]);
-        
+    {   
         foreach ($rows as $index => $row) {
             $row = $row->toArray();
 
             Log::info('AssetSheetImport: data baris Excel', [
                 'row' => $index + 2,
                 'inventory_ref' => $row['inventory_ref'] ?? null,
+                'asset_ref' => $row['asset_ref'] ?? null,
                 'serial_number' => $row['serial_number'] ?? null,
                 'asset_number' => $row['asset_number'] ?? null,
                 'status' => $row['status'] ?? null,
@@ -43,6 +40,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
 
             if (
                 empty($row['inventory_ref']) &&
+                empty($row['asset_ref']) &&
                 empty($row['serial_number']) &&
                 empty($row['asset_number'])
             ) {
@@ -78,9 +76,10 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
 
             $validator = Validator::make($row, [
                 'inventory_ref' => ['required', 'string'],
+                'asset_ref' => ['required', 'string'],
                 'serial_number' => ['nullable', 'string', 'max:255'],
                 'asset_number'  => ['nullable', 'string', 'max:255'],
-                'status'        => ['required', 'in:Available,In Use,Repair,Broken,Lost,Disposed'],
+                'status'        => ['required', 'in:Available,In Use,Repair,Broken,Lost,Unavailable'],
                 'placement'     => ['nullable', 'string', 'max:255'],
                 'entry_date'    => ['nullable'],
             ]);
@@ -114,6 +113,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 ]);
             }
 
+            $assetRef = $this->nullableString($row['asset_ref'] ?? null);
             $serialNumber = $this->nullableString($row['serial_number'] ?? null);
             $assetNumber = $this->nullableString($row['asset_number'] ?? null);
             $assetDate = filled($row['entry_date'] ?? null)
@@ -142,6 +142,13 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 ]);
             }
 
+            if (Asset::where('import_ref', $assetRef)->exists()) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    "Asset baris {$rowNumber}" =>
+                        "Asset Ref {$assetRef} sudah pernah digunakan.",
+                ]);
+            }
+
             $assetDate = filled($row['entry_date'] ?? null)
                 ? $this->parseDate($row['entry_date'])
                 : $inventory->entry_date;
@@ -149,6 +156,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
             Asset::create([
                 'inventory_id'  => $inventory->id,
                 'outlet_id'     => $inventory->outlet_id,
+                'import_ref' => $assetRef,
                 'serial_number' => $serialNumber,
                 'asset_number'  => $assetNumber,
                 'status'        => trim($row['status']),
@@ -160,7 +168,7 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
     }
 
     private function generateAssetNumber(
-        $assetDate,
+        string $assetDate,
         Inventory $inventory
     ): string {
         $dateCode = Carbon::parse($assetDate)->format('ymd');

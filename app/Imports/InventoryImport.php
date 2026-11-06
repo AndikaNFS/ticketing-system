@@ -4,8 +4,9 @@ namespace App\Imports;
 
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
-class InventoryImport implements WithMultipleSheets
+class InventoryImport implements WithMultipleSheets, SkipsUnknownSheets
 {
     public function sheets(): array
     {
@@ -13,7 +14,13 @@ class InventoryImport implements WithMultipleSheets
         
         return [
             'Worksheet' => new InventorySheetImport(),
-            'Worksheet 1' => new AssetSheetImport(),
+            'Asset' => new AssetSheetImport(),
+            'Asset Movement' => new AssetMovementSheetImport(),
         ];
+    }
+
+    public function onUnknownSheet($sheetName)
+    {
+        Log::warning("Sheet tidak ditemukan: {$sheetName}");
     }
 }

@@ -38,7 +38,6 @@ class InventoryTemplateSheet implements FromArray, WithHeadings, WithEvents
             'Source Outlet',
             'Is Tracked',
             'Quantity',
-            // 'Placement',
             'Entry Date',
             'Description',
         ];

@@ -17,7 +17,8 @@ class InventoryTemplateExport implements WithMultipleSheets
 {
     protected array $categories;
     protected array $outlets;
-    protected array $refs;
+    protected array $inventoryRefs = [];
+    protected array $assetRefs = [];
     /**
      * Create a new class instance.
      */
@@ -26,24 +27,37 @@ class InventoryTemplateExport implements WithMultipleSheets
         $this->categories = $categories;
         $this->outlets = $outlets;
 
-        $prefix = 'INV-' . Str::upper(Str::random(8));
+        $inventoryPrefix = 'INV-' . Str::upper(Str::random(8));
+        $assetPrefix = 'AST-' . Str::upper(Str::random(8));
 
-        $this->refs= [];
+        // $this->refs= [];
 
         for ($i = 1; $i <= 100; $i++) {
-            $this->refs[] = sprintf('%s-%03d', $prefix, $i);
+            $this->inventoryRefs[] = sprintf('%s-%03d', $inventoryPrefix, $i);
+        }
+        
+        for ($i = 1; $i <= 500; $i++) {
+            $this->assetRefs[] = sprintf('%s-%03d', $assetPrefix, $i);
         }
     }
 
     public function sheets(): array
     {
         return [
-            new InventoryTemplateSheet($this->refs),
-            new AssetTemplateSheet($this->refs),
+            new InventoryTemplateSheet($this->inventoryRefs),
+            new AssetTemplateSheet(
+                $this->inventoryRefs,
+                $this->assetRefs
+                ),
+            new AssetMovementTemplateSheet(
+                $this->assetRefs
+            ),
+
             new InventoryReferenceSheet(
                 $this->categories,
                 $this->outlets,
-                $this->refs
+                $this->inventoryRefs,
+                $this->assetRefs
             ),
         ];
     }

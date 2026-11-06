@@ -5,19 +5,22 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Override;
 
-class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
+class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents, WithTitle
 {
     /**
      * Create a new class instance.
      */
-    protected array $refs;
+    protected array $inventoryRefs;
+    protected array $assetRefs;
 
-    public function __construct(array $refs)
+    public function __construct(array $inventoryRefs, array $assetRefs)
     {
-        $this->refs = array_values($refs);
+        $this->inventoryRefs = array_values($inventoryRefs);
+        $this->assetRefs = array_values($assetRefs);
     }
 
     public function title(): string
@@ -28,6 +31,7 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
     public function headings(): array
     {
         return [
+            'Asset Ref',
             'Inventory Ref',
             'Serial Number',
             'Asset Number',
@@ -39,7 +43,21 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
 
     public function array(): array
     {
-        return array_fill(0, 500, array_fill(0, 6, null));
+        $rows = [];
+
+        for ($i = 0; $i < 100; $i++) {
+            $rows[] = [
+                $this->assetRefs[$i] ?? null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            ];
+        }
+
+        return $rows;
     }
 
     public function registerEvents(): array
@@ -49,46 +67,26 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 $sheet->freezePane('A2');
-                $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:G1')->getFont()->setBold(true);
 
-                foreach (range('A', 'F') as $column) {
+                foreach (range('A', 'G') as $column) {
                     $sheet->getColumnDimension($column)
                         ->setAutoSize(true);           
                 }
 
-                $sheet->getStyle('F2:F501')
+                $sheet->getStyle('G2:G101')
                     ->getNumberFormat()
                     ->setFormatCode('yyyy-mm-dd');
                 
-                // for ($row = 2; $row <= 501; $row++) {
-                //     $validation = $sheet
-                //         ->getCell('D' . $row)
-                //         ->getDataValidation();
-
-                //     $validation->setType(
-                //         \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST
-                //     );
-                //     $validation->setErrorStyle(
-                //         \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP
-                //     );
-                //     $validation->setAllowBlank(false);
-                //     $validation->setShowDropDown(true);
-                //     $validation->setShowErrorMessage(true);
-                //     $validation->setFormula1('=StatusList');
-                //     $validation->setErrorTitle('Status tidak valid');
-                //     $validation->setError(
-                //         'Silakan pilih status dari daftar dropdown.'
-                //     );
-                // }
-
+                
                 $dropdowns = [
-                    'A' => [
+                    'B' => [
                         'formula' => '=InventoryRefList',
                         'blank' => true,
                         'errorTitle' => 'Inventory Ref tidak valid',
                         'error' => 'Silakan pilih Inventory Ref dari daftar.',
                     ],
-                    'D' => [
+                    'E' => [
                         'formula' => '=StatusList',
                         'blank' => false,
                         'errorTitle' => 'Status tidak valid',
@@ -97,7 +95,7 @@ class AssetTemplateSheet implements FromArray, WithHeadings, WithEvents
                 ];
 
                 foreach ($dropdowns as $column => $config) {
-                    for ($row = 2; $row <= 501; $row++) {
+                    for ($row = 2; $row <= 101; $row++) {
                         $validation = $sheet
                             ->getCell($column . $row)
                             ->getDataValidation();

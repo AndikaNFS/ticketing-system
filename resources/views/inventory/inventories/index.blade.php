@@ -91,33 +91,7 @@
 
                     
                     <div class="flex flex-wrap gap-2">
-                        {{-- <a href="{{ route('inventories.export') }}"
-                        class="rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800">
-                            Export to Excel
-                        </a>
-
-                        <a href="{{ route('inventories.download-template') }}"
-                        class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800">
-                            Download Template
-                        </a> --}}
-
-                        {{-- <form action="{{ route('inventories.import') }}"
-                            method="POST"
-                            enctype="multipart/form-data"
-                            class="flex flex-wrap items-center gap-2">
-                            @csrf
-
-                            <input type="file"
-                                name="file"
-                                accept=".xlsx,.xls,.csv"
-                                required
-                                class="block max-w-xs text-sm text-gray-900 dark:text-gray-200">
-
-                            <button type="submit"
-                                    class="rounded-lg bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800">
-                                Submit
-                            </button>
-                        </form> --}}
+                        
                     </div>
 
                     <div class="flex">
@@ -308,122 +282,6 @@
 
                 </div>
 
-                {{-- Search and Filter --}}
-                {{-- <div class="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-
-                    <form action="{{ route('inventories.index') }}" method="GET">
-
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-
-                            Search
-                            <div>
-                                <label for="search"
-                                    class="mb-2 block text-sm font-medium text-gray-300 dark:text-gray-200">
-                                    Search
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="search"
-                                    id="search"
-                                    value="{{ request('search') }}"
-                                    placeholder="Item, brand, category, outlet..."
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                >
-                            </div>
-
-                            Category
-                            <div>
-                                <label for="category_id"
-                                    class="mb-2 block text-sm font-medium text-gray-300 dark:text-gray-700">
-                                    Category
-                                </label>
-
-                                <select
-                                    name="category_id"
-                                    id="category_id"
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                >
-                                    <option value="">All Categories</option>
-
-                                    @foreach ($categories as $category)
-                                        <option
-                                            value="{{ $category->id }}"
-                                            @selected((string) request('category_id') === (string) $category->id)
-                                        >
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            Outlet
-                            <div>
-                                <label for="outlet_id"
-                                    class="mb-2 block text-sm font-medium text-gray-300 dark:text-gray-700">
-                                    Site
-                                </label>
-
-                                <select
-                                    name="outlet_id"
-                                    id="outlet_id"
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                >
-                                    <option value="">All Sites</option>
-
-                                    @foreach ($outlets as $outlet)
-                                        <option
-                                            value="{{ $outlet->id }}"
-                                            @selected((string) request('outlet_id') === (string) $outlet->id)
-                                        >
-                                            {{ $outlet->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            Date From
-                            <div>
-                                <label for="entry_date"
-                                    class="mb-2 block text-sm font-medium text-gray-300 dark:text-gray-700">
-                                    Entry Date
-                                </label>
-
-                                <input
-                                    type="date"
-                                    name="entry_date"
-                                    id="entry_date"
-                                    value="{{ request('entry_date') }}"
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                >
-                            </div>
-
-                        </div>
-
-                        Buttons
-                        <div class="mt-4 flex flex-wrap gap-2">
-
-                            <button
-                                type="submit"
-                                class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                            >
-                                Search / Filter
-                            </button>
-
-                            <a
-                                href="{{ route('inventories.index') }}"
-                                class="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
-                            >
-                                Reset
-                            </a>
-
-                        </div>
-
-                    </form>
-
-                    
-
-                </div> --}}
 
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
                 <div class="p-6">
@@ -470,11 +328,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($inventories as $inventory)
+                                @forelse ($inventoryRows as $row)
+                                @php
+                                    $inventory = $row['inventory'];
+                                @endphp
                                     <tr class="bg-white border-b">
                                         {{-- NO --}}
                                         <td class="px-6 py-4">
-                                            {{ $inventories->firstItem() + $loop->index }}
+                                            {{-- {{ $inventories->firstItem() + $loop->index }} --}}
+                                            {{ $inventoryRows->firstItem() + $loop->index }}
                                         </td>
                                         {{-- Device --}}
                                         <td class="px-6 py-4 font-medium text-gray-900">
@@ -485,7 +347,7 @@
                                             {{ $inventory->brand ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 ">
-                                            {{ $inventory->type }}
+                                            {{ $inventory->type ?? '-' }}
                                         </td>
                                         {{-- Category --}}
                                         <td class="px-6 py-4">
@@ -493,16 +355,16 @@
                                         </td>
                                         {{-- Outlet --}}
                                         <td class="px-6 py-4">
-                                            {{ $inventory->outlet?->name ?? '-' }}
+                                            {{ $row['outlet']?->name ?? '-' }}
                                         </td>
                                         {{-- Quantity --}}
                                         <td class="px-6 py-4">
                                             <span class="font-medium">
-                                                {{ $inventory->quantity }}
+                                                {{ $row['quantity'] }}
                                             </span>
                                             @if ($inventory->is_tracked)
                                                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                    {{ $inventory->assets_count}} / {{ $inventory->quantity }} Asset
+                                                    {{ $row['assets_count'] }} / {{ $row['quantity'] }} Asset
                                                 </div>
                                             @endif
                                         </td>
@@ -545,10 +407,13 @@
                                                    class="px-3 py-2 text-xs text-white bg-blue-600 rounded-lg">
                                                     Details
                                                 </a>
-                                                <a href="{{ route('inventories.edit', $inventory) }}"
-                                                   class="px-3 py-2 text-xs text-white bg-yellow-500 rounded-lg">
-                                                    Edit
-                                                </a>
+
+                                                @if (!$row['is_grouped'])
+                                                    <a href="{{ route('inventories.edit', $inventory) }}"
+                                                    class="px-3 py-2 text-xs text-white bg-yellow-500 rounded-lg">
+                                                        Edit
+                                                    </a>
+                                                @endif
                                                 {{-- <form action="{{ route('inventories.destroy', $inventory) }}"
                                                       method="POST"
                                                       onsubmit="return confirm('Are you sure you want to delete this inventory item?')">
@@ -619,13 +484,13 @@
                             </select>
 
                             <span class="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                of {{ $inventories->total() }} entries
+                                of {{ $inventoryRows->total() }} entries
                             </span>
                         </form>
 
                         {{-- Pagination --}}
                         <div>
-                            {{ $inventories->links() }}
+                            {{ $inventoryRows->links() }}
                         </div>
 
                     </div>

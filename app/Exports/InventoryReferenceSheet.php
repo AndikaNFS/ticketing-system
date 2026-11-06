@@ -19,13 +19,15 @@ class InventoryReferenceSheet implements
 {
     protected array $categories;
     protected array $outlets;
-    protected array $refs;
+    protected array $inventoryRefs;
+    protected array $assetRefs;
 
-    public function __construct(array $categories, array $outlets, array $refs)
+    public function __construct(array $categories, array $outlets, array $inventoryRefs, array $assetRefs)
     {
         $this->categories = array_values($categories);
         $this->outlets = array_values($outlets);
-        $this->refs = array_values($refs);
+        $this->inventoryRefs = array_values($inventoryRefs);
+        $this->assetRefs = array_values($assetRefs);
     }
 
     public function title(): string
@@ -35,7 +37,7 @@ class InventoryReferenceSheet implements
 
     public function headings(): array
     {
-        return ['Category', 'Outlet', 'Tracked', 'Status', 'ImportRef'];
+        return ['Category', 'Outlet', 'Tracked', 'Status', 'ImportRef', 'AssetRef',];
     }
 
     public function array(): array
@@ -44,8 +46,9 @@ class InventoryReferenceSheet implements
         $total = max(
             count($this->categories),
             count($this->outlets),
-            count($this->refs),
-            5
+            count($this->inventoryRefs),
+            count($this->assetRefs),
+            6
         );
 
         $trackedOptions = ['Yes', 'No'];
@@ -56,7 +59,7 @@ class InventoryReferenceSheet implements
             'Repair',
             'Lost',
             'Broken',
-            'Disposed',
+            'Unavailable',
         ];
 
         for ($i = 0; $i < $total; $i++) {
@@ -65,7 +68,8 @@ class InventoryReferenceSheet implements
                 $this->outlets[$i] ?? null,
                 $trackedOptions[$i] ?? null,
                 $statusOptions[$i] ?? null,
-                $this->refs[$i] ?? null,
+                $this->inventoryRefs[$i] ?? null,
+                $this->assetRefs[$i] ?? null,
             ];
         }
 
@@ -110,15 +114,23 @@ class InventoryReferenceSheet implements
                     new NamedRange(
                         'StatusList',
                         $sheet,
-                        '$D$2:$D$6'
+                        '$D$2:$D$7'
                     )
                 );
 
                 $spreadsheet->addNamedRange(
-                    new NamedRange(
+                    new \PhpOffice\PhpSpreadsheet\NamedRange(
                         'InventoryRefList',
                         $sheet,
-                        '$E$2:$E$' . (count($this->refs) + 1)
+                        '$E$2:$E$' . (count($this->inventoryRefs) + 1)
+                    )
+                );
+
+                $spreadsheet->addNamedRange(
+                    new \PhpOffice\PhpSpreadsheet\NamedRange(
+                        'AssetRefList',
+                        $sheet,
+                        '$F$2:$F$' . (count($this->assetRefs) + 1)
                     )
                 );
 

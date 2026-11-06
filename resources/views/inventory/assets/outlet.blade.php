@@ -278,6 +278,10 @@
                                         Qty Image
                                     </th>
 
+                                    <th class="px-6 py-3">
+                                        Description
+                                    </th>
+
                                     <th class="px-6 py-3 text-center">
                                         Actions
                                     </th>
@@ -350,13 +354,17 @@
                                             {{ $asset->placement ?? '-' }}
                                         </td>
 
+                                        
                                         <td class="px-6 py-4">
                                             <span class="inline-flex items-center  px-2.5 py-1 text-xs font-medium text-blue-800  dark:text-blue-400">
                                                 {{ $asset->images_count }} Images
                                             </span>
-
+                                            
                                         </td>
-
+                                        
+                                        <td class="px-6 py-4">
+                                            {{ $asset->description ?? '-' }}
+                                        </td>
 
                                         <td class="px-6 py-4">
 

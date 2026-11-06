@@ -111,6 +111,7 @@
                                     <th class="px-4 py-3">Device</th>
                                     <th class="px-4 py-3">Outlet</th>
                                     <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3">Description</th>
                                     <th class="px-4 py-3">Action</th>
                                 </tr>
                             </thead>
@@ -141,6 +142,10 @@
 
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             {{ $asset->status }}
+                                        </td>
+
+                                        <td class="px-4 py-3 whitespace-nowrap">
+                                            {{ $asset->description ?? '-' }}
                                         </td>
 
                                         <td class="px-4 py-3">

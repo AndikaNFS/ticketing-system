@@ -9,7 +9,7 @@
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Asset transfers between outlets
+                    Asset transfers between sites
                 </p>
             </div>
     
@@ -50,7 +50,7 @@
                         <div>
                             <label for="from_outlet_id"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Source Outlet
+                                Source Site
                             </label>
 
                             <select
@@ -58,7 +58,7 @@
                                 id="from_outlet_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                                <option value="">All Outlets</option>
+                                <option value="">All Sites</option>
 
                                 @foreach ($outlets as $outlet)
                                     <option value="{{ $outlet->id }}"
@@ -74,7 +74,7 @@
                         <div>
                             <label for="to_outlet_id"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Destination Outlet
+                                Destination Site
                             </label>
 
                             <select
@@ -82,7 +82,7 @@
                                 id="to_outlet_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                                <option value="">All Outlets</option>
+                                <option value="">All Sites</option>
 
                                 @foreach ($outlets as $outlet)
                                     <option value="{{ $outlet->id }}"
@@ -167,8 +167,8 @@
                                 <th class="px-6 py-3">Asset</th>
                                 <th class="px-6 py-3">Serial Number</th>
                                 <th class="px-6 py-3">Asset Number</th>
-                                <th class="px-6 py-3">Source Outlet</th>
-                                <th class="px-6 py-3">Destination Outlet</th>
+                                <th class="px-6 py-3">Source Site</th>
+                                <th class="px-6 py-3">Destination Site</th>
                                 <th class="px-6 py-3">Transfer Date</th>
                                 <th class="px-6 py-3">Description</th>
                                 <th class="px-6 py-3">Created at</th>
