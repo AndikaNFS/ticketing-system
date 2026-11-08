@@ -360,6 +360,57 @@ class AssetController extends Controller
         return redirect()->route('assets.outlet', $asset->outlet_id)->with('success', 'Asset updated successfully.');
     }
 
+    public function generateAssetNumberCreate(Request $request)
+    {
+        $validated = $request->validate([
+            'entry_date' => ['required', 'date'],
+            'inventory_id' => ['required', 'exists:inventories,id'],
+            'outlet_id' => ['required', 'exists:outlets,id'],
+        ]);
+
+        $inventory = Inventory::findOrFail($validated['inventory_id']);
+
+        $dateCode = Carbon::parse($validated['entry_date'])->format('ymd');
+
+        $categoryCode = str_pad(
+            (string) $inventory->category_id,
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $outletCode = str_pad(
+            (string) $validated['outlet_id'],
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $prefix = "{$dateCode}{$categoryCode}{$outletCode}";
+
+        $lastAssetNumber = Asset::where('asset_number', 'like', "{$prefix}%")
+            ->orderByDesc('asset_number')
+            ->value('asset_number');
+
+        $lastSequence = $lastAssetNumber
+            ? (int) substr($lastAssetNumber, -3)
+            : 0;
+
+        if ($lastSequence >= 999) {
+            return response()->json([
+                'message' => 'Nomor urut Asset Number sudah mencapai batas 999.',
+            ], 422);
+        }
+
+        $nextSequence = $lastSequence + 1;
+
+        $assetNumber = $prefix . sprintf('%03d', $nextSequence);
+
+        return response()->json([
+            'asset_number' => $assetNumber,
+        ]);
+    }
+
     public function generateAssetNumber(Asset $asset)
     {
         if ($asset->asset_number && !auth()->user()->hasRole('superadmin'))

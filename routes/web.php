@@ -302,6 +302,7 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::put('/assets/{asset}', [AssetController::class, 'update'])->name('assets.update');
     Route::delete('/assets/{asset}', [AssetController::class, 'destroy'])->name('assets.destroy');
     Route::post('/assets/{asset}/generate-asset-number', [AssetController::class, 'generateAssetNumber'])->name('assets.generate-asset-number');
+    Route::post('/assets/generate-asset-number-create', [AssetController::class, 'generateAssetNumberCreate'])->name('assets.generate-asset-number-create');
     
     Route::post('/assets/{asset}/images', [AssetImageController::class, 'store'])->name('assets.images.store');
     Route::delete('/assets/{asset}/images/{image}', [AssetImageController::class, 'destroy'])->name('assets.images.destroy');

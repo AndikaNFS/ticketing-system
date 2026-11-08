@@ -1,8 +1,5 @@
 <x-app-layout>
 
-    <x-slot name="header">
-    </x-slot>
-    
     <div class="py-6">
         <div class="flex items-center justify-between">
             <div>
@@ -463,6 +460,6 @@
                 }
             });
         });
-        </script>
+    </script>
 
 </x-app-layout>
