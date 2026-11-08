@@ -7,6 +7,7 @@ use App\Models\Outlet;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\InventoryTransfer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -357,6 +358,63 @@ class AssetController extends Controller
         ]);
 
         return redirect()->route('assets.outlet', $asset->outlet_id)->with('success', 'Asset updated successfully.');
+    }
+
+    public function generateAssetNumber(Asset $asset)
+    {
+        if ($asset->asset_number && !auth()->user()->hasRole('superadmin'))
+            {
+                return response()->json([
+                    'message' => 'The Asset Number is already available.'
+                ], 403);
+            }
+        $asset->loadMissing('inventory');
+
+        if (!$asset->entry_date || !$asset->inventory || !$asset->outlet_id) {
+            return response()->json([
+                'message' => 'Entry Date, Inventory, atau Outlet belum tersedia.',
+            ], 422);
+        }
+
+        $dateCode = Carbon::parse($asset->entry_date)->format('ymd');
+
+        $categoryCode = str_pad(
+            (string) $asset->inventory->category_id,
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $outletCode = str_pad(
+            (string) $asset->outlet_id,
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $prefix = "{$dateCode}{$categoryCode}{$outletCode}";
+
+        $lastAssetNumber = Asset::where('asset_number', 'like', "{$prefix}%")
+            ->orderByDesc('asset_number')
+            ->value('asset_number');
+
+        $lastSequence = $lastAssetNumber
+            ? (int) substr($lastAssetNumber, -3)
+            : 0;
+
+        if ($lastSequence >= 999) {
+            return response()->json([
+                'message' => 'Nomor urut Asset Number sudah mencapai batas 999.',
+            ], 422);
+        }
+
+        $nextSequence = $lastSequence + 1;
+
+        $assetNumber = $prefix . sprintf('%03d', $nextSequence);
+
+        return response()->json([
+            'asset_number' => $assetNumber,
+        ]);
     }
 
     public function destroy(Asset $asset)

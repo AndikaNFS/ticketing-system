@@ -182,7 +182,7 @@
 
 
                         {{-- Asset Number --}}
-                        <div>
+                        {{-- <div>
                             <label for="asset_number"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Asset Number
@@ -204,6 +204,52 @@
 
                             @error('asset_number')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div> --}}
+
+                        {{-- Asset Number --}}
+                        <div>
+                            <label for="asset_number"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Asset Number
+                            </label>
+
+                            <div class="flex gap-2">
+                                <input
+                                    type="text"
+                                    id="asset_number"
+                                    name="asset_number"
+                                    value="{{ old('asset_number', $asset->asset_number) }}"
+                                    readonly
+                                    placeholder="Click Generate to create asset number"
+                                    class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                        block w-full p-2.5 cursor-not-allowed
+                                        dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                >
+                                @if (!$asset->asset_number || auth()->user()->hasRole('superadmin'))
+                                <button
+                                    type="button"
+                                    id="generateAssetNumber"
+                                    data-url="{{ route('assets.generate-asset-number', $asset) }}"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600
+                                        rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                                        >
+                                    Generate
+                                </button>
+                                @endif
+                            </div>
+
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                {{-- The Asset Number is generated automatically based on Entry Date, Category ID, & Outlet. --}}
+                            </p>
+
+                            <p id="assetNumberMessage" class="mt-1 text-sm"></p>
+                            
+
+                            @error('asset_number')
+                                <p class="mt-1 text-sm text-red-600">
                                     {{ $message }}
                                 </p>
                             @enderror
@@ -363,5 +409,60 @@
 
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const generateButton = document.getElementById('generateAssetNumber');
+            const assetNumberInput = document.getElementById('asset_number');
+            const message = document.getElementById('assetNumberMessage');
+
+            // Tidak ada tombol untuk role selain superadmin
+            if (!generateButton) return;
+
+            generateButton.addEventListener('click', async function () {
+                generateButton.disabled = true;
+                generateButton.textContent = 'Generating...';
+
+                message.textContent = '';
+
+                try {
+                    const response = await fetch(generateButton.dataset.url, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        },
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to create Asset Number.');
+                    }
+
+                    assetNumberInput.value = data.asset_number;
+
+                    message.textContent = 'Asset Number successfully created.';
+                    message.className = 'mt-1 text-sm text-green-600';
+
+                    // Hilagkan tombol setelah berhasil generate
+                    // ROle lain tombol disembunyikan
+                    @if (!auth()->user()->hasRole('superadmin'))
+                        generateButton.style.display = 'none';
+                    @else
+                        generateButton.disabled = false;
+                        generateButton.textContent = 'Generate';
+                    @endif
+
+                } catch (error) {
+                    message.textContent = error.message;
+                    message.className = 'mt-1 text-sm text-red-600';
+
+                // } finally {
+                    generateButton.disabled = false;
+                    generateButton.textContent = 'Generate';
+                }
+            });
+        });
+        </script>
 
 </x-app-layout>
