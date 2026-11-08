@@ -4,10 +4,10 @@
     </x-slot>
     
     <div class="py-6">
-        <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
-            Inventory Details
-        </h2>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
+                Inventory Details
+            </h2>
 
             @if (session('success'))
                 <div class="mb-5 p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">

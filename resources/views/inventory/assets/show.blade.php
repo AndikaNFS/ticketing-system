@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between mb-3">
             <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                    Asset Detailsss
+                    Asset Details
                 </h2>
     
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">

@@ -4,10 +4,10 @@
     </x-slot>
     
     <div class="py-6">
-        <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
-            Repair Detailsss
-        </h2>
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-semibold text-xl mb-3 text-gray-800 dark:text-gray-200 leading-tight">
+                Repair Details
+            </h2>
 
             {{-- Success --}}
             @if (session('success'))
@@ -294,139 +294,6 @@
                             </div>
 
                         </div>
-                        <div class="">
-                            Asset Photo
-
-
-                            {{-- Gallery --}}
-                    @if ($asset->images->count())
-
-                        <div
-                            x-data="{
-                                showModal: false,
-                                selectedImage: ''
-                            }"
-                            @keydown.escape.window="showModal = false"
-                        >
-
-                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
-                                @foreach ($asset->images as $image)
-
-                                    <div class="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-
-                                        {{-- Image --}}
-                                        <button
-                                            type="button"
-                                            @click="
-                                                selectedImage = '{{ asset('storage/' . $image->image_path) }}';
-                                                showModal = true;
-                                            "
-                                            class="block w-full cursor-pointer"
-                                        >
-                                            <img
-                                                src="{{ asset('storage/' . $image->image_path) }}"
-                                                alt="Asset Photo"
-                                                class="w-full h-40 object-cover hover:opacity-80 transition"
-                                            >
-                                        </button>
-
-                                        {{-- Image Information --}}
-                                        <div class="p-3 bg-gray-50 dark:bg-gray-700">
-
-                                            <p class="text-xs text-gray-500 dark:text-gray-300 truncate">
-                                                {{ basename($image->path) }}
-                                            </p>
-
-                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                Outlet: {{ $image->outlet->name ?? '-' }}
-                                            </p>
-
-                                            {{-- Delete Button --}}
-                                            <form
-                                                action="{{ route('assets.images.destroy', [$asset, $image]) }}"
-                                                method="POST"
-                                                class="mt-3"
-                                                onsubmit="return confirm('Are you sure you want to delete this photo?')"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button
-                                                    type="submit"
-                                                    class="w-full px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
-                                                >
-                                                    Delete Photo
-                                                </button>
-                                            </form>
-
-                                        </div>
-
-                                    </div>
-
-                                @endforeach
-
-                            </div>
-
-
-                            {{-- Image Modal --}}
-                            <div
-                                x-show="showModal"
-                                x-transition.opacity
-                                x-cloak
-                                @click.self="showModal = false"
-                                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
-                            >
-
-                                <div class="relative max-w-5xl w-full flex items-center justify-center">
-
-                                    {{-- Close Button --}}
-                                    <button
-                                        type="button"
-                                        @click="showModal = false"
-                                        class="absolute -top-10 right-0 text-white hover:text-gray-300"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="w-8 h-8"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2">
-
-                                            <path stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M6 18L18 6M6 6l12 12" />
-
-                                        </svg>
-                                    </button>
-
-                                    {{-- Full Image --}}
-                                    <img
-                                        :src="selectedImage"
-                                        alt="Preview Asset Photo"
-                                        @click.stop
-                                        class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-xl"
-                                    >
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    @else
-
-
-                        <div class="text-center py-8">
-
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                No photos available for this asset.
-                            </p>
-
-                        </div>
-
-                    @endif
-                        </div>
 
                     </div>
 
@@ -581,7 +448,7 @@
                     class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg
                            hover:bg-blue-700"
                 >
-                    Asset Detailsss
+                    Asset Details
                 </a>
 
             </div>
