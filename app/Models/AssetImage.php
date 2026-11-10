@@ -10,6 +10,7 @@ class AssetImage extends Model
         'asset_id',
         'outlet_id',
         'image_path',
+        'image_type',
     ];
 
     public function asset()

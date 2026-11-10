@@ -95,55 +95,6 @@
 
                     </div>
 
-                    
-                    {{-- <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Outlet
-                                </p>
-                                <p class="font-semibold text-gray-900 dark:text-white">
-                                    {{ $outlet->name }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Area
-                                </p>
-                                <p class="font-semibold text-gray-900 dark:text-white">
-                                    {{ $outlet->area ?? '-' }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Inventory Type
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalInventories }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Asset Individual
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalIndividualAssets }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Total Unit Bulk
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalBulkUnits }}
-                                </p>
-                            </div>
-                        </div>
-                    </div> --}}
 
 
 
@@ -438,9 +389,21 @@
                    <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                         {{-- Rows per page --}}
+                        @php
+                            $isWarehouse = in_array($outlet->id, [22, 23, 24]);
+                        @endphp
+
+                        {{-- <a
+                            href="{{ $isWarehouse
+                                ? route('assets.warehouse', $outlet)
+                                : route('assets.outlet', $outlet) }}"
+                            class="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+                        > --}}
                         <form
                             method="GET"
-                            action="{{ route('assets.outlet', $outlet->id) }}"
+                            action="{{ $isWarehouse
+                                ? route('assets.warehouse', $outlet)
+                                : route('assets.outlet', $outlet) }}"
                             class="flex items-center gap-2"
                         >
                             {{-- Preserve existing filters --}}

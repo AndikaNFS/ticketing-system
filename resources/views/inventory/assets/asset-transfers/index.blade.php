@@ -252,6 +252,10 @@
                                                class="font-medium text-blue-600 hover:underline dark:text-blue-400">
                                                 Asset Details
                                             </a>
+                                            <a href="{{ route('assets.transfers.show', $transfer->id) }}"
+                                               class="font-medium text-blue-600 hover:underline dark:text-blue-400">
+                                                Details
+                                            </a>
                                         @else
                                             <span class="text-gray-400">-</span>
                                         @endif

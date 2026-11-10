@@ -142,4 +142,17 @@ class AssetTransferController extends Controller
 
         return redirect()->route('assets.show', $asset)->with('success', 'Asset transferred successfully.');
     }
+
+    public function show(InventoryTransfer $transfer)
+    {
+        $transfer->load([
+            'asset.inventory.category',
+            'fromOutlet',
+            'toOutlet',
+            'creator',
+            'images',
+        ]);
+
+        return view('inventory.assets.asset-transfers.show', compact('transfer'));
+    }
 }

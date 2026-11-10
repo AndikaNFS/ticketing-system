@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AssetOutletExport;
 use App\Models\Inventory;
 use App\Models\Outlet;
 use App\Models\Asset;
@@ -10,6 +11,7 @@ use App\Models\InventoryTransfer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
 {
@@ -63,48 +65,6 @@ class AssetController extends Controller
         ));
     }
 
-    // public function outlet(Outlet $outlet, Request $request)
-    // {
-    //     $query = $outlet->assets()
-    //         ->with(['inventory.category', 'images'])
-    //         ->withCount('images');
-
-    //     $inventories = $outlet->inventories()
-    //         ->with('category')
-    //         ->orderBy('device')
-    //         ->get();
-
-    //     $assets = $outlet->assets()
-    //         ->with(['inventory.category', 'images',])
-    //         ->withCount('images')
-    //         ->latest()
-    //         ->paginate(15);
-
-
-    //     $totalBulkUnits = $inventories
-    //         ->where('is_tracked', false)
-    //         ->sum('quantity');
-
-
-    //     $totalInventories = $inventories->count();
-    //     $totalIndividualAssets = $outlet->assets()->count();
-
-    //     // Rows per page
-    //     $allowedPerPage = [10, 20, 50, 100];
-
-    //     $perPage = (int) $request->input('per_page', 10);
-    //     if (! in_array($perPage, $allowedPerPage, true)) {
-    //         $perPage = 10;
-    //     }
-
-    //     // Pagination
-    //     $assets = $query
-    //         ->orderByDesc('id')
-    //         ->paginate($perPage)
-    //         ->withQueryString();
-
-    //     return view('inventory.assets.outlet', compact('outlet', 'inventories', 'assets', 'totalBulkUnits', 'totalIndividualAssets', 'totalInventories'));
-    // }
 
     public function outlet(Outlet $outlet, Request $request)
     {
@@ -466,6 +426,24 @@ class AssetController extends Controller
         return response()->json([
             'asset_number' => $assetNumber,
         ]);
+    }
+
+    public function exportOutlet(Outlet $outlet, Request $request)
+    {
+        $filters = $request->only([
+            'category_id',
+            'search',
+        ]);
+
+        $filename = 'Asset-' .
+            str_replace(' ', '-', $outlet->name) .
+            '-' . now()->format('Ymd-His') .
+            '.xlsx';
+
+        return Excel::download(
+            new AssetOutletExport($outlet->id, $filters),
+            $filename
+        );
     }
 
     public function destroy(Asset $asset)

@@ -24,58 +24,6 @@
                     @endforeach
                 </div>
             @endif
-            {{-- @if (session('import_failures'))
-                <div class="mt-4 overflow-hidden rounded-lg border border-red-300 dark:border-red-700">
-                    <div class="bg-red-50 px-4 py-3 dark:bg-red-900/30">
-                        <h3 class="font-semibold text-red-800 dark:text-red-300">
-                            Import Error Detailsss
-                        </h3>
-
-                        <p class="mt-1 text-sm text-red-700 dark:text-red-300">
-                            Check the following Excel rows and columns, then correct your file.
-                        </p>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-300 dark:text-gray-700">
-                            <thead class="bg-gray-100 text-xs uppercase dark:bg-gray-700">
-                                <tr>
-                                    <th class="px-4 py-3">Excel Row</th>
-                                    <th class="px-4 py-3">Column</th>
-                                    <th class="px-4 py-3">Value</th>
-                                    <th class="px-4 py-3">Description</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @foreach (session('import_failures') as $failure)
-                                    @foreach ($failure['errors'] as $error)
-                                        <tr class="border-t dark:border-gray-700">
-                                            <td class="px-4 py-3">
-                                                {{ $failure['row'] }}
-                                            </td>
-
-                                            <td class="px-4 py-3 font-medium">
-                                                {{ $failure['column'] }}
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                {{ filled($failure['value'])
-                                                    ? $failure['value']
-                                                    : '(kosong)' }}
-                                            </td>
-
-                                            <td class="px-4 py-3 text-red-600 dark:text-red-400">
-                                                {{ $error }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @endif --}}
 
                 <div class="flex items-center justify-between">
                     <div class="mb-3 ">

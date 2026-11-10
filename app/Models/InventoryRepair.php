@@ -37,4 +37,9 @@ class InventoryRepair extends Model
     {
         return $this->belongsTo(Asset::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(AssetRepairImage::class, 'inventory_repair_id');
+    }
 }

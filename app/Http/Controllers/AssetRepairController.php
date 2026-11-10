@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\InventoryRepair;
 use App\Models\Outlet;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class AssetRepairController extends Controller
@@ -131,6 +132,7 @@ class AssetRepairController extends Controller
             'asset.inventory.category',
             'asset.outlet',
             'outlet',
+            'images',
         ]);
 
         return view('inventory.assets.asset-repairs.show', compact('repair'));
@@ -139,8 +141,8 @@ class AssetRepairController extends Controller
     public function complete(Request $request, InventoryRepair $repair)
     {
         $validated = $request->validate([
-            'completed_at' => 'required|date',
-            'asset_status' => 'required|in:Available, In Use, Broken',
+            'completed_at' => ['required','date'],
+            'asset_status' => ['required', Rule::in(['Available', 'In Use', 'Broken'])],
         ]);
         
         DB::transaction(function () use ($validated, $repair) {

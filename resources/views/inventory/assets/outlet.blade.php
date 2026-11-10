@@ -27,29 +27,11 @@
             >
                 + Add Asset
             </a>
-    
+
         </div>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- Alert Success --}}
-            @if (session('success'))
-
-                <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50">
-                    {{ session('success') }}
-                </div>
-
-            @endif
-
-
-            {{-- Alert Error --}}
-            @if (session('error'))
-
-                <div class="mb-4 p-4 text-sm text-red-800 rounded-lg bg-red-50">
-                    {{ session('error') }}
-                </div>
-
-            @endif
 
 
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
@@ -96,54 +78,6 @@
                     </div>
 
                     
-                    {{-- <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Outlet
-                                </p>
-                                <p class="font-semibold text-gray-900 dark:text-white">
-                                    {{ $outlet->name }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Area
-                                </p>
-                                <p class="font-semibold text-gray-900 dark:text-white">
-                                    {{ $outlet->area ?? '-' }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Inventory Type
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalInventories }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Asset Individual
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalIndividualAssets }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    Total Unit Bulk
-                                </p>
-                                <p class="font-semibold text-blue-600">
-                                    {{ $totalBulkUnits }}
-                                </p>
-                            </div>
-                        </div>
-                    </div> --}}
 
 
 
@@ -159,6 +93,52 @@
 
                         {{-- </div> --}}
                         <div class="flex justify-end items-center">
+                            {{-- Export --}}
+                            <div class="">
+                                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white w-full sm:w-auto font-medium rounded-xl text-sm px-5 py-2.5 text-center inline-flex items-center" type="button">
+                                    <svg class="w-6 h-6 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Dropdown menu Export-->
+                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-56 dark:bg-gray-700">
+                                <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
+                                    <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
+                                        <span class="p-2 text-sm text-gray-900 ">Export</span>
+
+                                    </div>
+                                    <li class="">
+                                        <a href="{{ route('assets.outlet.export', array_merge(
+                                            ['outlet' => $outlet->id],
+                                            request()->only(['category_id', 'search'])
+                                        ))}}" 
+                                            class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#" 
+                                            class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">PDF</a>
+                                    </li>
+
+                                    {{-- <div class="w-full bg-gray-400 p-2 text-center">
+                                        <span class="p-2 text-sm text-gray-900 ">Import</span>
+
+                                    </div> --}}
+                                    <li>
+                                        <button
+                                            type="button"
+                                            onclick="document.getElementById('importPhotoModal').classList.remove('hidden')"
+                                            {{-- class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 whitespace-nowrap" --}}
+                                            class="w-full rounded-b-md bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800">
+                                            
+                                            <i class="fa-solid fa-images mr-1"></i>
+                                            Import Foto
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
                             {{-- Filter Category --}}
                             <form action="{{ url()->current() }}" method="GET"
                                 class="flex flex-col md:flex-row pr-3 gap-3">
@@ -228,7 +208,45 @@
 
                     </div>
 
+                    @if (session('success'))
+                        <div class="p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
+                    @if (session('error'))
+                        <div class="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if (session('import_failed'))
+                        <div class="p-4 mb-4 border border-yellow-300 rounded-lg dark:border-yellow-600">
+                            <h3 class="mb-3 font-semibold text-yellow-700 dark:text-yellow-400">
+                                Detail Foto yang Gagal Diimport
+                            </h3>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b dark:border-gray-600">
+                                            <th class="px-3 py-2 text-left">Nama File</th>
+                                            <th class="px-3 py-2 text-left">Alasan</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (session('import_failed') as $item)
+                                            <tr class="border-b dark:border-gray-600">
+                                                <td class="px-3 py-2">{{ $item['file'] }}</td>
+                                                <td class="px-3 py-2">{{ $item['reason'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
                     {{-- Table --}}
                     <div class="overflow-x-auto">
 
@@ -574,7 +592,98 @@
         </div>
 
     </div>
+        {{-- Modal Import Foto --}}
+        <div
+            id="importPhotoModal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+        >
+            <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
 
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Import Foto Asset
+                    </h3>
+
+                    <button
+                        type="button"
+                        onclick="document.getElementById('importPhotoModal').classList.add('hidden')"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
+                    Import foto fisik dan foto Serial Number untuk Asset
+                    yang saat ini berada di {{ $outlet->name }}.
+                </p>
+
+                <form
+                    action="{{ route('assets.images.import-zip', $outlet) }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+                    @csrf
+
+                    <div class="mb-4">
+                        <label
+                            for="zip_file"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                            Pilih File ZIP
+                        </label>
+
+                        <input
+                            type="file"
+                            name="zip_file"
+                            id="zip_file"
+                            accept=".zip"
+                            required
+                            class="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        >
+
+                        {{-- <select name="image_type" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white">
+                            <option value="physical">Foto Fisik Asset</option>
+                            <option value="serial_number">Foto Serial Number</option>
+                        </select> --}}
+
+                        @error('zip_file')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="p-3 mb-4 text-xs text-gray-600 bg-gray-100 rounded-lg dark:bg-gray-700 dark:text-gray-300">
+                        <p class="font-semibold mb-2">Contoh nama file:</p>
+
+                        <p>2611080305001.jpg</p>
+                        <p>2611080305001_SN.jpg</p>
+                        <p>2611080305002.jpg</p>
+                        <p>2611080305002_SN.jpg</p>
+
+                        <p class="mt-2">
+                            Tanpa _SN = Foto fisik. Dengan _SN = Foto Serial Number.
+                        </p>
+                    </div>
+
+                    <div class="flex justify-end gap-2">
+                        <button
+                            type="button"
+                            onclick="document.getElementById('importPhotoModal').classList.add('hidden')"
+                            class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+                        >
+                            Batal
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                        >
+                            Import Foto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     
 
 </x-app-layout>

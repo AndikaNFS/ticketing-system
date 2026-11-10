@@ -4,7 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetImageController;
 use App\Http\Controllers\AssetRepairController;
+use App\Http\Controllers\AssetRepairImageController;
 use App\Http\Controllers\AssetTransferController;
+use App\Http\Controllers\AssetTransferImageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DailyReportController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryExcelController;
 use App\Http\Controllers\WhatsappController;
 use App\Models\Asset;
+use App\Models\AssetImage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -304,11 +307,24 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::post('/assets/{asset}/generate-asset-number', [AssetController::class, 'generateAssetNumber'])->name('assets.generate-asset-number');
     Route::post('/assets/generate-asset-number-create', [AssetController::class, 'generateAssetNumberCreate'])->name('assets.generate-asset-number-create');
     
+    // Upload Image
     Route::post('/assets/{asset}/images', [AssetImageController::class, 'store'])->name('assets.images.store');
     Route::delete('/assets/{asset}/images/{image}', [AssetImageController::class, 'destroy'])->name('assets.images.destroy');
+    Route::post('/assets/{outlet}/assets/import-photos', [AssetImageController::class, 'importZip'])->name('assets.images.import-zip');
+    Route::post('/assets/outlets/{outlet}/assets/import-photos', [AssetImageController::class, 'importZip'])->name('assets.images.import-zip');
+    Route::post('/asset-transfers/{transfer}/images', [AssetTransferImageController::class, 'store'])->name('asset-transfers.images.store');
+    Route::delete('/asset-transfers/{transfer}/images/{image}', [AssetTransferImageController::class, 'destroy'])->name('asset-tranfers.images.destroy');
+    Route::post('/asset-repairs/{repair}/images', [AssetRepairImageController::class, 'store'])->name('asset-repairs.images.store');
+    Route::delete('/asset-repairs/{repair}/images/{image}', [AssetRepairImageController::class, 'destroy'])->name('asset-repairs.images.destroy');
+    Route::delete('/asset-transfers/{transfer}/images/{image}', [AssetTransferImageController::class, 'destroy'])->name('asset-transfers.images.destroy');
+    
+
+    
+    Route::get('/assets/{outlet}/assets/export', [AssetController::class, 'exportOutlet'])->name('assets.outlet.export');
     Route::get('/assets/{asset}/transfer', [AssetTransferController::class, 'create'])->name('assets.asset-transfers.create');
     Route::post('/assets/{asset}/transfer', [AssetTransferController::class, 'store'])->name('assets.asset-transfers.store');
     Route::get('/asset-transfers', [AssetTransferController::class, 'index'])->name('assets.transfers.index');
+    Route::get('/asset-transfers/{transfer}', [AssetTransferController::class, 'show'])->name('assets.transfers.show');
     
     Route::get('/asset-repairs', [AssetRepairController::class, 'index'])->name('assets.repairs.index');
     Route::get('/asset-repairs/{repair}', [AssetRepairController::class, 'show'])->name('assets.repairs.show');
