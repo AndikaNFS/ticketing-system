@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -43,44 +44,59 @@ class InventoryExcelController extends Controller
         );
     }
 
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => [
-                'required',
-                'file',
-                'mimes:xlsx,xls,csv',
-                'max:10240',
-            ],
-        ]);
+    
+public function import(Request $request)
+{
+    $request->validate([
+        'file' => [
+            'required',
+            'file',
+            'mimes:xlsx,xls,csv',
+            'max:10240',
+        ],
+    ]);
 
-        $import = new InventoryImport();
-
-
-         try {
-            DB::transaction(function () use ($request) {
-                Excel::import(
-                    new InventoryImport(),
-                    $request->file('file')
-                );
-            });
+    try {
+        DB::transaction(function () use ($request) {
+            Excel::import(
+                new InventoryImport(),
+                $request->file('file')
+            );
+        });
 
         return redirect()
             ->route('inventories.index')
             ->with('success', 'Inventory and asset data imported successfully.');
 
-        } catch (ValidationException $e) {
-            return redirect()
-                ->route('inventories.index')
-                ->withErrors($e->errors())
-                ->withInput();
+    } catch (\Illuminate\Validation\ValidationException $e) {
 
-        } catch (\Throwable $e) {
-            report($e);
+        Log::warning('Inventory import validation failed', [
+            'errors' => $e->errors(),
+        ]);
 
-            return redirect()
-                ->route('inventories.index')
-                ->with('error', 'Import failed. Please check the Excel format and Laravel log.');
-        }
+        return redirect()
+            ->route('inventories.index')
+            ->withErrors($e->errors())
+            ->withInput();
+
+    } catch (\Throwable $e) {
+
+        Log::error('Inventory and Asset import failed', [
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+
+        report($e);
+
+        return redirect()
+            ->route('inventories.index')
+            ->with(
+                'error',
+                'Import gagal: terjadi kesalahan saat memproses data. Silakan periksa Laravel log.'
+            );
     }
+}
+
 }

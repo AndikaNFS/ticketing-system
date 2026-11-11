@@ -120,9 +120,24 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
             $serialNumber = $this->nullableString($row['serial_number'] ?? null);
             $assetNumber = $this->nullableString($row['asset_number'] ?? null);
             $description = $this->nullableString($row['description'] ?? null);
+            // $assetDate = filled($row['entry_date'] ?? null)
+            //     ? $this->parseDate($row['entry_date'])
+            //     : $inventory->entry_date;
+
             $assetDate = filled($row['entry_date'] ?? null)
                 ? $this->parseDate($row['entry_date'])
-                : $inventory->entry_date;
+                : (
+                    $inventory->entry_date
+                        ? Carbon::parse($inventory->entry_date)->format('Y-m-d')
+                        : null
+                );
+            if (!$assetDate) {
+                throw ValidationException::withMessages([
+                    'file' => [
+                        "Sheet Asset, baris {$rowNumber}: Entry Date kosong dan tanggal Inventory juga belum tersedia."
+                    ],
+                ]);
+            }
 
             // Generate otomatis jika Asset Number kosong
             if ($assetNumber === null) {
@@ -157,7 +172,16 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                 ? $this->parseDate($row['entry_date'])
                 : $inventory->entry_date;
 
-            Asset::create([
+            Log::info('AssetSheetImport: mencoba menyimpan asset', [
+                'row' => $rowNumber,
+                'inventory_id' => $inventory->id,
+                'asset_ref' => $assetRef,
+                'asset_number' => $assetNumber,
+                'serial_number' => $serialNumber,
+                'entry_date' => $assetDate,
+            ]);
+
+            $asset = Asset::create([
                 'inventory_id'  => $inventory->id,
                 'outlet_id'     => $inventory->outlet_id,
                 'import_ref' => $assetRef,
@@ -168,6 +192,12 @@ class AssetSheetImport implements ToCollection, WithHeadingRow, WithTitle
                     ?? $inventory->placement,
                 'entry_date'    => $assetDate,
                 'description'    => $description,
+            ]);
+
+            Log::info('AssetSheetImport: asset berhasil disimpan', [
+                'row' => $rowNumber,
+                'asset_id' => $asset->id,
+                'asset_number' => $asset->asset_number,
             ]);
         }
     }

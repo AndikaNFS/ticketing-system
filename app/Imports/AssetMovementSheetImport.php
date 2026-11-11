@@ -101,8 +101,12 @@ class AssetMovementSheetImport implements
             }
 
             if (!$toOutlet) {
-                $this->fail($rowNumber, [
-                    "To Outlet '{$toOutletName}' tidak ditemukan.",
+                throw ValidationException::withMessages([
+                    'file' => [
+                        "Sheet Asset Movement, baris {$rowNumber}, kolom To Outlet: " .
+                        "nilai '{$toOutletName}' tidak ditemukan di database. " .
+                        "Periksa nama outlet pada data Excel."
+                    ],
                 ]);
             }
 
