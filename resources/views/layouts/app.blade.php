@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,17 +7,24 @@
 
         <title>{{ config('app.name', 'Dashboard') }}</title>
         <link rel="icon" href="{{ asset('images/logo-rr.png') }}" type="image/png">
+        
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')
+        {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-300 dark:bg-gray-900">
-            @include('layouts.navigation')
+            @include('components.navbar')
+            @include('components.sidebar')
+            
+            {{-- @include('layouts.navigation') --}}
 
             <!-- Page Heading -->
             @isset($header)
@@ -30,9 +37,17 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="pt-6 sm:ml-64">
+                    <div class="pt-2 max-w-7xl mx-auto sm:px-6 lg:px-8 mt-14">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
+            {{-- @include('components.footer') --}}
         </div>
+        @stack('scripts')
+        {{-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> --}}
     </body>
+    {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
   
 </html>
