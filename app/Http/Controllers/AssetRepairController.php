@@ -213,7 +213,7 @@ class AssetRepairController extends Controller
         $validated = $request->validate([
             // 'status' => 'nullable|in:Repair,Completed',
             // 'repair_date' => 'nullable|date',
-            'completed_at' => 'nullable|required_if:status,Completed|date|after_or_equal:repair_date',
+            // 'completed_at' => 'nullable|required_if:status,Completed|date|after_or_equal:repair_date',
             'technician' => 'nullable|string|max:255',
             'cost' => 'nullable|numeric|min:0',
             'address' => 'nullable|string|max:1000',
@@ -223,7 +223,7 @@ class AssetRepairController extends Controller
         $repair->update([
             // 'status' => $validated['status'],
             // 'repair_date' => $validated['repair_date'],
-            'completed_at' => $validated['completed_at'] ?? null,
+            // 'completed_at' => $validated['completed_at'] ?? null,
             'technician' => $validated['technician'],
             'cost' => $validated['cost'] ?? 0,
             'address' => $validated['address'] ?? null,
