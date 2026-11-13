@@ -95,20 +95,30 @@
                         <div class="flex justify-end items-center">
                             {{-- Export --}}
                             <div class="">
-                                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white w-full sm:w-auto font-medium rounded-xl text-sm px-5 py-2.5 text-center inline-flex items-center" type="button">
-                                    <svg class="w-6 h-6 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"/>
-                                    </svg>
+                                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white w-full sm:w-auto font-medium rounded-xl text-sm  py-2.5 text-center inline-flex items-center" type="button">
+                                    <span class="text-md text-gray-200">Export</span>
                                 </button>
+                            </div>
+                            <div class="">
+                                <button
+                                    type="button"
+                                    onclick="document.getElementById('importPhotoModal').classList.remove('hidden')"
+                                    class="px-4 py-2 text-sm font-medium text-white hover:text-blue-300 whitespace-nowrap">
+                                    {{-- class="w-full rounded-b-md bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800"> --}}
+                                    
+                                    <i class="fa-solid fa-images mr-1"></i>
+                                    Import Foto
+                                </button>
+
                             </div>
 
                             <!-- Dropdown menu Export-->
-                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-56 dark:bg-gray-700">
+                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-auto dark:bg-gray-700">
                                 <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
-                                    <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
+                                    {{-- <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
                                         <span class="p-2 text-sm text-gray-900 ">Export</span>
 
-                                    </div>
+                                    </div> --}}
                                     <li class="">
                                         <a href="{{ route('assets.outlet.export', array_merge(
                                             ['outlet' => $outlet->id],
@@ -126,15 +136,6 @@
 
                                     </div> --}}
                                     <li>
-                                        <button
-                                            type="button"
-                                            onclick="document.getElementById('importPhotoModal').classList.remove('hidden')"
-                                            {{-- class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 whitespace-nowrap" --}}
-                                            class="w-full rounded-b-md bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800">
-                                            
-                                            <i class="fa-solid fa-images mr-1"></i>
-                                            Import Foto
-                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -147,7 +148,7 @@
                                     <select
                                         name="category_id"
                                         onchange="this.form.submit()"
-                                        class="w-full md:w-40 rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        class="w-full text-sm md:w-36 rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     >
                                         <option value="">All Category</option>
     
@@ -167,7 +168,7 @@
                             <form action="{{ route('assets.outlet', $outlet) }}" method="GET"
                             class="">
                             
-                                <div class="flex flex-col justify-center sm:flex-row gap-2">
+                                <div class="flex flex-col justify-center sm:flex-row gap-2 text-sm">
     
                                     {{-- Search --}}
                                     <input
@@ -175,7 +176,7 @@
                                         name="search"
                                         value="{{ $search ?? '' }}"
                                         placeholder="Search Asset Number, Serial Number, Device..."
-                                        class="w-full sm:w-96 rounded-lg border-gray-300
+                                        class="w-full sm:w-72 text-sm rounded-lg border-gray-300
                                             dark:border-gray-600 dark:bg-gray-700
                                             dark:text-white"
                                     >
@@ -607,7 +608,7 @@
                     <button
                         type="button"
                         onclick="document.getElementById('importPhotoModal').classList.add('hidden')"
-                        class="text-gray-500 hover:text-gray-700"
+                        class=" text-gray-500 hover:text-gray-700"
                     >
                         &times;
                     </button>

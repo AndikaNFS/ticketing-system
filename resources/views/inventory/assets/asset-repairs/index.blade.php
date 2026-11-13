@@ -191,7 +191,8 @@
                                 <th class="px-6 py-3">SN</th>
                                 <th class="px-6 py-3">Outlet</th>
                                 <th class="px-6 py-3">Repair Date</th>
-                                <th class="px-6 py-3">Durasi</th>
+                                <th class="px-6 py-3">Duration</th>
+                                <th class="px-6 py-3">Technician/Vendor</th>
                                 <th class="px-6 py-3">Cost</th>
                                 <th class="px-6 py-3">Status</th>
                                 <th class="px-6 py-3">Actions</th>
@@ -247,6 +248,48 @@
                                         {{ $repair->repair_date?->format('Y-m-d H:i') ?? '-' }}
                                     </td>
 
+                                    {{-- Duration --}}
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{-- {{ $repair->repair_date?->format('Y-m-d H:i') ?? '-' }} --}}
+                                        @if ($repair->repair_date)
+                                            @php
+                                                $startDate = $repair->repair_date;
+                                                $endDate = $repair->completed_at ?? now();
+
+                                                $totalMinutes = (int) $startDate->diffInMinutes($endDate);
+
+                                                $days = intdiv($totalMinutes, 1440);
+                                                $hours = intdiv($totalMinutes % 1440, 60);
+                                                $minutes = $totalMinutes % 60;
+                                            @endphp
+
+                                            @if ($days > 0)
+                                                {{ $days }} day
+                                            @endif
+
+                                            @if ($hours > 0)
+                                                {{ $hours }} hour
+                                            @endif
+
+                                            @if ($minutes > 0)
+                                                {{ $minutes }} minute
+                                            @endif
+
+                                            @if ($totalMinutes === 0)
+                                                < 1 minute
+                                            @endif
+
+                                            @if (!$repair->completed_at)
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                    (Proceed)
+                                                </span>
+                                            @endif
+
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+
 
                                     {{-- Technician --}}
                                     <td class="px-6 py-4">
@@ -263,37 +306,18 @@
                                     {{-- Status --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
 
-                                        @if ($repair->completed_at && $repair->repair_date)
-
-                                            @php
-                                                $totalMinutes = $repair->repair_date->diffInMinutes($repair->completed_at);
-                                                $days = intdiv($totalMinutes, 1440);
-                                                $hours = intdiv($totalMinutes % 1440, 60);
-                                                $minutes = $totalMinutes % 60;
-                                            @endphp
-
-                                            @if ($days > 0)
-                                                {{ $days }} hari
-                                            @endif
-
-                                            @if ($hours > 0)
-                                                {{ $hours }} jam
-                                            @endif
-
-                                            @if ($minutes > 0)
-                                                {{ $minutes }} menit
-                                            @endif
-
-                                            @if ($days === 0 && $hours === 0 && $minutes === 0)
-                                                < 1 menit
-                                            @endif
-
+                                        @if ($repair->completed_at)
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                                        bg-green-100 text-green-700
+                                                        dark:bg-green-900 dark:text-green-300">
+                                                Completed
+                                            </span>
                                         @else
-
-                                            <span class="text-yellow-600 dark:text-yellow-400">
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                                        bg-yellow-100 text-yellow-700
+                                                        dark:bg-yellow-900 dark:text-yellow-300">
                                                 In Progress
                                             </span>
-
                                         @endif
 
                                     </td>
@@ -316,6 +340,14 @@
                                         @endif
 
                                     </td>
+                                    {{-- <td class="px-6 py-5">
+                                        <a href="{{ route('assets.repairs.edit', $repair) }}"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                                            
+                                            <i class="fas fa-edit mr-1"> Edit</i>
+                                        </a>
+
+                                    </td> --}}
 
                                 </tr>
 
@@ -352,5 +384,5 @@
 
         </div>
     </div>
-
+    
 </x-app-layout>

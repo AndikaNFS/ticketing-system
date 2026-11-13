@@ -147,6 +147,14 @@ class AssetTransferController extends Controller
     {
         $transfer->load([
             'asset.inventory.category',
+            'asset.transfers' => function ($query) {
+                $query->with([
+                    'fromOutlet',
+                    'toOutlet',
+                ])
+                ->orderBy('transfer_date', 'asc')
+                ->orderBy('id', 'asc');
+            },
             'fromOutlet',
             'toOutlet',
             'creator',

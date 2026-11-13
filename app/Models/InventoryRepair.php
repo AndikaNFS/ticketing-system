@@ -14,6 +14,8 @@ class InventoryRepair extends Model
         'status',
         'description',
         'cost',
+        'address',
+        'technician',
         'completed_at',
     ];
 

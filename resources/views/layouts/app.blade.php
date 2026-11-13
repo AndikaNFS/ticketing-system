@@ -7,6 +7,7 @@
 
         <title>{{ config('app.name', 'Dashboard') }}</title>
         <link rel="icon" href="{{ asset('images/logo-rr.png') }}" type="image/png">
+        
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,6 +15,7 @@
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')
         {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 
     </head>
@@ -43,6 +45,7 @@
             </main>
             {{-- @include('components.footer') --}}
         </div>
+        @stack('scripts')
         {{-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> --}}
     </body>
     {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}

@@ -119,7 +119,7 @@
                                     <select
                                         name="category_id"
                                         onchange="this.form.submit()"
-                                        class="w-full md:w-40 rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        class="w-full md:w-36 text-sm rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     >
                                         <option value="">All Category</option>
     
@@ -129,6 +129,25 @@
                                                 {{ request('category_id') == $category->id ? 'selected' : '' }}
                                             >
                                                 {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <select
+                                        name="source_outlet_id"
+                                        onchange="this.form.submit()"
+                                        class="w-full md:w-40 text-sm rounded-lg border-gray-300 dark:border-gray-700
+                                            dark:bg-gray-800 dark:text-gray-200"
+                                    >
+                                        <option value="">All Source Site</option>
+
+                                        @foreach ($sourceOutlets as $sourceOutlet)
+                                            <option
+                                                value="{{ $sourceOutlet->id }}"
+                                                {{ request('source_outlet_id') == $sourceOutlet->id ? 'selected' : '' }}
+                                            >
+                                                {{ $sourceOutlet->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -147,7 +166,7 @@
                                         name="search"
                                         value="{{ $search ?? '' }}"
                                         placeholder="Search Asset Number, Serial Number, Device..."
-                                        class="w-full sm:w-96 rounded-lg border-gray-300
+                                        class="w-full sm:w-80 text-sm rounded-lg border-gray-300
                                             dark:border-gray-600 dark:bg-gray-700
                                             dark:text-white"
                                     >
@@ -386,19 +405,12 @@
                     </div>
 
 
-                   <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                         {{-- Rows per page --}}
                         @php
                             $isWarehouse = in_array($outlet->id, [22, 23, 24]);
                         @endphp
-
-                        {{-- <a
-                            href="{{ $isWarehouse
-                                ? route('assets.warehouse', $outlet)
-                                : route('assets.outlet', $outlet) }}"
-                            class="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
-                        > --}}
                         <form
                             method="GET"
                             action="{{ $isWarehouse

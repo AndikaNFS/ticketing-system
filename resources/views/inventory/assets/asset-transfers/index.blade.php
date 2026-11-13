@@ -229,7 +229,7 @@
 
                                     {{-- Transfer Date --}}
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $transfer->transfer_date?->format('Y-m-d H:i') ?? '-' }}
+                                        {{ $transfer->transfer_date?->format('d M Y H:i') ?? '-' }}
                                     </td>
 
                                     {{-- Description --}}

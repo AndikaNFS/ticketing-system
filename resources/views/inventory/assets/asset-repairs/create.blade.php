@@ -139,15 +139,16 @@
                                 for="technician"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Teknisi
+                                Technician/Vendor
                             </label>
 
                             <input
                                 type="text"
                                 id="technician"
                                 name="technician"
+                                required
                                 value="{{ old('technician') }}"
-                                placeholder="Nama teknisi"
+                                placeholder="Name technician/vendor"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
@@ -179,6 +180,34 @@
                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                        dark:text-white"
                             >
+                        </div>
+
+                        {{-- Address --}}
+                        <div>
+                            <label
+                                for="address"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Address <span class=" text-xs text-gray-300">(Optional)</span>
+                            </label>
+                            
+
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                value="{{ old('address') }}"
+                                placeholder="08123456789 - Jl.A..."
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                       focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                       dark:text-white"
+                            >
+                            @error('address')
+                                <p class="mt-1 text-sm text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
 

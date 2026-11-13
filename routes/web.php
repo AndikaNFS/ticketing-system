@@ -331,6 +331,8 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::put('/asset-repairs/{repair}/complete', [AssetRepairController::class, 'complete'])->name('assets.repairs.complete');
     Route::get('/assets/{asset}/repair', [AssetRepairController::class, 'create'])->name('assets.repairs.create');
     Route::post('/assets/{asset}/repair', [AssetRepairController::class, 'store'])->name('assets.repairs.store');
+    Route::get('/asset-repair/{repair}/edit', [AssetRepairController::class, 'edit'])->name('assets.repairs.edit');
+    Route::put('/asset-repair/{repair}', [AssetRepairController::class, 'update'])->name('assets.repairs.update');
 
 });
 

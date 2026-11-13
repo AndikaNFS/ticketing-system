@@ -111,6 +111,14 @@ class AssetController extends Controller
                 $q->where('category_id', $request->category_id);
             });
         }
+
+        // Filter Source Site
+        if ($request->filled('source_outlet_id')) {
+            $query->whereHas('latestTransfer', function ($q) use ($request) {
+                $q->where('from_outlet_id', $request->source_outlet_id);
+            });
+        }
+
         $query->when($search, function ($query, $search) {
             $query->where(function ($q) use ($search) {
                 $q->where('serial_number', 'like', "%{$search}%")
@@ -127,6 +135,11 @@ class AssetController extends Controller
             ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();
+        
+        $sourceOutlets = $outlet->assets()
+            ->with('latestTransfer.fromOutlet')->get()
+            ->pluck('latestTransfer.fromOutlet')->filter()
+            ->unique('id')->sortBy('name')->values();
 
         $totalBulkUnits = $inventories
             ->where('is_tracked', false)
@@ -160,6 +173,7 @@ class AssetController extends Controller
             'search',
             'perPage',
             'categories',
+            'sourceOutlets',
         ));
     }
 

@@ -180,11 +180,23 @@
             {{-- Repair Information --}}
             <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg mb-6">
 
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
 
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         Repair Information
                     </h3>
+                    <a href="{{ route('assets.repairs.edit', $repair) }}"
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-edit mr-1"></i>
+                        Edit Repair
+                    </a>
+
+                </div>
+
+                <div class="flex items-center justify-between mb-3">
+                    {{-- <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
+                        Repair Details
+                    </h2> --}}
 
                 </div>
 
@@ -215,7 +227,7 @@
                             </p>
 
                         </div>
-                        <div class="">
+                        {{-- <div> --}}
                             @if ($repair->completed_at && $repair->repair_date)
                                 @php
                                     $totalMinutes = $repair->repair_date->diffInMinutes($repair->completed_at);
@@ -231,15 +243,15 @@
     
                                         <p class="mt-1 font-medium text-gray-900 dark:text-white">
                                             @if ($days > 0)
-                                                {{ $days }} hari
+                                                {{ $days }} day
                                             @endif
     
                                             @if ($hours > 0)
-                                                {{ $hours }} jam
+                                                {{ $hours }} hour
                                             @endif
     
                                             @if ($minutes > 0)
-                                                {{ $minutes }} menit
+                                                {{ $minutes }} minute
                                             @endif
     
                                             @if ($days === 0 && $hours === 0 && $minutes === 0)
@@ -250,17 +262,17 @@
     
                             @endif
 
-                        </div>
+                        {{-- </div> --}}
                         
 
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Teknisi
+                                Technician/Vendor
                             </p>
 
                             <p class="mt-1 font-medium text-gray-900 dark:text-white">
-                                {{ $repair->technician ?? '-' }}
+                            {{ $repair->technician ?? '-' }}
                             </p>
                         </div>
 
@@ -279,12 +291,27 @@
                         <div class="md:col-span-2">
 
                             <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Address
+                            </p>
+
+                            <div class="mt-2 rounded-lg ">
+
+                                <span class="text-gray-900 dark:text-gray-200 text-body whitespace-normal">
+                                    {{ $repair->address ?? '-' }}
+                                </span>
+
+                            </div>
+
+                        </div>
+                        <div class="md:col-span-2">
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
                                 Description
                             </p>
 
                             <div class="mt-2 p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
 
-                                <p class="text-gray-900 dark:text-gray-200 whitespace-pre-line">
+                                <p class="text-gray-900 dark:text-gray-200">
                                     {{ $repair->description ?? '-' }}
                                 </p>
 
@@ -340,13 +367,13 @@
                         @csrf
                         <div>
                             <div class="mb-3">
-                                <label class="block mb-2 text-gray-900 dark:text-gray-200">Jenis Foto</label>
+                                <label class="block mb-2 text-sm text-gray-900 dark:text-white">Photo Type</label>
 
                                 <select name="image_type"
-                                    class="w-full rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white">
-                                    <option value="Damage">Foto Kerusakan</option>
-                                    <option value="Process">Foto Proses Perbaikan</option>
-                                    <option value="Result">Foto Hasil Perbaikan</option>
+                                    class="w-full rounded-lg text-sm border-gray-300 dark:bg-gray-700 dark:text-white">
+                                    <option value="Damage">Photo Damage</option>
+                                    <option value="Process">Photo Repair Process</option>
+                                    <option value="Result">Photo Completed Repair</option>
                                 </select>
                             </div>
                             <label for="images"

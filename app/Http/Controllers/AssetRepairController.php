@@ -83,6 +83,8 @@ class AssetRepairController extends Controller
             'repair_date' => 'required|date',
             'cost' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
+            'technician' => 'required|string',
+            'address' => 'nullable|string',
         ]);
 
         DB::transaction(function () use ($validated, $asset) {
@@ -112,6 +114,8 @@ class AssetRepairController extends Controller
                 'outlet_id' => $lockedAsset->outlet_id,
                 'repair_date' => $validated['repair_date'],
                 'status' => 'Repair',
+                'technician' => $validated['technician'],
+                'address' => $validated['address'] ?? null,
                 'description' => $validated['description'] ?? null,
                 'cost' => $validated['cost'],
                 'completed_at' => null,
@@ -191,5 +195,43 @@ class AssetRepairController extends Controller
         });
 
         return redirect()->route('assets.repairs.show', $repair)->with('success', 'Repair completed successfully.');
+    }
+
+    public function edit(InventoryRepair $repair)
+    {
+        $repair->load([
+            'asset.inventory.category',
+            'asset.outlet',
+            'outlet',
+        ]);
+
+        return view('inventory.assets.asset-repairs.edit', compact('repair'));
+    }
+
+    public function update(Request $request, InventoryRepair $repair)
+    {
+        $validated = $request->validate([
+            // 'status' => 'nullable|in:Repair,Completed',
+            // 'repair_date' => 'nullable|date',
+            'completed_at' => 'nullable|required_if:status,Completed|date|after_or_equal:repair_date',
+            'technician' => 'nullable|string|max:255',
+            'cost' => 'nullable|numeric|min:0',
+            'address' => 'nullable|string|max:1000',
+            'description' => 'nullable|string|max:2000',
+        ]);
+
+        $repair->update([
+            // 'status' => $validated['status'],
+            // 'repair_date' => $validated['repair_date'],
+            'completed_at' => $validated['completed_at'] ?? null,
+            'technician' => $validated['technician'],
+            'cost' => $validated['cost'] ?? 0,
+            'address' => $validated['address'] ?? null,
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('assets.repairs.show', $repair)
+            ->with('success', 'Repair information updated successfully.');
     }
 }

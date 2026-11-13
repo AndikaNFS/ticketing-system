@@ -141,13 +141,13 @@
                     </div>
     
     
-                    <div class="border-t border-gray-200 dark:border-gray-700 pt-5">
+                    <div class=" ">
     
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        {{-- <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">
                             Destination Site
-                        </p>
+                        </p> --}}
     
-                        <div class="flex items-center gap-3">
+                        {{-- <div class="flex items-center gap-3">
     
                             <div class="p-3 rounded-lg bg-green-100 text-green-600">
                                 <i class="fas fa-store"></i>
@@ -162,6 +162,67 @@
                                 </p>
                             </div>
     
+                        </div> --}}
+                        {{-- Transfer History --}}
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-5">
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                Transfer History
+                            </p>
+
+                            @if ($transfer->asset && $transfer->asset->transfers->isNotEmpty())
+
+                                <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 space-y-6">
+
+                                    @foreach ($transfer->asset->transfers as $history)
+
+                                        <div class="relative pl-6">
+
+                                            {{-- Timeline Dot --}}
+                                            <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full
+                                                        bg-green-500 border-2 border-white dark:border-gray-800">
+                                            </div>
+
+                                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+
+                                                {{-- Outlet Information --}}
+                                                <div>
+                                                    <p class="font-semibold text-gray-900 dark:text-white">
+                                                        {{ $history->fromOutlet?->name ?? '-' }}
+                                                        <i class="font-bold text-lg text-gray-400">-></i>
+                                                        {{ $history->toOutlet?->name ?? '-' }}
+                                                    </p>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                        Transfer Destination:
+                                                        {{ $history->toOutlet?->name ?? '-' }}
+                                                    </p>
+                                                </div>
+
+                                                {{-- Transfer Date --}}
+                                                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                                    <i class="far fa-calendar-alt"></i>
+
+                                                    {{ $history->transfer_date
+                                                        ? \Carbon\Carbon::parse($history->transfer_date)->format('d M Y')
+                                                        : '-' }}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    @endforeach
+
+                                </div>
+
+                            @else
+
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    No transfer history available.
+                                </p>
+
+                            @endif
+
                         </div>
     
                     </div>
