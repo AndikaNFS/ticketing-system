@@ -55,18 +55,23 @@
 
                             <select
                                 name="from_outlet_id"
-                                id="from_outlet_id"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                id="outletFilter"
+                                {{-- onchange="this.form.submit()" --}}
 
-                                <option value="">All Sites</option>
-
+                                class="w-full md:w-64 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            >
+                                <option value="">All Site</option>
+        
                                 @foreach ($outlets as $outlet)
-                                    <option value="{{ $outlet->id }}"
-                                        {{ request('from_outlet_id') == $outlet->id ? 'selected' : '' }}>
+                                    <option
+                                        value="{{ $outlet->id }}"
+                                        {{-- {{ (string) $outletId === (string) $outlet->id ? 'selected' : '' }} --}}
+                                        {{ request('from_outlet_id') == $outlet->id ? 'selected' : '' }}
+
+                                    >
                                         {{ $outlet->name }}
                                     </option>
                                 @endforeach
-
                             </select>
                         </div>
 
@@ -76,8 +81,27 @@
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Destination Site
                             </label>
-
                             <select
+                                name="to_outlet_id"
+                                id="outletToFilter"
+                                {{-- onchange="this.form.submit()" --}}
+
+                                class="w-full md:w-64 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            >
+                                <option value="">All Site</option>
+        
+                                @foreach ($outlets as $outlet)
+                                    <option
+                                        value="{{ $outlet->id }}"
+                                        {{-- {{ (string) $outletId === (string) $outlet->id ? 'selected' : '' }} --}}
+                                        {{ request('to_outlet_id') == $outlet->id ? 'selected' : '' }}
+
+                                    >
+                                        {{ $outlet->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            {{-- <select
                                 name="to_outlet_id"
                                 id="to_outlet_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -91,7 +115,7 @@
                                     </option>
                                 @endforeach
 
-                            </select>
+                            </select> --}}
                         </div>
 
                         {{-- Tanggal Awal --}}
@@ -303,5 +327,101 @@
 
         </div>
     </div>
+
+    
+    @push('styles')
+        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
+
+        <style>
+            /* Dropdown utama */
+            .ts-wrapper .ts-control {
+                background-color: #374151 !important;
+                color: #ffffff !important;
+                border: 1px solid #4b5563 !important;
+                border-radius: 0.5rem;
+                padding: 10px 12px;
+            }
+
+            /* Input pencarian */
+            .ts-wrapper .ts-control input {
+                color: #ffffff !important;
+            }
+
+            .ts-wrapper .ts-control input::placeholder {
+                color: #9ca3af !important;
+            }
+
+            /* Daftar pilihan */
+            .ts-dropdown {
+                background-color: #1f2937 !important;
+                color: #ffffff !important;
+                border: 1px solid #4b5563 !important;
+            }
+
+            /* Setiap pilihan outlet */
+            .ts-dropdown .option {
+                color: #e5e7eb !important;
+                padding: 10px 12px;
+            }
+
+            /* Hover pilihan */
+            .ts-dropdown .option:hover,
+            .ts-dropdown .option.active {
+                background-color: #2563eb !important;
+                color: #ffffff !important;
+            }
+
+            /* Outlet yang sedang dipilih */
+            .ts-dropdown .option.selected {
+                background-color: #1d4ed8 !important;
+                color: #ffffff !important;
+            }
+
+            /* Panah dropdown */
+            .ts-wrapper.single .ts-control:after {
+                border-color: #ffffff transparent transparent transparent !important;
+            }
+        </style>
+    @endpush
+
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                new TomSelect('#outletFilter', {
+                    create: false,
+                    allowEmptyOption: true,
+                    placeholder: 'Search outlet name...',
+                    searchField: ['text'],
+                    maxOptions: 1000,
+                    onChange: function (value) {
+                        const form = this.input.closest('form');
+
+                        // if (form) {
+                        //     form.submit();
+                        // }
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                new TomSelect('#outletToFilter', {
+                    create: false,
+                    allowEmptyOption: true,
+                    placeholder: 'Search outlet name...',
+                    searchField: ['text'],
+                    maxOptions: 1000,
+                    onChange: function (value) {
+                        const form = this.input.closest('form');
+
+                        // if (form) {
+                        //     form.submit();
+                        // }
+                    }
+                });
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

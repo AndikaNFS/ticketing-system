@@ -83,7 +83,7 @@
 
                     {{-- Back --}}
                     <div class="grid grid-cols-2 items-center mb-4 ">
-                        {{-- <div class=""> --}}
+                        <div class=" w-auto ">
                             <a
                                 href="{{ route('assets.index') }}"
                                 class="text-sm text-blue-600 hover:underline"
@@ -91,7 +91,7 @@
                                 ← Back to Site List
                             </a>
 
-                        {{-- </div> --}}
+                        </div>
                         <div class="flex justify-end items-center">
                             {{-- Export --}}
                             <div class="">
@@ -117,7 +117,12 @@
                                 <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
                                     {{-- <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
                                         <span class="p-2 text-sm text-gray-900 ">Export</span>
-
+                                        
+                                    </div> --}}
+                                    
+                                    {{-- <div class="w-full bg-gray-400 p-2 text-center">
+                                        <span class="p-2 text-sm text-gray-900 ">Import</span>
+                                        
                                     </div> --}}
                                     <li class="">
                                         <a href="{{ route('assets.outlet.export', array_merge(
@@ -127,14 +132,11 @@
                                             class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
                                     </li>
                                     <li class="">
-                                        <a href="#" 
+                                        <a href="{{ route('assets.outlet.export-pdf', array_merge(['outlet' => $outlet->id],
+                                            request()->only(['category_id', 'source_outlet_id', 'search'])
+                                            )) }}" 
                                             class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">PDF</a>
                                     </li>
-
-                                    {{-- <div class="w-full bg-gray-400 p-2 text-center">
-                                        <span class="p-2 text-sm text-gray-900 ">Import</span>
-
-                                    </div> --}}
                                     <li>
                                     </li>
                                 </ul>
@@ -391,16 +393,21 @@
 
                                                 <a
                                                     href="{{ route('assets.show', $asset) }}"
-                                                    class="px-3 py-2 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                                                    class=" text-xs font-medium rounded-lg hover:text-blue-700"
                                                 >
-                                                    Details
+                                                    <svg class="w-6 h-6 text-blue-800 dark:text-blue-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                                                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                                    </svg>
                                                 </a>
 
                                                 <a
                                                     href="{{ route('assets.edit', $asset) }}"
-                                                    class="px-3 py-2 text-xs font-medium text-white bg-yellow-500 rounded-lg hover:bg-yellow-600"
+                                                    class=" text-xs font-medium text-white  rounded-lg hover:text-yellow-300"
                                                 >
-                                                    Edit
+                                                    <svg class="w-6 h-6 text-yellow-800 dark:text-yellow-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                                                    </svg>
                                                 </a>
 
                                                 <form
@@ -414,9 +421,11 @@
 
                                                     <button
                                                         type="submit"
-                                                        class="px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
+                                                        class=" text-xs font-medium  rounded-lg hover:text-red-700"
                                                     >
-                                                        Delete
+                                                        <svg class="w-6 h-6 text-red-800 dark:text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                                        </svg>
                                                     </button>
 
                                                 </form>

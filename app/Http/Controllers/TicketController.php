@@ -210,7 +210,7 @@ public function index(Request $request)
     {
         $ticket = Ticket::findOrFail($id);
         // $outlets   = Outlet::whereNotIn('id', [22, 23, 24])->orderBy('name')->get();
-        $outlets   = Outlet::whereNotIn('id', [22, 40, 41])->orderBy('name')->get();
+        $outlets   = Outlet::whereNotIn('id', [40, 41])->orderBy('name')->get();
         $employees = Employee::active()->get();
         // $employees = Employee::all()->where('name', '!=', 'All');
 

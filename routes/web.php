@@ -321,6 +321,7 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
 
     
     Route::get('/assets/{outlet}/assets/export', [AssetController::class, 'exportOutlet'])->name('assets.outlet.export');
+    Route::get('/assets/{outlet}/assets/export-pdf', [AssetController::class, 'exportOutletPdf'])->name('assets.outlet.export-pdf');
     Route::get('/assets/{asset}/transfer', [AssetTransferController::class, 'create'])->name('assets.asset-transfers.create');
     Route::post('/assets/{asset}/transfer', [AssetTransferController::class, 'store'])->name('assets.asset-transfers.store');
     Route::get('/asset-transfers', [AssetTransferController::class, 'index'])->name('assets.transfers.index');

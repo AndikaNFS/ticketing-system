@@ -26,15 +26,27 @@ class AssetOutletExport implements FromQuery, WithHeadings, WithMapping, ShouldA
     public function query()
     {
         $query = Asset::query()
-            ->with(['inventory.category', 'outlet'])
+            ->with(['inventory.category', 'outlet', 'latestTransfer.fromOutlet'])
             ->where('outlet_id', $this->outletId);
 
+        // Filter Category
         if (!empty($this->filters['category_id'])) {
             $query->whereHas('inventory', function ($q) {
                 $q->where('category_id', $this->filters['category_id']);
             });
         }
 
+        // Filter Source Site
+        if (!empty($this->filters['source_outlet_id'])) {
+            $query->whereHas('latestTransfer', function ($q) {
+                $q->where(
+                    'from_outlet_id', 
+                    $this->filters['source_outlet_id']
+                );
+            });
+        }
+
+        // Filter Search
         if (!empty($this->filters['search'])) {
             $search = $this->filters['search'];
 
@@ -63,6 +75,7 @@ class AssetOutletExport implements FromQuery, WithHeadings, WithMapping, ShouldA
             'Serial Number',
             'Category',
             'Outlet',
+            'Source Site',
             'Status',
             'Placement',
             'Entry Date',
@@ -79,6 +92,7 @@ class AssetOutletExport implements FromQuery, WithHeadings, WithMapping, ShouldA
             $asset->serial_number,
             $asset->inventory?->category?->name,
             $asset->outlet?->name,
+            $asset->latestTransfer?->fromOutlet?->name,
             $asset->status,
             $asset->placement,
             $asset->entry_date?->format('Y-m-d'),

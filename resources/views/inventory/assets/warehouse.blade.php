@@ -111,13 +111,49 @@
                         {{-- </div> --}}
                         
                         <div class="flex justify-end items-center">
+                            
+                            <!-- Dropdown menu Export-->
+                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-auto dark:bg-gray-700">
+                                <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
+                                    {{-- <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
+                                        <span class="p-2 text-sm text-gray-900 ">Export</span>
+                                        
+                                    </div> --}}
+                                    
+                                    {{-- <div class="w-full bg-gray-400 p-2 text-center">
+                                        <span class="p-2 text-sm text-gray-900 ">Import</span>
+                                        
+                                    </div> --}}
+                                    <li class="">
+                                        <a href="{{ route('assets.outlet.export', array_merge(
+                                            ['outlet' => $outlet->id],
+                                            request()->only(['category_id', 'source_outlet_id', 'search'])
+                                            ))}}" 
+                                            class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Excel</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="{{ route('assets.outlet.export-pdf', array_merge(['outlet' => $outlet->id],
+                                            request()->only(['category_id', 'source_outlet_id', 'search'])
+                                            )) }}" 
+                                            class="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">PDF</a>
+                                        </li>
+                                    <li>
+                                    </li>
+                                </ul>
+                            </div>
+                            {{-- Export --}}
+                           <div class="pr-4">
+                               <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class=" w-full sm:w-auto font-medium rounded-xl text-sm bg-sky-400 p-2 text-center inline-flex items-center" type="button">
+                                   <span class="text-md text-gray-800 font-bold font-medium">Export</span>
+                               </button>
+                           </div>
                             {{-- Filter Category --}}
                             <form action="{{ url()->current() }}" method="GET"
                                 class="flex flex-col md:flex-row pr-3 gap-3">
                                 <div class="col-span-2 sm:col-span-1">
     
                                     <select
-                                        name="category_id"
+                                    name="category_id"
                                         onchange="this.form.submit()"
                                         class="w-full md:w-36 text-sm rounded-lg  border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     >
@@ -166,7 +202,7 @@
                                         name="search"
                                         value="{{ $search ?? '' }}"
                                         placeholder="Search Asset Number, Serial Number, Device..."
-                                        class="w-full sm:w-80 text-sm rounded-lg border-gray-300
+                                        class="w-full sm:w-56 text-sm rounded-lg border-gray-300
                                             dark:border-gray-600 dark:bg-gray-700
                                             dark:text-white"
                                     >

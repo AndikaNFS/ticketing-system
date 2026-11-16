@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -170,6 +171,11 @@ class InventoryController extends Controller
                         ->whereHas('assets', function ($assetQuery) use ($outletId) {
                             $assetQuery->where('outlet_id', $outletId);
                         });
+                })->orWhere(function ($trackedQuery) use ($outletId) {
+                    $trackedQuery->where('is_tracked', true)
+                        ->whereDoesntHave('assets')
+                        ->where('outlet_id', $outletId);
+
                 })->orWhere(function ($bulkQuery) use ($outletId) {
                     $bulkQuery->where('is_tracked', false)
                         ->where('outlet_id', $outletId);
@@ -205,20 +211,35 @@ class InventoryController extends Controller
                 // Kelompokkan asset berdasarkan outlet saat ini
                 $assetsByOutlet = $inventory->assets->groupBy('outlet_id');
 
-                foreach ($assetsByOutlet as $outletId => $assets) {
-                    $outlet = $assets->first()->outlet;
-
-                    if (!$outlet) {
-                        continue;
-                    }
-
+                // Jika belum memiliki asset
+                if ($assetsByOutlet->isEmpty()) {
                     $trackedRows->push([
                         'inventory' => $inventory,
-                        'outlet' => $outlet,
-                        'quantity' => $assets->count(),
-                        'assets_count' => $assets->count(),
+                        'outlet' => $inventory->outlet,
+                        'quantity' => 0,
+                        'assets_count' => 0,
+                        'inventories' => collect([$inventory]),
+                        'is_grouped' => false,
                     ]);
+                } else {
+                    foreach ($assetsByOutlet as $outletId => $assets) {
+                        $outlet = $assets->first()->outlet;
+    
+                        if (!$outlet) {
+                            continue;
+                        }
+    
+                        $trackedRows->push([
+                            'inventory' => $inventory,
+                            'outlet' => $outlet,
+                            'quantity' => $assets->count(),
+                            'assets_count' => $assets->count(),
+                            'inventories' => collect([$inventory]),
+                            'is_grouped' => false,
+                        ]);
+                    }
                 }
+
             } else {
                 // Bulk tetap mengikuti data Inventory
                 $bulkRows->push([
@@ -319,26 +340,60 @@ class InventoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'device' => 'required|string|max:150',
-            'brand' => 'nullable|string|max:100',
-            'type' => 'nullable|string|max:100',
-            'category_id' => 'required|exists:categories,id',
-            'outlet_id' => 'required|exists:outlets,id',
-            'sources_outlet_id' => 'nullable|exists:outlets,id',
-            'is_tracked' => 'required|boolean',
-            'quantity' => 'required|integer|min:1',
-            // 'serial_number' => 'required|string|max:150|unique:assets,serial_number',
-            // 'asset_number' => 'nullable|string|max:150|unique:assets,asset_number',
-            // 'status' => ['required', Rule::in(['Available', 'In Use', 'Repair', 'Broken', 'Lost', 'Disposed'])],
-            'placement' => 'nullable|string|max:150',
-            'entry_date' => 'required|date',
-            'description' => 'nullable|string|max:500',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'device' => 'required|string|max:150',
+    //         'brand' => 'nullable|string|max:100',
+    //         'type' => 'nullable|string|max:100',
+    //         'category_id' => 'required|exists:categories,id',
+    //         'outlet_id' => 'required|exists:outlets,id',
+    //         'sources_outlet_id' => 'nullable|exists:outlets,id',
+    //         'is_tracked' => 'required|boolean',
+    //         'quantity' => 'required|integer|min:1',
+    //         'placement' => 'nullable|string|max:150',
+    //         'entry_date' => 'required|date',
+    //         'description' => 'nullable|string|max:500',
+    //         'import_ref' => 'nullable|string',
+    //     ]);
 
-        Inventory::create([
+    //     Inventory::create([
+    //         'category_id' => $validated['category_id'],
+    //         'outlet_id' => $validated['outlet_id'],
+    //         'sources_outlet_id' => $validated['sources_outlet_id'] ?? null,
+    //         'device' => $validated['device'],
+    //         'brand' => $validated['brand'] ?? null,
+    //         'type' => $validated['type'] ?? null,
+    //         'is_tracked' => $validated['is_tracked'],
+    //         'quantity' => $validated['quantity'],
+    //         'placement' => $validated['placement'] ?? null,
+    //         'entry_date' => $validated['entry_date'],
+    //         'description' => $validated['description'] ?? null,
+    //         'import_ref' => $validated['import_ref'] ?? null,
+    //     ]);
+
+    //     return redirect()->route('inventories.index')->with('success', 'Inventory created successfully.');
+    // }
+
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'device' => 'required|string|max:150',
+        'brand' => 'nullable|string|max:100',
+        'type' => 'nullable|string|max:100',
+        'category_id' => 'required|exists:categories,id',
+        'outlet_id' => 'required|exists:outlets,id',
+        'sources_outlet_id' => 'nullable|exists:outlets,id',
+        'is_tracked' => 'required|boolean',
+        'quantity' => 'required|integer|min:1',
+        'placement' => 'nullable|string|max:150',
+        'entry_date' => 'required|date',
+        'description' => 'nullable|string|max:500',
+        'import_ref' => 'nullable|string',
+    ]);
+
+    try {
+        $inventory = Inventory::create([
             'category_id' => $validated['category_id'],
             'outlet_id' => $validated['outlet_id'],
             'sources_outlet_id' => $validated['sources_outlet_id'] ?? null,
@@ -350,24 +405,35 @@ class InventoryController extends Controller
             'placement' => $validated['placement'] ?? null,
             'entry_date' => $validated['entry_date'],
             'description' => $validated['description'] ?? null,
+            'import_ref' => $validated['import_ref'] ?? null,
         ]);
-        // DB::transaction(function () use ($validated) {
 
-        //     if ($validated['is_serialized']) {
-        //         $inventory->assets()->create([
-        //             'outlet_id' => $validated['outlet_id'],
-        //             'serial_number' => $validated['serial_number'],
-        //             'asset_number' => $validated['asset_number'] ?? null,
-        //             'status' => $validated['status'],
-        //             'placement' => $validated['placement'] ?? null,
-        //             'entry_date' => $validated['entry_date'],
-        //         ]);
-        //     }
+        Log::info('Inventory successfully created', [
+            'inventory_id' => $inventory->id,
+            'device' => $inventory->device,
+            'database' => $inventory->getConnection()->getDatabaseName(),
+            'table' => $inventory->getTable(),
+            'exists' => $inventory->exists,
+            'wasRecentlyCreated' => $inventory->wasRecentlyCreated,
+        ]);
 
-        // });
+        return redirect()
+            ->route('inventories.index')
+            ->with('success', 'Inventory created successfully. ID: ' . $inventory->id);
 
-        return redirect()->route('inventories.index')->with('success', 'Inventory created successfully.');
+    } catch (\Throwable $e) {
+
+        Log::error('Inventory creation failed', [
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+
+        return back()
+            ->withInput()
+            ->with('error', 'Failed to create inventory: ' . $e->getMessage());
     }
+}
 
     /**
      * Display the specified resource.
@@ -420,6 +486,7 @@ class InventoryController extends Controller
             'placement' => 'nullable|string|max:150',
             'entry_date' => 'required|date',
             'description' => 'nullable|string|max:500',
+            'import_ref' => 'nullable|string',
         ]);
 
         $assetCount = $inventory->assets()->count();
@@ -465,6 +532,7 @@ class InventoryController extends Controller
             'placement' => $validated['placement'] ?? null,
             'entry_date' => $validated['entry_date'],
             'description' => $validated['description'] ?? null,
+            'import_ref' => $validated['import_ref'] ?? null,
         ]);
 
         return redirect()->route('inventories.index')->with('success', 'Inventory updated successfully.');

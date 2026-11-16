@@ -235,7 +235,7 @@
                 <div class="p-6">
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <thead class="text-xs text-center text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3">
                                         No
@@ -309,10 +309,12 @@
                                         <td class="px-6 py-4">
                                             <span class="font-medium">
                                                 {{ $row['quantity'] }}
+                                                {{-- {{ $inventory->quantity ?? '-' }} --}}
                                             </span>
                                             @if ($inventory->is_tracked)
                                                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                    {{ $row['assets_count'] }} / {{ $row['quantity'] }} Asset
+                                                    {{ $row['assets_count'] }} / {{ $inventory->quantity }} Asset
+                                                    {{-- {{ $inventory->assets_count }} / {{ $inventory->quantity }} Asset --}}
                                                 </div>
                                             @endif
                                         </td>
@@ -352,25 +354,35 @@
                                         <td class="px-6 py-4">
                                             <div class="flex gap-2">
                                                 <a href="{{ route('inventories.show', $inventory) }}"
-                                                   class="px-3 py-2 text-xs text-white bg-blue-600 rounded-lg">
-                                                    Details
+                                                   class=" text-xs rounded-lg">
+                                                    <svg class="w-6 h-6 text-blue-800 dark:text-blue-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                                                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                                    </svg>
+
                                                 </a>
 
                                                 @if (!$row['is_grouped'])
                                                     <a href="{{ route('inventories.edit', $inventory) }}"
-                                                    class="px-3 py-2 text-xs text-white bg-yellow-500 rounded-lg">
-                                                        Edit
+                                                    class="text-xs rounded-lg">
+                                                        <svg class="w-6 h-6 text-yellow-800 dark:text-yellow-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                                                        </svg>
+
                                                     </a>
                                                 @endif
-                                                {{-- <form action="{{ route('inventories.destroy', $inventory) }}"
+                                                <form action="{{ route('inventories.destroy', $inventory) }}"
                                                       method="POST"
                                                       onsubmit="return confirm('Are you sure you want to delete this inventory item?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                            class="px-3 py-2 text-xs text-white bg-red-600 rounded-lg">
-                                                        Delete
-                                                    </button> --}}
+                                                            class="text-xs rounded-lg">
+                                                        <svg class="w-6 h-6 text-red-800 dark:text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                                        </svg>
+
+                                                    </button>
                                                 </form>
                                             </div>
                                         </td>

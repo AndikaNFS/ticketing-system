@@ -8,6 +8,7 @@ use App\Models\Outlet;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\InventoryTransfer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -76,11 +77,8 @@ class AssetController extends Controller
         return $this->showOutletAssets($outlet, $request, 'inventory.assets.warehouse');
     }
 
-    private function showOutletAssets(
-        Outlet $outlet,
-        Request $request,
-        string $view
-    ) {
+    private function showOutletAssets(Outlet $outlet, Request $request, string $view) 
+    {
         $search = $request->input('search');
 
         $allowedPerPage = [10, 20, 50, 100];
@@ -446,6 +444,7 @@ class AssetController extends Controller
     {
         $filters = $request->only([
             'category_id',
+            'source_outlet_id',
             'search',
         ]);
 
@@ -460,6 +459,33 @@ class AssetController extends Controller
         );
     }
 
+    public function exportOutletPdf(Outlet $outlet, Request $request)
+    {
+        $filters = $request->only([
+            'category_id',
+            'source_outlet_id',
+            'search',
+        ]);
+
+        $export = new AssetOutletExport($outlet->id, $filters);
+
+        $assets = $export->query()
+            ->with('images')
+            ->get();
+
+        $pdf = Pdf::loadView(
+            'inventory.assets.export.outlet-pdf',
+            compact('outlet', 'assets')
+        )->setPaper('a4', 'landscape');
+
+        $filename = 'Asset-' .
+            str_replace(' ', '-', $outlet->name) .
+            '-' . now()->format('Ymd-His') .
+            '.pdf';
+
+        return $pdf->download($filename);
+    }
+
     public function destroy(Asset $asset)
     {
         if ($asset->transfers()->exists()) {
@@ -471,6 +497,6 @@ class AssetController extends Controller
 
         $asset->delete();
 
-        return redirect()->route('inventory.assets.outlet', $outletId)->with('success', 'Asset deleted successfully.');
+        return redirect()->route('assets.outlet', $outletId)->with('success', 'Asset deleted successfully.');
     }
 }
