@@ -13,6 +13,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use Picqer\Barcode\BarcodeGenerator;
+use Picqer\Barcode\BarcodeGeneratorSVG;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AssetController extends Controller
 {
@@ -63,6 +66,58 @@ class AssetController extends Controller
             'assets',
             'search',
             'outletId',
+        ));
+    }
+
+    public function printBarcode(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'required|integer|distinct|exists:assets,id',
+
+            'width' => 'nullable|numeric|min:20|max:200',
+            'height' => 'nullable|numeric|min:15|max:150',
+            'gap' => 'nullable|numeric|min:0|max:20',
+            'columns' => 'nullable|integer|min:1|max:6',
+        ]);
+
+        $width = $validated['width'] ?? 50;
+        $height = $validated['height'] ?? 30;
+        $gap = $validated['gap'] ?? 2;
+        $columns = $validated['columns'] ?? 1;
+
+        $assets = Asset::with('inventory.category')
+            ->whereIn('id', $validated['ids'])
+            ->get();
+
+        $barcodeGenerator = new BarcodeGeneratorSVG();
+
+        $labels = $assets->map(function ($asset) use ($barcodeGenerator) {
+            return [
+                'asset' => $asset,
+
+                'qrCode' => QrCode::format('svg')
+                    ->size(180)
+                    ->margin(1)
+                    ->generate(route('assets.show', $asset->id)),
+
+                'barcode' => $asset->asset_number
+                    ? $barcodeGenerator->getBarcode(
+                        (string) $asset->asset_number,
+                        BarcodeGenerator::TYPE_CODE_128,
+                        2,
+                        55  
+                    )
+                    : null,
+            ];
+        });
+
+        return view('inventory.assets.barcode.print', compact(
+            'labels',
+            'width',
+            'height',
+            'gap',
+            'columns'
         ));
     }
 

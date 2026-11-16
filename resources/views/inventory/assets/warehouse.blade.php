@@ -111,19 +111,17 @@
                         {{-- </div> --}}
                         
                         <div class="flex justify-end items-center">
+                            <div class="flex justify-end mr-3">
+                                <button type="button" id="printSelectedAssets" 
+                                    class="px-1 py-1 w-28 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">
+                                    Print Barcode
+                                </button>
+                            </div>
                             
                             <!-- Dropdown menu Export-->
                             <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-s w-auto dark:bg-gray-700">
                                 <ul class=" text-sm text-gray-700 dark:text-white" aria-labelledby="dropdownDefaultButton">
-                                    {{-- <div class="w-full bg-gray-400 p-2 text-center rounded-t-md">
-                                        <span class="p-2 text-sm text-gray-900 ">Export</span>
-                                        
-                                    </div> --}}
                                     
-                                    {{-- <div class="w-full bg-gray-400 p-2 text-center">
-                                        <span class="p-2 text-sm text-gray-900 ">Import</span>
-                                        
-                                    </div> --}}
                                     <li class="">
                                         <a href="{{ route('assets.outlet.export', array_merge(
                                             ['outlet' => $outlet->id],
@@ -143,8 +141,8 @@
                             </div>
                             {{-- Export --}}
                            <div class="pr-4">
-                               <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class=" w-full sm:w-auto font-medium rounded-xl text-sm bg-sky-400 p-2 text-center inline-flex items-center" type="button">
-                                   <span class="text-md text-gray-800 font-bold font-medium">Export</span>
+                               <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class=" w-full sm:w-auto font-medium rounded-md text-sm bg-blue-700 py-1 px-1 text-center inline-flex items-center" type="button">
+                                   <span class="text-md text-white font-medium">Export</span>
                                </button>
                            </div>
                             {{-- Filter Category --}}
@@ -245,6 +243,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
 
                                 <tr>
+                                    <th class="px-4 py-3 text-center">
+                                        <input type="checkbox" id="selectAllAssets" class="rounded border-gray-300">
+                                    </th>
 
                                     <th class="px-6 py-3">
                                         No
@@ -300,6 +301,9 @@
                                 @forelse ($assets as $asset)
 
                                     <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-4 py-4 text-center">
+                                            <input type="checkbox" class="asset-checkbox rounded border-gray-300" value="{{ $asset->id }}">
+                                        </td>
 
                                         <td class="px-6 py-4">
                                             {{ $assets->firstItem() + $loop->index }}
@@ -502,7 +506,55 @@
 
     </div>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const selectAll = document.getElementById('selectAllAssets');
+            const printButton = document.getElementById('printSelectedAssets');
+
+            const getCheckboxes = () => {
+                return document.querySelectorAll('.asset-checkbox');
+            };
+
+            // Select All
+            selectAll?.addEventListener('change', function () {
+                getCheckboxes().forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // Print selected assets
+            printButton?.addEventListener('click', function () {
+
+                const selectedIds = Array.from(getCheckboxes())
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one asset.');
+                    return;
+                }
+
+                const params = new URLSearchParams();
+
+                selectedIds.forEach(id => {
+                    params.append('ids[]', id);
+                });
+
+                // Default label settings
+                params.append('width', 50);
+                params.append('height', 30);
+                params.append('gap', 2);
+                params.append('columns', 1);
+
+                const url = "{{ route('assets.barcode.print') }}" +
+                            '?' + params.toString();
+
+                window.open(url, '_blank');
+            });
+
+        });
+    </script>
 
 </x-app-layout>
 

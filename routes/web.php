@@ -300,6 +300,7 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::get('/assets/outlet/{outlet}/warehouse', [AssetController::class, 'warehouse'])->name('assets.warehouse');
     Route::get('/assets/outlet/{outlet}/create', [AssetController::class, 'create'])->name('assets.create');
     Route::post('/assets/outlet/{outlet}', [AssetController::class, 'store'])->name('assets.store');
+    Route::get('/assets/barcode/print', [AssetController::class, 'printBarcode'])->name('assets.barcode.print');
     Route::get('/assets/{asset}', [AssetController::class, 'show'])->name('assets.show');
     Route::get('/assets/{asset}/edit', [AssetController::class, 'edit'])->name('assets.edit');
     Route::put('/assets/{asset}', [AssetController::class, 'update'])->name('assets.update');
@@ -319,7 +320,7 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     Route::delete('/asset-transfers/{transfer}/images/{image}', [AssetTransferImageController::class, 'destroy'])->name('asset-transfers.images.destroy');
     
 
-    
+    // Export
     Route::get('/assets/{outlet}/assets/export', [AssetController::class, 'exportOutlet'])->name('assets.outlet.export');
     Route::get('/assets/{outlet}/assets/export-pdf', [AssetController::class, 'exportOutletPdf'])->name('assets.outlet.export-pdf');
     Route::get('/assets/{asset}/transfer', [AssetTransferController::class, 'create'])->name('assets.asset-transfers.create');

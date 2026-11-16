@@ -93,6 +93,12 @@
 
                         </div>
                         <div class="flex justify-end items-center">
+                            <div class="flex justify-end mr-3">
+                                <button type="button" id="printSelectedAssets" 
+                                    class="px-1 py-1 w-28 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">
+                                    Print Barcode
+                                </button>
+                            </div>
                             {{-- Export --}}
                             <div class="">
                                 <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white w-full sm:w-auto font-medium rounded-xl text-sm  py-2.5 text-center inline-flex items-center" type="button">
@@ -258,7 +264,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
 
                                 <tr>
-
+                                    <th class="px-4 py-3 text-center">
+                                        <input type="checkbox" id="selectAllAssets" class="rounded border-gray-300">
+                                    </th>
                                     <th class="px-6 py-3">
                                         No
                                     </th>
@@ -317,7 +325,9 @@
                                 @forelse ($assets as $asset)
 
                                     <tr class="bg-white border-b hover:bg-gray-50">
-
+                                        <td class="px-4 py-4 text-center">
+                                            <input type="checkbox" class="asset-checkbox rounded border-gray-300" value="{{ $asset->id }}">
+                                        </td>
                                         <td class="px-6 py-4">
                                             {{ $assets->firstItem() + $loop->index }}
                                         </td>
@@ -469,82 +479,6 @@
                     </div>
 
 
-                    
-                    {{-- Inventory Table --}}
-                    {{-- <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                            Inventory List
-                        </h3>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700
-                                            text-gray-700 dark:text-gray-200">
-                                    <tr>
-                                        <th class="px-4 py-3">No</th>
-                                        <th class="px-4 py-3">Device</th>
-                                        <th class="px-4 py-3">Category</th>
-                                        <th class="px-4 py-3">Merk</th>
-                                        <th class="px-4 py-3">Tipe</th>
-                                        <th class="px-4 py-3">Quantity</th>
-                                        <th class="px-4 py-3">Placement</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @forelse ($inventories as $inventory)
-                                        <tr class="border-b dark:border-gray-700">
-                                            <td class="px-4 py-3">
-                                                {{ $loop->iteration }}
-                                            </td>
-
-                                            <td class="px-4 py-3 font-medium text-gray-900
-                                                    dark:text-white">
-                                                {{ $inventory->device }}
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                {{ $inventory->category?->name ?? '-' }}
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                {{ $inventory->brand ?? '-' }}
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                @if ($inventory->is_tracked)
-                                                    <span class="px-2 py-1 text-xs rounded-full
-                                                                bg-blue-100 text-blue-800">
-                                                        Tracked
-                                                    </span>
-                                                @else
-                                                    <span class="px-2 py-1 text-xs rounded-full
-                                                                bg-gray-100 text-gray-800">
-                                                        Bulk
-                                                    </span>
-                                                @endif
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                {{ $inventory->quantity }}
-                                            </td>
-
-                                            <td class="px-4 py-3">
-                                                {{ $inventory->placement ?? '-' }}
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="px-4 py-8 text-center">
-                                                No inventory items found for this outlet.
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> --}}
-
 
 
                    <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -694,7 +628,55 @@
                 </form>
             </div>
         </div>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const selectAll = document.getElementById('selectAllAssets');
+            const printButton = document.getElementById('printSelectedAssets');
+
+            const getCheckboxes = () => {
+                return document.querySelectorAll('.asset-checkbox');
+            };
+
+            // Select All
+            selectAll?.addEventListener('change', function () {
+                getCheckboxes().forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // Print selected assets
+            printButton?.addEventListener('click', function () {
+
+                const selectedIds = Array.from(getCheckboxes())
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one asset.');
+                    return;
+                }
+
+                const params = new URLSearchParams();
+
+                selectedIds.forEach(id => {
+                    params.append('ids[]', id);
+                });
+
+                // Default label settings
+                params.append('width', 50);
+                params.append('height', 30);
+                params.append('gap', 2);
+                params.append('columns', 1);
+
+                const url = "{{ route('assets.barcode.print') }}" +
+                            '?' + params.toString();
+
+                window.open(url, '_blank');
+            });
+
+        });
+    </script>
 
 </x-app-layout>
 
