@@ -147,7 +147,7 @@
                            </div>
                             {{-- Filter Category --}}
                             @php
-                                $isWarehouse = in_array($outlet->id, [22, 23, 24]);
+                                $isWarehouse = request()->routeIs('assets.warehouse');
                             @endphp
                             {{-- <form action="{{ url()->current() }}" method="GET" --}}
                             <form action="{{  $isWarehouse
@@ -219,11 +219,10 @@
                                     </button>
     
                                     @if ($search)
-                                        <a
-                                            href="{{ route('assets.outlet', $outlet) }}"
-                                            class="px-4 py-2 bg-gray-500 text-white rounded-lg
-                                                hover:bg-gray-600 text-center"
-                                        >
+                                        <a href="{{ $isWarehouse
+                                            ? route('assets.warehouse', $outlet->id)
+                                            : route('assets.outlet', $outlet->id) }}"
+                                            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
                                             Reset
                                         </a>
                                     @endif
@@ -456,7 +455,7 @@
 
                         {{-- Rows per page --}}
                         @php
-                            $isWarehouse = in_array($outlet->id, [22, 23, 24]);
+                            $isWarehouse = request()->routeIs('assets.warehouse');
                         @endphp
                         <form
                             method="GET"
