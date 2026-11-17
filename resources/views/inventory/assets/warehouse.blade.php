@@ -146,7 +146,14 @@
                                </button>
                            </div>
                             {{-- Filter Category --}}
-                            <form action="{{ url()->current() }}" method="GET"
+                            @php
+                                $isWarehouse = in_array($outlet->id, [22, 23, 24]);
+                            @endphp
+                            {{-- <form action="{{ url()->current() }}" method="GET" --}}
+                            <form action="{{  $isWarehouse
+                                ? route('assets.warehouse', $outlet->id)
+                                : route('assets.outlet', $outlet->id) }}" 
+                                method="GET"
                                 class="flex flex-col md:flex-row pr-3 gap-3">
                                 <div class="col-span-2 sm:col-span-1">
     
@@ -186,12 +193,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </form>    
-    
-                            {{-- Search --}}
-                            <form action="{{ route('assets.outlet', $outlet) }}" method="GET"
-                            class="">
-                            
                                 <div class="flex flex-col justify-center sm:flex-row gap-2">
     
                                     {{-- Search --}}
@@ -227,7 +228,13 @@
                                         </a>
                                     @endif
                                 </div>
-                            </form>
+                            </form>    
+    
+                            {{-- Search --}}
+                            {{-- <form action="{{ route('assets.outlet', $outlet) }}" method="GET"
+                            class="">
+                            
+                            </form> --}}
 
                         </div>
                         
@@ -454,14 +461,15 @@
                         <form
                             method="GET"
                             action="{{ $isWarehouse
-                                ? route('assets.warehouse', $outlet)
-                                : route('assets.outlet', $outlet) }}"
+                                ? route('assets.warehouse', $outlet->id)
+                                : route('assets.outlet', $outlet->id) }}"
                             class="flex items-center gap-2"
                         >
                             {{-- Preserve existing filters --}}
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="category_id" value="{{ request('category_id') }}">
                             <input type="hidden" name="outlet_id" value="{{ request('outlet_id') }}">
+                            <input type="hidden" name="from_outlet_id" value="{{ request('from_outlet_id') }}">
                             <input type="hidden" name="entry_date" value="{{ request('entry_date') }}">
 
                             <label for="per_page" class="whitespace-nowrap text-sm text-gray-300 dark:text-gray-700">

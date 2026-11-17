@@ -246,7 +246,7 @@ Route::prefix('building')->middleware('role:superadmin')->group(function () {
 });
 
 // INVENTORY
-Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|direksi'])->group(function () {
+Route::prefix('inventory')->middleware(['auth', 'role:superadmin|admin|admin1|inventory|direksi'])->group(function () {
     // Route::resource('categories', CategoryController::class);
     // Route::resource('inventory', InventoryController::class);
 
@@ -262,25 +262,18 @@ Route::prefix('inventory')->middleware(['role:superadmin|admin|admin1|inventory|
     // Route::get('/inventories/template', [InventoryExcelController::class, 'template'])->name('inventories.download-template');
     
     Route::post('/inventories/import', [InventoryExcelController::class, 'import'])->middleware('permission:inventory.create')->name('inventories.import');
-    // Inventory : detail
     Route::get('/inventories/{inventory}', [InventoryController::class, 'show'])->middleware('permission:inventory.view')->name('inventories.show');
-    // Inventory : edit
     Route::get('/inventories/{inventory}/edit', [InventoryController::class, 'edit'])->middleware('permission:inventory.edit')->name('inventories.edit');
     Route::put('/inventories/{inventory}', [InventoryController::class, 'update'])->middleware('permission:inventory.edit')->name('inventories.update');
-    // Inventory : delete
     Route::delete('/inventories/{inventory}', [InventoryController::class, 'destroy'])->middleware('permission:inventory.delete')->name('inventories.destroy');
     
     // Category: lihat daftar
     Route::get('/categories', [CategoryController::class, 'index'])->middleware('permission:category.view')->name('categories.index');
-    // Category: tambah
     Route::get('/categories/create', [CategoryController::class, 'create'])->middleware('permission:category.create')->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->middleware('permission:category.create')->name('categories.store');
-    // Category : detail
     Route::get('/categories/{category}', [CategoryController::class, 'show'])->middleware('permission:category.view')->name('categories.show');
-    // Category : edit
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('permission:category.edit')->name('categories.edit');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->middleware('permission:category.edit')->name('categories.update');
-    // Category : delete
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->middleware('permission:category.delete')->name('categories.destroy');
 
 
