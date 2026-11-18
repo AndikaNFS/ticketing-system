@@ -55,23 +55,42 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
+        // Jika login berasal dari halaman yang membutuhkan autentikasi
+        $intendedUrl = $request->session()->pull('url.intended');
+
+        if ($intendedUrl) {
+            return redirect()->to($intendedUrl);
+        }
+
+        if ($user->hasRole(['superadmin', 'admin', 'admin1', 'direksi'])) {
             return redirect()->route('tickets.index');
         } elseif ($user->hasRole('hrd')) {
             return redirect()->route('schedules.index');
-        } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
+        } elseif ($user->hasRole('building', 'building-user', 'maintenance', 'maintenance1')) {
             return redirect()->route('building.tickets.index');
-        } elseif ($user->hasRole(['inventory', 'superadmin', 'admin', 'admin1', 'direksi'])) {
+        } elseif ($user->hasRole('inventory')) {
             return redirect()->route('inventory.index');
         } elseif ($user->hasRole('user')) {
             return redirect()->route('welcome');
         } else {
-        // abort(403, 'Unauthorized role');
-                return redirect()->route('welcome');
-
+            return redirect()->route('welcome');
         }
 
-        return redirect()->intended(route('welcome', absolute: false));
+        // if ($user->hasRole(['superadmin','admin','admin1','direksi'])) {
+        //     return redirect()->route('tickets.index');
+        // } elseif ($user->hasRole('hrd')) {
+        //     return redirect()->route('schedules.index');
+        // } elseif ($user->hasRole(['building','building-user','maintenance','maintenance1'])) {
+        //     return redirect()->route('building.tickets.index');
+        // } elseif ($user->hasRole(['inventory', 'superadmin', 'admin', 'admin1', 'direksi'])) {
+        //     return redirect()->route('inventory.index');
+        // } elseif ($user->hasRole('user')) {
+        //     return redirect()->route('welcome');
+        // } else {
+        //     return redirect()->intended(route('welcome', absolute: false));
+
+        // }
+
     }
 
     /**
